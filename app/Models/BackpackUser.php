@@ -35,4 +35,8 @@ class BackpackUser extends User
     {
         return $this->email;
     }
+    public function comensal()
+    {
+        return $this->hasOne('App\Models\Comensal');
+    }
 }
