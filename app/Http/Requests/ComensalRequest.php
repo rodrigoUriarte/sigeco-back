@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ComensalRequest extends FormRequest
 {
@@ -21,12 +22,13 @@ class ComensalRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return arrays
      */
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'user_id' => ['required',Rule::unique('comensales')->ignore($this->id),],
+            //'comedor_id' => ['required', 'unique:comensales', 'max:255'],
         ];
     }
 
@@ -38,7 +40,7 @@ class ComensalRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'user_id' => 'ID Usuario',
         ];
     }
 

@@ -14,7 +14,7 @@ class CreateComensalesTable extends Migration
     {
         Schema::create('comensales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');

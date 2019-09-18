@@ -24,13 +24,14 @@ class ComensalCrudController extends CrudController
         $this->crud->setModel('App\Models\Comensal');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comensal');
         $this->crud->setEntityNameStrings('comensal', 'comensales');
+        //$this->crud->setColumns(['user','comedor']);
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['usuario','comedor']);
+        $this->crud->addColumns(['u', 'c']);
 
-        $this->crud->setColumnDetails('usuario', [
+        $this->crud->setColumnDetails('u', [
             'label' => 'Usuario',
             'type' => 'select',
             'name' => 'user_id', // the db column for the foreign key
@@ -39,7 +40,7 @@ class ComensalCrudController extends CrudController
             'model' => "App\Models\BackpackUser" // foreign key model
         ]);
 
-        $this->crud->setColumnDetails('comedor', [
+        $this->crud->setColumnDetails('c', [
             'label' => 'Comedor',
             'type' => 'select',
             'name' => 'comedor_id', // the db column for the foreign key
@@ -47,6 +48,12 @@ class ComensalCrudController extends CrudController
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Comedor" // foreign key model
         ]);
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+
     }
 
     protected function setupCreateOperation()

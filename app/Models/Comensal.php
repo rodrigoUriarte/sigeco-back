@@ -16,9 +16,9 @@ class Comensal extends Model
     */
 
     protected $table = 'comensales';
-    // protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
     // public $timestamps = false;
-    // protected $guarded = ['id'];
+    //protected $guarded = [];
     protected $fillable = ['user_id','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
@@ -34,11 +34,13 @@ class Comensal extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function comedor(){
+    public function comedor()
+    {
         return $this->belongsTo('App\Models\Comedor');
     }
-    
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo('App\Models\BackpackUser');
     }
 

@@ -16,7 +16,7 @@ class Comedor extends Model
     */
 
     protected $table = 'comedores';
-    // protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
     protected $fillable = ['descripcion','direccion'];
