@@ -29,9 +29,9 @@ class ComensalCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['u', 'c']);
+        $this->crud->addColumns(['user', 'comedor']);
 
-        $this->crud->setColumnDetails('u', [
+        $this->crud->setColumnDetails('user', [
             'label' => 'Usuario',
             'type' => 'select',
             'name' => 'user_id', // the db column for the foreign key
@@ -40,7 +40,7 @@ class ComensalCrudController extends CrudController
             'model' => "App\Models\BackpackUser" // foreign key model
         ]);
 
-        $this->crud->setColumnDetails('c', [
+        $this->crud->setColumnDetails('comedor', [
             'label' => 'Comedor',
             'type' => 'select',
             'name' => 'comedor_id', // the db column for the foreign key
@@ -52,6 +52,7 @@ class ComensalCrudController extends CrudController
 
     protected function setupShowOperation()
     {
+        //$this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
 
     }

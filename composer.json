@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "backpack/crud": "v4.x-dev as 4.0.0",
+        "backpack/permissionmanager": "^4.0",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
