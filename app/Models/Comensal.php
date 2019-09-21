@@ -17,7 +17,7 @@ class Comensal extends Model
 
     protected $table = 'comensales';
     protected $primaryKey = 'id';
-    // public $timestamps = false;
+     public $timestamps = true;
     //protected $guarded = [];
     protected $fillable = ['user_id','comedor_id'];
     // protected $hidden = [];

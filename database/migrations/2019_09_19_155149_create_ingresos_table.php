@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComedoresTable extends Migration
+class CreateIngresosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,11 @@ class CreateComedoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('comedores', function (Blueprint $table) {
+        Schema::create('ingresos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion');
-            $table->string('direccion');
-            $table->unsignedBigInteger('unidad_academica_id');
-            $table->foreign('unidad_academica_id')->references('id')->on('unidades_academicas');
+            $table->unsignedBigInteger('operativo_id');
+            $table->foreign('operativo_id')->references('id')->on('operativos');
+            $table->date('fecha');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateComedoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comedores');
+        Schema::dropIfExists('ingresos');
     }
 }

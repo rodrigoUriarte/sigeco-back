@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Comedor extends Model
+class Operativo extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Comedor extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'comedores';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
-    // protected $guarded = [];
-    protected $fillable = ['descripcion','direccion'];
+    protected $table = 'operativos';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    // protected $guarded = ['id'];
+    protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,9 +34,6 @@ class Comedor extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function comensales(){
-        return $this->hasMany('App\Models\Comensal');
-    }
 
     /*
     |--------------------------------------------------------------------------
