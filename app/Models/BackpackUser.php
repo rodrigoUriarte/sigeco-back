@@ -40,4 +40,9 @@ class BackpackUser extends User
     {
         return $this->hasOne('App\Models\Comensal');
     }
+
+    public function persona()
+    {
+        return $this->belongsTo('App\Models\Persona');
+    }
 }

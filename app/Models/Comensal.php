@@ -33,15 +33,20 @@ class Comensal extends Model
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
-    */
+    */   
+    public function user()
+    {
+        return $this->belongsTo('App\Models\BackpackUser');
+    }
+
     public function comedor()
     {
         return $this->belongsTo('App\Models\Comedor');
     }
 
-    public function user()
+    public function unidad_academica()
     {
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\Models\UnidadAcademica');
     }
 
     /*

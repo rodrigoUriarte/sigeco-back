@@ -14,5 +14,5 @@
 </li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingreso') }}'><i class='nav-icon fa fa-question'></i> Ingresos</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('persona') }}'><i class='nav-icon fa fa-question'></i> Personas</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('unidad_academica') }}'><i class='nav-icon fa fa-question'></i> Unidad_academicas</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('operativo') }}'><i class='nav-icon fa fa-question'></i> Operativos</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('unidadAcademica') }}'><i class='nav-icon fa fa-question'></i> UnidadesAcademicas</a></li>

@@ -24,7 +24,6 @@ class ComensalCrudController extends CrudController
         $this->crud->setModel('App\Models\Comensal');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comensal');
         $this->crud->setEntityNameStrings('comensal', 'comensales');
-        //$this->crud->setColumns(['user','comedor']);
     }
 
     protected function setupListOperation()
@@ -33,11 +32,7 @@ class ComensalCrudController extends CrudController
 
         $this->crud->setColumnDetails('user', [
             'label' => 'Usuario',
-            'type' => 'select',
-            'name' => 'user_id', // the db column for the foreign key
-            'entity' => 'user', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\BackpackUser" // foreign key model
+            'name' => 'user_id',
         ]);
 
         $this->crud->setColumnDetails('comedor', [

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Unidad_academica extends Model
+class UnidadAcademica extends Model
 {
     use CrudTrait;
 

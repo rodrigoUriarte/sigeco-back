@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class PersonaRequest extends FormRequest
 {
@@ -26,6 +28,7 @@ class PersonaRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => ['required',Rule::unique('personas')->ignore($this->id),],
             // 'name' => 'required|min:5|max:255'
         ];
     }

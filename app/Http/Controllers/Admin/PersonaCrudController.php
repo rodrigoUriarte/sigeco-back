@@ -28,20 +28,61 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        $this->crud->addColumns(['DNI', 'Nombre', 'Apellido', 'Telefono']);
+
+        $this->crud->setColumnDetails('DNI', [
+            'label' => 'DNI',
+            'name' => 'id',
+        ]);
+        $this->crud->setColumnDetails('Nombre', [
+            'label' => 'Nombre',
+            'name' => 'nombre',
+        ]);
+        $this->crud->setColumnDetails('Apellido', [
+            'label' => 'Apellido',
+            'name' => 'apellido',
+        ]);
+        $this->crud->setColumnDetails('Telefono', [
+            'label' => 'Telefono',
+            'name' => 'telefono',
+        ]);
+        
     }
 
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(PersonaRequest::class);
 
-        // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        $this->crud->addField([
+            'name' => 'id',
+            'type' => 'text',
+            'label' => 'DNI'
+        ]);
+        $this->crud->addField([
+            'name' => 'nombre',
+            'type' => 'text',
+            'label' => 'Nombre'
+        ]);
+        $this->crud->addField([
+            'name' => 'apellido',
+            'type' => 'text',
+            'label' => 'Apellido'
+        ]);
+        $this->crud->addField([
+            'name' => 'telefono',
+            'type' => 'text',
+            'label' => 'Telelfono'
+        ]);
     }
 
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }

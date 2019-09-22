@@ -16,10 +16,11 @@ class Persona extends Model
     */
 
     protected $table = 'personas';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = [];
+    protected $fillable = ['id','nombre','apellido','telefono'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,7 +35,10 @@ class Persona extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function user()
+    {
+        return $this->hasOne('App\Models\BackpackUser');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
