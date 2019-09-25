@@ -28,20 +28,17 @@ class ComensalCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user', 'comedor']);
+        $this->crud->addColumns(['user']);
+
+
 
         $this->crud->setColumnDetails('user', [
             'label' => 'Usuario',
-            'name' => 'user_id',
-        ]);
-
-        $this->crud->setColumnDetails('comedor', [
-            'label' => 'Comedor',
             'type' => 'select',
-            'name' => 'comedor_id', // the db column for the foreign key
-            'entity' => 'comedor', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Comedor" // foreign key model
+            'name' => 'user_id', // the db column for the foreign key
+            'entity' => 'user', // the method that defines the relationship in your Model
+            'attribute' => 'email', // foreign key attribute that is shown to user
+            'model' => "App\Models\BackpackUser" // foreign key model
         ]);
     }
 
@@ -61,7 +58,7 @@ class ComensalCrudController extends CrudController
             'type' => 'select2',
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
+            'attribute' => 'email', // foreign key attribute that is shown to user
             'model' => "App\Models\BackpackUser", // foreign key model
 
             // optional
@@ -69,22 +66,6 @@ class ComensalCrudController extends CrudController
             // 'options'   => (function ($query) {
             // return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
             // }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        ]);
-
-        $this->crud->addField([  // Select2
-            'label' => "Comedor",
-            'type' => 'select2',
-            'name' => 'comedor_id', // the db column for the foreign key
-            'entity' => 'comedor', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Comedor", // foreign key model
-
-            // optional
-            'default' => 1, // set the default value of the select2
-
-            //'options'   => (function ($query) {
-            //return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-            //}), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ]);
     }
 

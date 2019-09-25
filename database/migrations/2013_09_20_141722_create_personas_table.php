@@ -13,10 +13,15 @@ class CreatePersonasTable extends Migration
     public function up()
     {
         Schema::create('personas', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('dni');
             $table->string('nombre');
             $table->string('apellido');
             $table->string('telefono');
+            $table->unsignedBigInteger('comedor_id');
+            $table->foreign('comedor_id')->references('id')->on('comedores');
+            $table->unsignedBigInteger('unidad_academica_id');
+            $table->foreign('unidad_academica_id')->references('id')->on('unidades_academicas');
             $table->timestamps();
         });
     }

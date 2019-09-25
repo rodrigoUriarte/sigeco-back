@@ -35,14 +35,14 @@ class BackpackUser extends User
     {
         return $this->email;
     }
-    
-    public function comensal()
-    {
-        return $this->hasOne('App\Models\Comensal');
-    }
 
     public function persona()
     {
         return $this->belongsTo('App\Models\Persona');
+    }
+
+    public function comensales()
+    {
+        return $this->hasMany('App\Models\Comensal');
     }
 }

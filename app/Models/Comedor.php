@@ -19,7 +19,7 @@ class Comedor extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = [];
-    protected $fillable = ['descripcion','direccion'];
+    protected $fillable = ['descripcion','direccion','unidad_academica_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,8 +34,11 @@ class Comedor extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function comensales(){
-        return $this->hasMany('App\Models\Comensal');
+    public function personas(){
+        return $this->hasMany('App\Models\Persona');
+    }
+    public function unidad_academica(){
+        return $this->belongsTo('App\Models\UnidadAcademica');
     }
 
     /*

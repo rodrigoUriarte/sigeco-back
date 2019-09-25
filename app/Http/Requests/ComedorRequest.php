@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class ComedorRequest extends FormRequest
 {
@@ -26,6 +28,7 @@ class ComedorRequest extends FormRequest
     public function rules()
     {
         return [
+            'descripcion' => ['required',Rule::unique('comedores')->ignore($this->id)],
             // 'name' => 'required|min:5|max:255'
         ];
     }

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UnidadAcademicaRequest extends FormRequest
 {
@@ -26,6 +28,7 @@ class UnidadAcademicaRequest extends FormRequest
     public function rules()
     {
         return [
+            'nombre' => ['required', Rule::unique('unidades_academicas')->ignore($this->id)],
             // 'name' => 'required|min:5|max:255'
         ];
     }

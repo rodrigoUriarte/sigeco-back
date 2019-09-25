@@ -15,11 +15,11 @@ class UnidadAcademica extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'unidad_academicas';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+    protected $table = 'unidades_academicas';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = [];
+    protected $fillable = ['nombre'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,6 +34,12 @@ class UnidadAcademica extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function comedores(){
+        return $this->hasMany('App\Models\Comedor');
+    }
+    public function personas(){
+        return $this->hasMany('App\Models\Persona');
+    }
 
     /*
     |--------------------------------------------------------------------------

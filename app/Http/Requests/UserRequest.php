@@ -3,10 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ComensalRequest extends FormRequest
+
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +24,13 @@ class ComensalRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return arrays
+     * @return array
      */
     public function rules()
     {
         return [
-            'user_id' => ['required',Rule::unique('comensales')->ignore($this->id)],
-            //'comedor_id' => ['required', 'unique:comensales', 'max:255'],
+            'persona_id' => ['required',Rule::unique('users')->ignore($this->id)],
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 
@@ -40,7 +42,7 @@ class ComensalRequest extends FormRequest
     public function attributes()
     {
         return [
-            'user_id' => 'ID Usuario',
+            //
         ];
     }
 

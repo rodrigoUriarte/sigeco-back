@@ -28,23 +28,24 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['DNI', 'Nombre', 'Apellido', 'Telefono']);
+        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'unidad_academica', 'comedor']);
 
-        $this->crud->setColumnDetails('DNI', [
-            'label' => 'DNI',
-            'name' => 'id',
+        $this->crud->setColumnDetails('unidad_academica', [
+            'label' => 'Unidad Academica',
+            'type' => 'select',
+            'name' => 'unidad_academica_id', // the db column for the foreign key
+            'entity' => 'unidad_academica', // the method that defines the relationship in your Model
+            'attribute' => 'nombre', // foreign key attribute that is shown to user
+            'model' => "App\Models\UnidadAcademica" // foreign key model
         ]);
-        $this->crud->setColumnDetails('Nombre', [
-            'label' => 'Nombre',
-            'name' => 'nombre',
-        ]);
-        $this->crud->setColumnDetails('Apellido', [
-            'label' => 'Apellido',
-            'name' => 'apellido',
-        ]);
-        $this->crud->setColumnDetails('Telefono', [
-            'label' => 'Telefono',
-            'name' => 'telefono',
+
+        $this->crud->setColumnDetails('comedor', [
+            'label' => 'Comedor',
+            'type' => 'select',
+            'name' => 'comedor_id', // the db column for the foreign key
+            'entity' => 'comedor', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion', // foreign key attribute that is shown to user
+            'model' => "App\Models\Comedor" // foreign key model
         ]);
         
     }
@@ -54,7 +55,7 @@ class PersonaCrudController extends CrudController
         $this->crud->setValidation(PersonaRequest::class);
 
         $this->crud->addField([
-            'name' => 'id',
+            'name' => 'dni',
             'type' => 'text',
             'label' => 'DNI'
         ]);
@@ -72,6 +73,28 @@ class PersonaCrudController extends CrudController
             'name' => 'telefono',
             'type' => 'text',
             'label' => 'Telelfono'
+        ]);
+        $this->crud->addField([  // Select2
+            'label' => "Unidad Academica",
+            'type' => 'select2',
+            'name' => 'unidad_academica_id', // the db column for the foreign key
+            'entity' => 'unidad_academica', // the method that defines the relationship in your Model
+            'attribute' => 'nombre', // foreign key attribute that is shown to user
+            'model' => "App\Models\UnidadAcademica", // foreign key model
+
+            // optional
+            'default' => 1, // set the default value of the select2
+        ]);
+        $this->crud->addField([  // Select2
+            'label' => "Comedor",
+            'type' => 'select2',
+            'name' => 'comedor_id', // the db column for the foreign key
+            'entity' => 'comedor', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion', // foreign key attribute that is shown to user
+            'model' => "App\Models\Comedor", // foreign key model
+
+            // optional
+            'default' => 1, // set the default value of the select2
         ]);
     }
 

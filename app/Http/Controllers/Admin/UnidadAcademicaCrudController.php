@@ -22,26 +22,34 @@ class UnidadAcademicaCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel('App\Models\UnidadAcademica');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/unidadacademica');
-        $this->crud->setEntityNameStrings('unidadacademica', 'unidad_academicas');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/unidadAcademica');
+        $this->crud->setEntityNameStrings('Unidad Academica', 'Unidades Academicas');
     }
 
     protected function setupListOperation()
     {
-        // TODO: remove setFromDb() and manually define Columns, maybe Filters
-        $this->crud->setFromDb();
+        $this->crud->addColumns(['nombre']);
     }
 
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(UnidadAcademicaRequest::class);
 
-        // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
+        $this->crud->addField([
+            'name' => 'nombre',
+            'type' => 'text',
+            'label' => 'Nombre'
+        ]);
     }
 
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }

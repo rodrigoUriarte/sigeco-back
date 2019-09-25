@@ -19,7 +19,7 @@ class Comensal extends Model
     protected $primaryKey = 'id';
      public $timestamps = true;
     //protected $guarded = [];
-    protected $fillable = ['user_id','comedor_id'];
+    protected $fillable = ['user_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -37,16 +37,6 @@ class Comensal extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\BackpackUser');
-    }
-
-    public function comedor()
-    {
-        return $this->belongsTo('App\Models\Comedor');
-    }
-
-    public function unidad_academica()
-    {
-        return $this->belongsTo('App\Models\UnidadAcademica');
     }
 
     /*

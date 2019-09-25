@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +29,7 @@ class PersonaRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required',Rule::unique('personas')->ignore($this->id),],
+            'dni' => ['required',Rule::unique('personas')->ignore($this->id)],
             // 'name' => 'required|min:5|max:255'
         ];
     }
