@@ -28,7 +28,7 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'unidad_academica', 'comedor']);
+        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'unidad_academica', 'comedor', 'usuario']);
 
         $this->crud->setColumnDetails('unidad_academica', [
             'label' => 'Unidad Academica',
@@ -46,6 +46,15 @@ class PersonaCrudController extends CrudController
             'entity' => 'comedor', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Comedor" // foreign key model
+        ]);
+
+        $this->crud->setColumnDetails('usuario', [
+            'label' => 'Usuario',
+            'type' => 'select',
+            'name' => 'user_id', // the db column for the foreign key
+            'entity' => 'user', // the method that defines the relationship in your Model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'model' => "App\Models\BackpackUser" // foreign key model
         ]);
         
     }
@@ -92,6 +101,17 @@ class PersonaCrudController extends CrudController
             'entity' => 'comedor', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Comedor", // foreign key model
+
+            // optional
+            'default' => 1, // set the default value of the select2
+        ]);
+        $this->crud->addField([  // Select2
+            'label' => "Usuario",
+            'type' => 'select2',
+            'name' => 'user_id', // the db column for the foreign key
+            'entity' => 'user', // the method that defines the relationship in your Model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'model' => "App\Models\BackpackUser", // foreign key model
 
             // optional
             'default' => 1, // set the default value of the select2

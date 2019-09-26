@@ -17,10 +17,9 @@ class Persona extends Model
 
     protected $table = 'personas';
     protected $primaryKey = 'id';
-    //public $incrementing = false;
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['dni','nombre','apellido','telefono','unidad_academica_id','comedor_id'];
+    protected $fillable = ['dni','nombre','apellido','telefono','unidad_academica_id','comedor_id','user_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -37,7 +36,7 @@ class Persona extends Model
     */
     public function user()
     {
-        return $this->hasOne('App\Models\BackpackUser');
+        return $this->belongsTo('App\Models\BackpackUser');
     }
     public function unidad_academica(){
         return $this->belongsTo('App\Models\UnidadAcademica');
@@ -45,6 +44,7 @@ class Persona extends Model
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

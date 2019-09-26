@@ -14,8 +14,6 @@ class CreateIngresosTable extends Migration
     {
         Schema::create('ingresos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('operativo_id');
-            $table->foreign('operativo_id')->references('id')->on('operativos');
             $table->date('fecha');
             $table->timestamps();
         });

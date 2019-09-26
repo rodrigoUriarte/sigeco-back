@@ -38,11 +38,8 @@ class BackpackUser extends User
 
     public function persona()
     {
-        return $this->belongsTo('App\Models\Persona');
+        return $this->hasOne('App\Models\Persona');
     }
 
-    public function comensales()
-    {
-        return $this->hasMany('App\Models\Comensal');
-    }
+
 }
