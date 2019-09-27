@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
-class Persona extends Model
+class BandaHoraria extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Persona extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'personas';
+    protected $table = 'bandas_horarias';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['dni','nombre','apellido','telefono','unidad_academica_id','comedor_id','user_id'];
+    protected $fillable = ['descripcion','hora_inicio','hora_fin','limite_comensales'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,14 +34,8 @@ class Persona extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
-    }
-    public function unidad_academica(){
-        return $this->belongsTo('App\Models\UnidadAcademica');
-    }
-    public function comedor(){
-        return $this->belongsTo('App\Models\Comedor');
+    public function inscripciones(){
+        return $this->hasMany('App\Models\Inscripcion');
     }
 
     /*
