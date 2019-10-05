@@ -36,7 +36,13 @@ class ComedorCrudController extends CrudController
             'name' => 'unidad_academica_id', // the db column for the foreign key
             'entity' => 'unidad_academica', // the method that defines the relationship in your Model
             'attribute' => 'nombre', // foreign key attribute that is shown to user
-            'model' => "App\Models\UnidadAcademica" // foreign key model
+            'model' => "App\Models\UnidadAcademica", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('unidad_academica', function ($q) use ($column, $searchTerm) {
+                    $q->where('nombre', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
         ]);
     }
 
@@ -63,7 +69,6 @@ class ComedorCrudController extends CrudController
             'entity' => 'unidad_academica', // the method that defines the relationship in your Model
             'attribute' => 'nombre', // foreign key attribute that is shown to user
             'model' => "App\Models\UnidadAcademica", // foreign key model
-
             // optional
             'default' => 1, // set the default value of the select2
         ]);

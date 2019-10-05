@@ -44,4 +44,10 @@ class MenuCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class InscripcionRequest extends FormRequest
 {
@@ -25,8 +26,16 @@ class InscripcionRequest extends FormRequest
      */
     public function rules()
     {
+        $menu = \App\Models\MenuAsignado::where('user_id', backpack_user()->id)
+        ->whereDate('fecha_inicio', '<=', $this->fecha_inscripcion)
+        ->whereDate('fecha_fin', '>=', $this->fecha_inscripcion)
+        ->first();
+        $fi = $menu->fecha_inicio;
+        $ff = $menu->fecha_fin;
+
         return [
-            // 'name' => 'required|min:5|max:255'
+            'fecha_inscripcion' => 'required|date|after_or_equal:' . $fi . '|before_or_equal:' . $ff . '|after: 3 hours',
+            'banda_horaria_id' => 'required',
         ];
     }
 

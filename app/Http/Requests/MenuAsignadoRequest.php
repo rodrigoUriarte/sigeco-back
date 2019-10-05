@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class MenuAsignadoRequest extends FormRequest
 {
@@ -25,7 +26,15 @@ class MenuAsignadoRequest extends FormRequest
      */
     public function rules()
     {
+        
+        $fi = Carbon::create($this->fecha_inicio);
+        $ff = $fi->addMonths(1)->subSecond();
+
         return [
+            'user_id' => 'required',
+            'menu_id' => 'required',
+            'fecha_inicio' => 'required|date|after_or_equal: 1 month',
+            'fecha_fin' => 'required|date|date_equals:' .$ff,
             // 'name' => 'required|min:5|max:255'
         ];
     }

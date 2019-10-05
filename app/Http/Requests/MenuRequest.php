@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MenuRequest extends FormRequest
 {
@@ -26,6 +27,7 @@ class MenuRequest extends FormRequest
     public function rules()
     {
         return [
+            'descripcion' => ['required',Rule::unique('menus')->ignore($this->id)],
             // 'name' => 'required|min:5|max:255'
         ];
     }

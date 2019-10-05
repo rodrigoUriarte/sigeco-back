@@ -20,6 +20,7 @@ class MenuAsignado extends Model
     public $timestamps = true;
     // protected $guarded = ['id'];
     protected $fillable = ['user_id','menu_id','fecha_inicio','fecha_fin'];
+    // protected $dates = ['fecha_inicio','fecha_fin'];
     // protected $hidden = [];
     // protected $dates = [];
 

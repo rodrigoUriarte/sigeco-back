@@ -20,6 +20,8 @@ class Inscripcion extends Model
     public $timestamps = true;
     // protected $guarded = ['id'];
     protected $fillable = ['user_id','banda_horaria_id','menu_asignado_id','fecha_inscripcion','fecha_asistencia'];
+    // protected $dates = ['fecha_incripcion','fecha_asistencia'];
+
     // protected $hidden = [];
     // protected $dates = [];
 

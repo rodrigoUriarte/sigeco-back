@@ -30,6 +30,11 @@ class PersonaRequest extends FormRequest
     {
         return [
             'dni' => ['required',Rule::unique('personas')->ignore($this->id)],
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'telefono' => 'required',
+            'unidad_academica_id' => 'required',
+            'comedor_id' => 'required',
             'user_id' => ['required',Rule::unique('personas')->ignore($this->id)],
 
             // 'name' => 'required|min:5|max:255'

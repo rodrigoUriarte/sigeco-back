@@ -36,7 +36,13 @@ class PersonaCrudController extends CrudController
             'name' => 'unidad_academica_id', // the db column for the foreign key
             'entity' => 'unidad_academica', // the method that defines the relationship in your Model
             'attribute' => 'nombre', // foreign key attribute that is shown to user
-            'model' => "App\Models\UnidadAcademica" // foreign key model
+            'model' => "App\Models\UnidadAcademica", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('unidad_academica', function ($q) use ($column, $searchTerm) {
+                    $q->where('nombre', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
         ]);
 
         $this->crud->setColumnDetails('comedor', [
@@ -45,7 +51,13 @@ class PersonaCrudController extends CrudController
             'name' => 'comedor_id', // the db column for the foreign key
             'entity' => 'comedor', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Comedor" // foreign key model
+            'model' => "App\Models\Comedor", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('comedor', function ($q) use ($column, $searchTerm) {
+                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
         ]);
 
         $this->crud->setColumnDetails('usuario', [
@@ -54,7 +66,13 @@ class PersonaCrudController extends CrudController
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\BackpackUser" // foreign key model
+            'model' => "App\Models\BackpackUser", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
         ]);
         
     }

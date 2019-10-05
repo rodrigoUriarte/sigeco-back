@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MenuAsignadoRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Carbon;
 
 /**
  * Class MenuAsignadoCrudController
@@ -31,6 +32,18 @@ class MenuAsignadoCrudController extends CrudController
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
          }
     }
+
+    // public function edit($id) {
+    //     if ($this->crud->getEntry($id)->user_id != backpack_user()->id) { abort(503); }
+      
+    //     return parent::edit($id);
+    //   }
+      
+    //   public function destroy($id) {
+    //     if ($this->crud->getEntry($id)->user_id != backpack_user()->id) { abort(503); }
+      
+    //     return parent::destroy($id);
+    //   }
 
     protected function setupListOperation()
     {
@@ -100,10 +113,10 @@ class MenuAsignadoCrudController extends CrudController
             'label' => 'Fecha Asignacion',
             'type' => 'date_range',
             // OPTIONALS
-            'default' => ['2019-01-01 01:01', '2019-01-01 02:00'], // default values for start_date & end_date
+            'default' => [Carbon::now(), Carbon::now()], // default values for start_date & end_date
             'date_range_options' => [ // options sent to daterangepicker.js
                 'timePicker' => false,
-                'locale' => ['format' => 'DD/MM/YYYY HH:mm']
+                'locale' => ['format' => 'DD/MM/YYYY'],
             ]
         ]);
     }
@@ -111,5 +124,11 @@ class MenuAsignadoCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }
