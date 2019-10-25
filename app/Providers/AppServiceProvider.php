@@ -25,7 +25,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Inscripcion::observe(InscripcionObserver::class);
-
     }
 }

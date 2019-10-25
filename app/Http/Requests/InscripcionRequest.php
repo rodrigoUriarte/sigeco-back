@@ -3,8 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\BandaHoraria;
+use App\Models\Inscripcion;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
+use App\Models\MenuAsignado;
+use Illuminate\Validation\Rule;
 
 class InscripcionRequest extends FormRequest
 {
@@ -26,19 +30,60 @@ class InscripcionRequest extends FormRequest
      */
     public function rules()
     {
-        $menu = \App\Models\MenuAsignado::where('user_id', backpack_user()->id)
-        ->whereDate('fecha_inicio', '<=', $this->fecha_inscripcion)
-        ->whereDate('fecha_fin', '>=', $this->fecha_inscripcion)
-        ->first();
-        $fi = $menu->fecha_inicio;
-        $ff = $menu->fecha_fin;
 
         return [
-            'fecha_inscripcion' => 'required|date|after_or_equal:' . $fi . '|before_or_equal:' . $ff . '|after: 3 hours',
-            'banda_horaria_id' => 'required',
+
+
+            'menu_asignado_id' => [
+                'bail',
+                'required',
+                Rule::exists('menus_asignados', 'id')
+                    ->where(function ($query) {
+                        $query
+                            ->where('user_id', '=', backpack_user()->id)
+                            ->whereDate('fecha_inicio', '<=', $this->fecha_inscripcion)
+                            ->whereDate('fecha_fin', '>=', $this->fecha_inscripcion)
+                            ->first();
+                    }),
+            ],
+
+            'banda_horaria_id' => [
+                'bail',
+                'required',
+                function ($attribute, $value, $fail) {
+
+                    $max = BandaHoraria::find($value)->limite_comensales;
+
+                    $cont = Inscripcion::where('banda_horaria_id', '=', $value)
+                        ->where('fecha_inscripcion', '=', $this->fecha_inscripcion)
+                        ->count();
+
+                    if ($cont >= $max) {
+                        $fail('No hay mas cupos para esta banda horaria');
+                    }
+                }
+            ],
+
+            'fecha_inscripcion' => [
+                'bail',
+                'required',
+                'date',
+                'after: 3 hours',
+                // Rule::unique('inscripciones', 'fecha_inscripcion')->ignore(!(backpack_user()->id)),
+                function ($attribute, $value, $fail) {
+
+                    $cont = Inscripcion::where('fecha_inscripcion', '=', $value)
+                        ->where('user_id', '=', backpack_user()->id)
+                        ->count();
+
+                    if ($cont >= 1) {
+                        $fail('Ya existe una inscripcion con su usuario para este dia');
+                    }
+                }
+            ],
+
         ];
     }
-
     /**
      * Get the validation attributes that apply to the request.
      *

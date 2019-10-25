@@ -19,7 +19,7 @@ class MenuAsignado extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id','menu_id','fecha_inicio','fecha_fin'];
+    protected $fillable = ['user_id', 'menu_id', 'fecha_inicio', 'fecha_fin'];
     // protected $dates = ['fecha_inicio','fecha_fin'];
     // protected $hidden = [];
     // protected $dates = [];
@@ -35,13 +35,16 @@ class MenuAsignado extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('App\Models\BackpackUser');
     }
-    public function menu(){
+    public function menu()
+    {
         return $this->belongsTo('App\Models\Menu');
     }
-    public function inscripciones(){
+    public function inscripciones()
+    {
         return $this->hasMany('App\Models\Inscripcion');
     }
 
@@ -50,12 +53,21 @@ class MenuAsignado extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    // public function scopeDentroRango($query,$fecha){
+    //     return $query
+    //     ->where('user_id','=',backpack_user()->id)
+    //     ->whereDate('$this->fecha_inicio','<=',$fecha)
+    //     ->whereDate('$this->fecha_fin','>=',$fecha);
+    // }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getRangoFechasAttribute()
+    {
+        return "{$this->fecha_inicio} / {$this->fecha_fin}";
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -108,17 +108,33 @@ class MenuAsignadoCrudController extends CrudController
             'default' => 1, // set the default value of the select2
         ]);
 
-        $this->crud->addField([
-            'name' => ['fecha_inicio', 'fecha_fin'], // db columns for start_date & end_date
-            'label' => 'Fecha Asignacion',
-            'type' => 'date_range',
-            // OPTIONALS
-            'default' => [Carbon::now(), Carbon::now()], // default values for start_date & end_date
-            'date_range_options' => [ // options sent to daterangepicker.js
-                'timePicker' => false,
-                'locale' => ['format' => 'DD/MM/YYYY'],
-            ]
-        ]);
+        $this->crud->addField([   // date_picker
+            'name' => 'fecha_inicio',
+            'type' => 'date_picker',
+            'label' => 'Fecha Inicio',
+            // optional:
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+               'format' => 'dd-mm-yyyy',
+               'language' => 'es',
+               //'startDate' => Carbon::now(),
+            ],
+            //'default' => $fecha,
+         ]);
+
+         $this->crud->addField([   // date_picker
+            'name' => 'fecha_fin',
+            'type' => 'date_picker',
+            'label' => 'Fecha Fin',
+            // optional:
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+               'format' => 'dd-mm-yyyy',
+               'language' => 'es',
+               //'startDate' => Carbon::now(),
+            ],
+            //'default' => $fecha,
+         ]);
     }
 
     protected function setupUpdateOperation()

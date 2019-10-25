@@ -41,5 +41,13 @@ class BackpackUser extends User
         return $this->hasOne('App\Models\Persona');
     }
 
+    public function inscripciones()
+    {
+        return $this->hasMany('App\Models\Inscripcion');
+    }
+    public function menus_asignados()
+    {
+        return $this->hasMany('App\Models\MenuAsignado');
+    }
 
 }

@@ -20,7 +20,7 @@ class Inscripcion extends Model
     public $timestamps = true;
     // protected $guarded = ['id'];
     protected $fillable = ['user_id','banda_horaria_id','menu_asignado_id','fecha_inscripcion','fecha_asistencia'];
-    // protected $dates = ['fecha_incripcion','fecha_asistencia'];
+    //protected $dates = ['fecha_incripcion','fecha_asistencia'];
 
     // protected $hidden = [];
     // protected $dates = [];
@@ -45,6 +45,9 @@ class Inscripcion extends Model
     public function menu_asignado(){
         return $this->belongsTo('App\Models\MenuAsignado');
     }
+    // public function menuAsignadoMenu(){
+    //     return $this->hasOneThrough('App\Models\Menu', 'App\Models\MenuAsignado','menu_id','id');
+    // }
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +60,7 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    
 
     /*
     |--------------------------------------------------------------------------
