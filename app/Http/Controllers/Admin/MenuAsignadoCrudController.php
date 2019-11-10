@@ -33,18 +33,6 @@ class MenuAsignadoCrudController extends CrudController
          }
     }
 
-    // public function edit($id) {
-    //     if ($this->crud->getEntry($id)->user_id != backpack_user()->id) { abort(503); }
-      
-    //     return parent::edit($id);
-    //   }
-      
-    //   public function destroy($id) {
-    //     if ($this->crud->getEntry($id)->user_id != backpack_user()->id) { abort(503); }
-      
-    //     return parent::destroy($id);
-    //   }
-
     protected function setupListOperation()
     {
         //Si el usuario tiene rol de admin mostrar a que usuario corresponde cada menu asignado
@@ -96,6 +84,12 @@ class MenuAsignadoCrudController extends CrudController
             'value' => backpack_user()->id,
         ]);
 
+        $this->crud->addField([
+            'name'  => 'comedor_id',
+            'type'  => 'hidden',
+            'value' => backpack_user()->persona->comedor_id,
+        ]);
+
         $this->crud->addField([  // Select2
             'label' => "Menu",
             'type' => 'select2',
@@ -103,9 +97,10 @@ class MenuAsignadoCrudController extends CrudController
             'entity' => 'menu', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Menu", // foreign key model
-
-            // optional
-            'default' => 1, // set the default value of the select2
+            'default' => 0, // set the default value of the select2
+            'options'   => (function ($query) {
+                return $query->where('comedor_id', backpack_user()->persona->comedor_id)->get();
+            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ]);
 
         $this->crud->addField([   // date_picker

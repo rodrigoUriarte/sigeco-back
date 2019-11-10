@@ -27,8 +27,17 @@ class MenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'descripcion' => ['required',Rule::unique('menus')->ignore($this->id)],
-            // 'name' => 'required|min:5|max:255'
+            'comedor_id' => [Rule::exists('comedores', 'id')],
+            'descripcion' => [
+                'required',
+                Rule::unique('menus')
+                    ->where(function ($query) {
+                        return $query
+                            ->where('descripcion', '=', $this->descripcion)
+                            ->where('comedor_id', '=', $this->comedor_id);
+                    })
+                    ->ignore($this->id),
+            ],
         ];
     }
 

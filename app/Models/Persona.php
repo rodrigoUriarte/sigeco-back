@@ -55,6 +55,9 @@ class Persona extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    // public function getComedorAttribute(){
+    //     return $this->comedor_id;
+    // }
 
     /*
     |--------------------------------------------------------------------------

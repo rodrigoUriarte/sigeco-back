@@ -30,7 +30,7 @@ class ComedorRequest extends FormRequest
         return [
             'descripcion' => ['required',Rule::unique('comedores')->ignore($this->id)],
             'direccion' => ['required'],
-            'unidad_academica_id' => ['required']
+            'unidad_academica_id' => ['required',Rule::exists('unidades_academicas','id')]
         ];
     }
 

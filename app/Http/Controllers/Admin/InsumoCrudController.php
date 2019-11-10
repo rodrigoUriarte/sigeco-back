@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\MenuRequest;
+use App\Http\Requests\InsumoRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class MenuCrudController
+ * Class InsumoCrudController
  * @package App\Http\Controllers\Admin
  * @property-read CrudPanel $crud
  */
-class MenuCrudController extends CrudController
+class InsumoCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -21,11 +21,11 @@ class MenuCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->setModel('App\Models\Menu');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/menu');
-        $this->crud->setEntityNameStrings('menu', 'menus');
-
-        //SI el usuario es un admin muestra solo los menus del comedor del cual es responsable
+        $this->crud->setModel('App\Models\Insumo');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/insumo');
+        $this->crud->setEntityNameStrings('insumo', 'insumos');
+        
+        //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
@@ -33,8 +33,7 @@ class MenuCrudController extends CrudController
 
     protected function setupListOperation()
     {
-
-        $this->crud->addColumns(['comedor', 'descripcion']);
+        $this->crud->addColumns(['comedor','descripcion','unidad_medida']);
 
         $this->crud->setColumnDetails('comedor', [
             'label' => 'Comedor',
@@ -50,24 +49,33 @@ class MenuCrudController extends CrudController
                 });
             },
         ]);
-
     }
 
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(MenuRequest::class);
+        $this->crud->setValidation(InsumoRequest::class);
 
         $this->crud->addField([
             'name'  => 'comedor_id',
             'type'  => 'hidden',
             'value' => backpack_user()->persona->comedor_id,
         ]);
-
-        $this->crud->addField([
-            'name' => 'descripcion',
+        
+        $this->crud->addField(
+            [
+            'label' => "Descripcion",
             'type' => 'text',
-            'label' => 'Descripcion'
+            'name' => 'descripcion',
+
         ]);
+        $this->crud->addField(
+            [
+            'label' => "Unidad Medida",
+            'type' => 'text',
+            'name' => 'unidad_medida',
+
+        ]);
+        
     }
 
     protected function setupUpdateOperation()

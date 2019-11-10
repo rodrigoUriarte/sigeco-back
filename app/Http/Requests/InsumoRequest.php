@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class IngresoRequest extends FormRequest
+class InsumoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +27,19 @@ class IngresoRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'comedor_id' => [Rule::exists('comedores','id')],
+            'descripcion' => [
+                'required',
+                Rule::unique('insumos')
+                ->where(function ($query) {
+                    return $query
+                        ->where('comedor_id', '=', $this->comedor_id)
+                        ->where('descripcion', '=', $this->descripcion);
+                })
+                ->ignore($this->id),
+            ],
+            'unidad_medida' => ['required'],
+
         ];
     }
 

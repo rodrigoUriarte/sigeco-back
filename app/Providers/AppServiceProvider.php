@@ -1,10 +1,16 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
-use App\Models\Inscripcion;
-use App\Observers\InscripcionObserver;
+
+use App\Models\BandaHoraria;
+use App\Models\Menu;
+use App\Models\Plato;
+use App\Models\Insumo;
+use App\Observers\BandaHorariaObserver;
+use App\Observers\MenuObserver;
+use App\Observers\PlatoObserver;
+use App\Observers\InsumoObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +31,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Menu::observe(MenuObserver::class);
+        // Plato::observe(PlatoObserver::class);
+        // BandaHoraria::observe(BandaHorariaObserver::class);
+        // Insumo::observe(InsumoObserver::class);
+
     }
 }

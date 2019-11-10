@@ -13,15 +13,17 @@ class CreateInscripcionesTable extends Migration
     public function up()
     {
         Schema::create('inscripciones', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->date('fecha_inscripcion');
+            $table->dateTime('fecha_asistencia')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('banda_horaria_id');
             $table->foreign('banda_horaria_id')->references('id')->on('bandas_horarias');
             $table->unsignedBigInteger('menu_asignado_id');
             $table->foreign('menu_asignado_id')->references('id')->on('menus_asignados');
-            $table->date('fecha_inscripcion');
-            $table->dateTime('fecha_asistencia')->nullable();
+            $table->unsignedBigInteger('comedor_id');
+            $table->foreign('comedor_id')->references('id')->on('comedores');
             $table->timestamps();
         });
     }

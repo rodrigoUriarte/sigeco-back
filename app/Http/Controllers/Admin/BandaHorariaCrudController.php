@@ -24,11 +24,31 @@ class BandaHorariaCrudController extends CrudController
         $this->crud->setModel('App\Models\BandaHoraria');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/bandaHoraria');
         $this->crud->setEntityNameStrings('Banda Horaria', 'Bandas Horarias');
+
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', 
+            backpack_user()->persona->comedor_id);
+        }
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['descripcion', 'hora_inicio', 'hora_fin', 'limite_comensales']);
+        $this->crud->addColumns(['comedor','descripcion', 'hora_inicio', 'hora_fin', 'limite_comensales']);
+
+        $this->crud->setColumnDetails('comedor', [
+            'label' => 'Comedor',
+            'type' => 'select',
+            'name' => 'comedor_id', // the db column for the foreign key
+            'entity' => 'comedor', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion', // foreign key attribute that is shown to user
+            'model' => "App\Models\Comedor", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('comedor', function ($q) use ($column, $searchTerm) {
+                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
+        ]);
 
     }
 
@@ -36,8 +56,12 @@ class BandaHorariaCrudController extends CrudController
     {
         $this->crud->setValidation(BandaHorariaRequest::class);
 
-        $this->crud->addColumns(['descripcion', 'hora_inicio', 'hora_fin', 'limite_comensales']);
-
+        $this->crud->addField([
+            'name'  => 'comedor_id',
+            'type'  => 'hidden',
+            'value' => backpack_user()->persona->comedor_id,
+        ]);
+        
         $this->crud->addField([
             'name' => 'descripcion',
             'type' => 'text',
@@ -67,5 +91,11 @@ class BandaHorariaCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }

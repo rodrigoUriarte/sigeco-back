@@ -6,7 +6,8 @@ use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class BandaHorariaRequest extends FormRequest
+
+class PlatoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,20 +28,19 @@ class BandaHorariaRequest extends FormRequest
     public function rules()
     {
         return [
-            'comedor_id' => [Rule::exists('comedores', 'id')],
+            'comedor_id' => [Rule::exists('comedores','id')],
+            'menu_id' => ['required',Rule::exists('menus','id')],
             'descripcion' => [
                 'required',
-                Rule::unique('bandas_horarias')
-                    ->where(function ($query) {
-                        return $query
-                            ->where('comedor_id', '=', $this->comedor_id)
-                            ->where('descripcion', '=', $this->descripcion);
-                    })
-                    ->ignore($this->id),
-            ],            
-            'hora_inicio' => ['required', 'date_format:H:i'],
-            'hora_fin' => ['required', 'date_format:H:i', 'after:hora_inicio'],
-            'limite_comensales' => ['required', 'integer'],
+                Rule::unique('platos')
+                ->where(function ($query) {
+                    return $query
+                        ->where('comedor_id', '=', $this->comedor_id)
+                        ->where('descripcion', '=', $this->descripcion);
+                })
+                ->ignore($this->id),
+            ],
+
         ];
     }
 

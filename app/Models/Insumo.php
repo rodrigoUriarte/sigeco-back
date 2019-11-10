@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Inscripcion extends Model
+class Insumo extends Model
 {
     use CrudTrait;
 
@@ -15,13 +15,11 @@ class Inscripcion extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'inscripciones';
+    protected $table = 'insumos';
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id','banda_horaria_id','menu_asignado_id','fecha_inscripcion','fecha_asistencia','comedor_id'];
-    //protected $dates = ['fecha_incripcion','fecha_asistencia'];
-
+    protected $fillable = ['comedor_id', 'descripcion', 'unidad_medida'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -36,21 +34,19 @@ class Inscripcion extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
-    }
-    public function banda_horaria(){
-        return $this->belongsTo('App\Models\BandaHoraria');
-    }
-    public function menu_asignado(){
-        return $this->belongsTo('App\Models\MenuAsignado');
-    }
-    public function comedor(){
+
+    public function comedor()
+    {
         return $this->belongsTo('App\Models\Comedor');
     }
-    // public function menuAsignadoMenu(){
-    //     return $this->hasOneThrough('App\Models\Menu', 'App\Models\MenuAsignado','menu_id','id');
+    // public function platos(){
+    //     return $this->belongsToMany('App\Models\Plato')->using('App\Models\InsumoPlato')->withPivot(['cantidad']);
     // }
+    //QUEDA PENDIENTE EL USO COMO TABLA PIVOT HASTA QUE BACKPACK SOPORTE CAMPOS APARTE DE LOS FK EN LA TABLA PIVOT
+    public function insumo_plato()
+    {
+        return $this->hasMany('App\Models\InsumoPlato');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -63,11 +59,22 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    
+    public function getDescripcionUMAttribute()
+    {
+        return "{$this->descripcion}  ({$this->unidad_medida})";
+    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setDescripcionAttribute($value)
+    {
+        $this->attributes['descripcion'] = strtoupper($value);
+    }
+    public function setUnidadMedidaAttribute($value)
+    {
+        $this->attributes['unidad_medida'] = strtoupper($value);
+    }
 }

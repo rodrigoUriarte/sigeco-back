@@ -19,7 +19,7 @@ class MenuAsignado extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id', 'menu_id', 'fecha_inicio', 'fecha_fin'];
+    protected $fillable = ['user_id', 'menu_id', 'fecha_inicio', 'fecha_fin','comedor_id'];
     // protected $dates = ['fecha_inicio','fecha_fin'];
     // protected $hidden = [];
     // protected $dates = [];
@@ -46,6 +46,9 @@ class MenuAsignado extends Model
     public function inscripciones()
     {
         return $this->hasMany('App\Models\Inscripcion');
+    }
+    public function comedor(){
+        return $this->belongsTo('App\Models\Comedor');
     }
 
     /*

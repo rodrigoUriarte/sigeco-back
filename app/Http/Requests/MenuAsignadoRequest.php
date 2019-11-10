@@ -6,6 +6,7 @@ use App\Http\Requests\Request;
 use App\Models\MenuAsignado;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 
 class MenuAsignadoRequest extends FormRequest
 {
@@ -41,19 +42,14 @@ class MenuAsignadoRequest extends FormRequest
             'fecha_inicio' => [
                 'required', 'date', 'after: 1 days', 'before:' . $ls ,'date_equals:' . $pd ,
 
-                    function ($attribute, $value, $fail) {
-
-                        $existe = MenuAsignado::where('fecha_inicio', '=', $value)
-                            ->where('user_id', '=', backpack_user()->id)
-                            ->count();
-
-                        if ($existe >= 1) {
-                            $fail('Ya existe un menu asignado en esta fecha');
-                        }
-                    },
+                Rule::unique('menus_asignados')
+                ->where(function ($query) {
+                    return $query
+                        ->where('fecha_inicio', '=', $this->fecha_inicio)
+                        ->where('user_id', '=', backpack_user()->id);
+                })
+                ->ignore($this->id),
             ],
-
-
             'fecha_fin' => 'required|date|date_equals:' . $ff,
         ];
     }

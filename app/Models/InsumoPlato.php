@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Ingreso extends Model
+class InsumoPlato extends Model
 {
     use CrudTrait;
 
@@ -15,11 +16,12 @@ class Ingreso extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'ingresos';
+    protected $table = 'insumo_plato';
     protected $primaryKey = 'id';
-     public $timestamps = true;
+    public $incrementing = true;
+    public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id','fecha'];
+    protected $fillable = ['insumo_id','plato_id','cantidad','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,11 +36,15 @@ class Ingreso extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\BackpackUser');
+    public function plato(){
+        return $this->belongsTo('App\Models\Plato');
     }
-
+    public function insumo(){
+        return $this->belongsTo('App\Models\Insumo');
+    }
+    public function comedor(){
+        return $this->belongsTo('App\Models\Comedor');
+    }
 
     /*
     |--------------------------------------------------------------------------

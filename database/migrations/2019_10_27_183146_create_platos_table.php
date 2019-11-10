@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMenusAsignadosTable extends Migration
+class CreatePlatosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,14 @@ class CreateMenusAsignadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('menus_asignados', function (Blueprint $table) {
+        Schema::create('platos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('descripcion');
             $table->unsignedBigInteger('menu_id');
             $table->foreign('menu_id')->references('id')->on('menus');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
             // $table->unique(['descripcion', 'comedor_id']);se controla en el form request
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ class CreateMenusAsignadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus_asignados');
+        Schema::dropIfExists('platos');
     }
 }

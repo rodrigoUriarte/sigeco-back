@@ -14,7 +14,10 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descripcion')->unique();
+            $table->unsignedBigInteger('comedor_id');
+            $table->foreign('comedor_id')->references('id')->on('comedores');
+            $table->string('descripcion');
+            // $table->unique(['descripcion', 'comedor_id']);se controla en el form request
             $table->timestamps();
         });
     }

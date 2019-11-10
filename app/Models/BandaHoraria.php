@@ -19,7 +19,7 @@ class BandaHoraria extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['descripcion','hora_inicio','hora_fin','limite_comensales'];
+    protected $fillable = ['descripcion','hora_inicio','hora_fin','limite_comensales','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -36,6 +36,9 @@ class BandaHoraria extends Model
     */
     public function inscripciones(){
         return $this->hasMany('App\Models\Inscripcion');
+    }
+    public function comedor(){
+        return $this->belongsTo('App\Models\Comedor');
     }
 
     /*

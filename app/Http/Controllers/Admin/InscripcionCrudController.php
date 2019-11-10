@@ -26,6 +26,7 @@ class InscripcionCrudController extends CrudController
         $this->crud->setEntityNameStrings('inscripcion', 'inscripciones');
 
         $this->crud->enableExportButtons();
+        
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
@@ -118,6 +119,11 @@ class InscripcionCrudController extends CrudController
             'value' => backpack_user()->id,
         ]);
 
+        $this->crud->addField([
+            'name'  => 'comedor_id',
+            'type'  => 'hidden',
+            'value' => backpack_user()->persona->comedor_id,
+        ]);
 
         $this->crud->addField(
             [  // Select2
@@ -145,6 +151,9 @@ class InscripcionCrudController extends CrudController
             'model' => "App\Models\BandaHoraria", // foreign key model
             // optional
             'default' => 0, // set the default value of the select2
+            'options'   => (function ($query) {
+                return $query->where('comedor_id','=',backpack_user()->persona->comedor_id)->get();
+            }), 
         ]);
 
         $this->crud->addField([   // date_picker
@@ -167,5 +176,11 @@ class InscripcionCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }
