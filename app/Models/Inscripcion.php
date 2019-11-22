@@ -39,10 +39,10 @@ class Inscripcion extends Model
     public function user(){
         return $this->belongsTo('App\Models\BackpackUser');
     }
-    public function banda_horaria(){
+    public function bandaHoraria(){
         return $this->belongsTo('App\Models\BandaHoraria');
     }
-    public function menu_asignado(){
+    public function menuAsignado(){
         return $this->belongsTo('App\Models\MenuAsignado');
     }
     public function comedor(){

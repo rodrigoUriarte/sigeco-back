@@ -37,7 +37,7 @@ class Comedor extends Model
     public function personas(){
         return $this->hasMany('App\Models\Persona');
     }
-    public function unidad_academica(){
+    public function unidadAcademica(){
         return $this->belongsTo('App\Models\UnidadAcademica');
     }
     public function insumos(){
@@ -55,11 +55,20 @@ class Comedor extends Model
     public function insumosPlatos(){
         return $this->hasMany('App\Models\InsumoPlato');
     }
-    public function Inscripciones(){
+    public function insripciones(){
         return $this->hasMany('App\Models\Inscripcion');
     }
-    public function MenusAsignados(){
+    public function menusAsignados(){
         return $this->hasMany('App\Models\MenuAsignado');
+    }
+    public function ingresosInsumos(){
+        return $this->hasMany('App\Models\IngresoInsumo');
+    }
+    public function platosAsignados(){
+        return $this->hasMany('App\Models\PlatoAsignado');
+    }
+    public function lotes(){
+        return $this->hasMany('App\Models\Lote');
     }
 
     /*

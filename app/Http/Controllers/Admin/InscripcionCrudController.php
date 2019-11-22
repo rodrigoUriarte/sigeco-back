@@ -62,11 +62,11 @@ class InscripcionCrudController extends CrudController
             'label' => 'Banda Horaria',
             'type' => 'select',
             'name' => 'banda_horaria_id', // the db column for the foreign key
-            'entity' => 'banda_horaria', // the method that defines the relationship in your Model
+            'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\BandaHoraria", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas('banda_horaria', function ($q) use ($column, $searchTerm) {
+                $query->orWhereHas('bandaHoraria', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
@@ -78,7 +78,7 @@ class InscripcionCrudController extends CrudController
             'label' => 'Menu Asignado',
             'type' => 'select',
             'name' => 'menu_asignado_id', // the db column for the foreign key
-            'entity' => 'menu_asignado.menu', // the method that defines the relationship in your Model
+            'entity' => 'menuAsignado.menu', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Menu", // foreign key model
             // 'searchLogic' => function ($query, $column, $searchTerm) {
@@ -130,7 +130,7 @@ class InscripcionCrudController extends CrudController
                 'label' => "Menu Asignado",
                 'type' => 'select2',
                 'name' => 'menu_asignado_id', // the db column for the foreign key
-                'entity' => 'menu_asignado', // the method that defines the relationship in your Model
+                'entity' => 'menuAsignado', // the method that defines the relationship in your Model
                 'attribute' => 'rangoFechas', // foreign key attribute that is shown to user
                 'model' => "App\Models\MenuAsignado", // foreign key model
                 // optional

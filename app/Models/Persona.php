@@ -37,7 +37,7 @@ class Persona extends Model
     public function user(){
         return $this->belongsTo('App\Models\BackpackUser');
     }
-    public function unidad_academica(){
+    public function unidadAcademica(){
         return $this->belongsTo('App\Models\UnidadAcademica');
     }
     public function comedor(){

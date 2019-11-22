@@ -10,7 +10,7 @@
 </li>
 @endif
 
-@if(backpack_user()->hasRole('admin'))
+{{-- @if(backpack_user()->hasRole('admin')) --}}
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
 <li class=nav-item><a class=nav-link href="{{ backpack_url('elfinder') }}"><i class="nav-icon fa fa-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>
 
@@ -51,5 +51,16 @@
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i class='nav-icon fa fa-question'></i> Insumo Plato</a></li>
 	</ul>
 </li>
-@endif
+
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> INSUMOS</a>
+	<ul class="nav-dropdown-items">
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon fa fa-question'></i> Lotes</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingresoInsumo') }}'><i class='nav-icon fa fa-question'></i> Ingresos Insumos</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i class='nav-icon fa fa-question'></i> Platos Asignados</a></li>
+	</ul>
+</li>
+
+{{-- @endif --}}
+
 

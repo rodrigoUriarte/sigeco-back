@@ -35,17 +35,23 @@ class Insumo extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function comedor()
-    {
+    public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }
+
     // public function platos(){
     //     return $this->belongsToMany('App\Models\Plato')->using('App\Models\InsumoPlato')->withPivot(['cantidad']);
     // }
     //QUEDA PENDIENTE EL USO COMO TABLA PIVOT HASTA QUE BACKPACK SOPORTE CAMPOS APARTE DE LOS FK EN LA TABLA PIVOT
-    public function insumo_plato()
-    {
+    
+    public function insumosPlatos() {
         return $this->hasMany('App\Models\InsumoPlato');
+    }
+    public function ingresosInsumos(){
+        return $this->hasMany('App\Models\IngresoInsumo');
+    }
+    public function lotes(){
+        return $this->hasMany('App\Models\Lote');
     }
 
     /*

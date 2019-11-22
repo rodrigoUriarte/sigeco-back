@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Lote extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Menu extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'menus';
+    protected $table = 'lotes';
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['descripcion','comedor_id'];
+    protected $fillable = ['fecha_vencimiento','cantidad','usado','comedor_id','insumo_id','ingreso_insumo_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,17 +34,15 @@ class Menu extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function menusAsignados(){
-        return $this->hasMany('App\Models\MenuAsignado');
-    }
-    public function platos(){
-        return $this->hasMany('App\Models\Plato');
+
+    public function ingresoInsumo(){
+        return $this->belongsTo('App\Models\IngresoInsumo');
     }
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }
-    public function platosAsignados(){
-        return $this->hasMany('App\Models\PlatoAsignado');
+    public function insumo(){
+        return $this->belongsTo('App\Models\Insumo');
     }
 
     /*
@@ -58,17 +56,10 @@ class Menu extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    // public function getComedorAttribute(){
-    //     return $this->comedor_id;
-    // }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function setDescripcionAttribute($value)
-    {
-        $this->attributes['descripcion'] = strtoupper($value);
-    }
 }

@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/api/plato', 'Api\PlatoController@index');
+Route::get('/api/plato/{id}', 'Api\PlatoController@show');
