@@ -74,7 +74,7 @@ class InscripcionCrudController extends CrudController
         ]);
 
         $this->crud->setColumnDetails('menu_asignado', [
-
+            //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DEL MENU ASIGNADO
             'label' => 'Menu Asignado',
             'type' => 'select',
             'name' => 'menu_asignado_id', // the db column for the foreign key
@@ -89,24 +89,6 @@ class InscripcionCrudController extends CrudController
             // },
         ]);
 
-        // $this->crud->setColumnDetails('menu_asignado', [
-
-        //     ESTA TOMANDO EL ID DE LA INSCRIPCION PARA AL HACER LA LLAMADA AL METODO MENU
-        //     LO DEJE COMO LA COLUMNA DE ARRIBA PERO NO FUNCIONA LA BUSQUEDA POR ESA COLUMNA
-
-        //     'label' => 'Menu Asignado',
-        //     'type' => 'select',
-        //     'name' => 'menu_asignado_id', // the db column for the foreign key
-        //     'entity' => 'menuAsignadoMenu', // the method that defines the relationship in your Model
-        //     'attribute' => 'descripcion', // foreign key attribute that is shown to user
-        //     'model' => "App\Models\Menu", // foreign key model
-        //     // 'searchLogic' => function ($query, $column, $searchTerm) {
-        //     //     $query->orWhereHas('descripcion', function ($q) use ($column, $searchTerm) {
-        //     //         $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-        //     //         //->orWhereDate('fecha_inicio', '=', date($searchTerm));
-        //     //     });
-        //     // },
-        // ]);
     }
 
     protected function setupCreateOperation()
@@ -146,7 +128,7 @@ class InscripcionCrudController extends CrudController
             'label' => "Banda Horaria",
             'type' => 'select2',
             'name' => 'banda_horaria_id', // the db column for the foreign key
-            'entity' => 'banda_horaria', // the method that defines the relationship in your Model
+            'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
             'attribute' => 'descripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\BandaHoraria", // foreign key model
             // optional

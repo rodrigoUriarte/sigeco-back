@@ -70,6 +70,9 @@ class Comedor extends Model
     public function lotes(){
         return $this->hasMany('App\Models\Lote');
     }
+    public function asistencias(){
+        return $this->hasMany('App\Models\Asistencia');
+    }
 
     /*
     |--------------------------------------------------------------------------

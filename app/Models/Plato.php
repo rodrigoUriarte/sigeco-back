@@ -41,7 +41,7 @@ class Plato extends Model
     //     return $this->belongsToMany('App\Models\Insumo')->using('App\Models\InsumoPlato')->withPivot(['cantidad']);
     // }
     //QUEDA PENDIENTE EL USO COMO TABLA PIVOT HASTA QUE BACKPACK SOPORTE CAMPOS APARTE DE LOS FK EN LA TABLA PIVOT
-    public function insumoPlato(){
+    public function insumosPlatos(){
         return $this->hasMany('App\Models\InsumoPlato');
     }
     public function comedor(){

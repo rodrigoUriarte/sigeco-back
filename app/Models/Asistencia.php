@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Lote extends Model
+class Asistencia extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Lote extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'lotes';
+    protected $table = 'asistencias';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['fecha_vencimiento','cantidad','usado','comedor_id','insumo_id','ingreso_insumo_id'];
+    protected $fillable = ['fecha_asistencia','asistio','inscripcion_id','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,18 +34,11 @@ class Lote extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function ingresoInsumo(){
-        return $this->belongsTo('App\Models\IngresoInsumo');
+    public function inscripcion(){
+        return $this->belongsTo('App\Models\Inscripcion');
     }
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
-    }
-    public function insumo(){
-        return $this->belongsTo('App\Models\Insumo');
-    }
-    public function platosAsignados(){
-        return $this->belongsToMany('App\Models\PlatoAsignado','lote_plato_asignado','lote_id','plato_asignado_id')->withPivot('cantidad')->withTimestamps();
     }
 
     /*
@@ -59,6 +52,7 @@ class Lote extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
 
     /*
     |--------------------------------------------------------------------------

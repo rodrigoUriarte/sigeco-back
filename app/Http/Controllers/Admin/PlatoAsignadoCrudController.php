@@ -29,6 +29,11 @@ class PlatoAsignadoCrudController extends CrudController
         $this->crud->setModel('App\Models\PlatoAsignado');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/platoAsignado');
         $this->crud->setEntityNameStrings('Plato Asignado', 'Platos Asignados');
+
+        //SI el usuario es un admin muestra solo los platos asignados del comedor del cual es responsable
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        }
     }
 
     protected function setupListOperation()
@@ -71,6 +76,20 @@ class PlatoAsignadoCrudController extends CrudController
     {
         $this->crud->setValidation(PlatoAsignadoRequest::class);
 
+        $this->crud->addField([   // date_picker
+            'name' => 'fecha',
+            'type' => 'date_picker',
+            'label' => 'Fecha',
+            // optional:
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format' => 'dd-mm-yyyy',
+                'language' => 'es',
+                'startDate' => Carbon::now(),
+                'defaultViewDate' => Carbon::now(),
+            ],
+            'default' => Carbon::now()->toDateString(),
+        ]);
         $this->crud->addField(
             [  // Select2
                 'label' => "Menu",
@@ -96,23 +115,10 @@ class PlatoAsignadoCrudController extends CrudController
                 'data_source' => url("api/plato"), // url to controller search function (with /{id} should return model)
                 'placeholder' => 'Seleccione un plato', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
-                'dependencies' => ['menu_id'],
+                'dependencies' => ['fecha','menu_id'],
+                //SE RESETEA SOLO SI EL MENU CAMBIA NO CUANDO CAMBIA LA FECHA, A CORREGIR
             ]
         );
-        $this->crud->addField([   // date_picker
-            'name' => 'fecha',
-            'type' => 'date_picker',
-            'label' => 'Fecha',
-            // optional:
-            'date_picker_options' => [
-                'todayBtn' => 'linked',
-                'format' => 'dd-mm-yyyy',
-                'language' => 'es',
-                'startDate' => Carbon::now(),
-                'defaultViewDate' => Carbon::now(),
-            ],
-            'default' => Carbon::now()->toDateString(),
-        ]);
         $this->crud->addField([
             'name'  => 'comedor_id',
             'type'  => 'hidden',

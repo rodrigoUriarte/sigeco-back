@@ -26,11 +26,16 @@ class IngresoInsumoCrudController extends CrudController
         $this->crud->setModel('App\Models\IngresoInsumo');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/ingresoInsumo');
         $this->crud->setEntityNameStrings('Ingreso Insumo', 'Ingresos Insumos');
+
+        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        }
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento','cantidad']);
+        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad']);
 
         $this->crud->setColumnDetails('user_id', [
             'label' => 'Usuario',
@@ -73,7 +78,7 @@ class IngresoInsumoCrudController extends CrudController
                 'type' => 'select2',
                 'name' => 'insumo_id', // the db column for the foreign key
                 'entity' => 'insumo', // the method that defines the relationship in your Model
-                'attribute' => 'descripcion', // foreign key attribute that is shown to user
+                'attribute' => 'descripcionUM', // foreign key attribute that is shown to user
                 'model' => "App\Models\Insumo", // foreign key model
                 'default' => 0, // set the default value of the select2
                 'options'   => (function ($query) {
@@ -95,7 +100,8 @@ class IngresoInsumoCrudController extends CrudController
             ],
             'default' => Carbon::now()->toDateString(),
         ]);
-        $this->crud->addField([
+        $this->crud->addField(
+            [
                 'label' => "Cantidad",
                 'type' => 'text',
                 'name' => 'cantidad',

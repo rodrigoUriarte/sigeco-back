@@ -26,7 +26,8 @@ class LoteRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            //NO SE REALIZA VALIDACION YA QUE LOS DATOS SON CARGADOS AUTOMATICAMENTE EN CADA INGRESO DE INSUMO
+            // Y DESCONTADOS POR CADA PLATO ASIGNADO
         ];
     }
 

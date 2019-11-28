@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IngresoInsumoRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class IngresoInsumoRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'insumo_id' => ['required', Rule::exists('insumos', 'id')],
+            'user_id' => [Rule::exists('users', 'id')],
+            'comedor_id' => [Rule::exists('comedores','id')],
+            'cantidad' => ['required', 'numeric'],
+            'fecha_vencimiento' => 'required|date|after:yesterday',
         ];
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIngresosInsumosTable extends Migration
+class CreateLotePlatoAsignadoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,15 @@ class CreateIngresosInsumosTable extends Migration
      */
     public function up()
     {
-        Schema::create('ingresos_insumos', function (Blueprint $table) {
+        Schema::create('lote_plato_asignado', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('fecha_vencimiento');
             $table->float('cantidad');
+            $table->unsignedBigInteger('lote_id');
+            $table->foreign('lote_id')->references('id')->on('lotes');
+            $table->unsignedBigInteger('plato_asignado_id');
+            $table->foreign('plato_asignado_id')->references('id')->on('platos_asignados');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
-            $table->unsignedBigInteger('insumo_id');
-            $table->foreign('insumo_id')->references('id')->on('insumos');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateIngresosInsumosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingresos_insumos');
+        Schema::dropIfExists('lote_plato_asignado');
     }
 }

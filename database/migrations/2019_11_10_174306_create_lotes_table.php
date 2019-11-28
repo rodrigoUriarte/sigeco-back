@@ -15,9 +15,9 @@ class CreateLotesTable extends Migration
         Schema::create('lotes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('fecha_vencimiento');
-            $table->integer('cantidad');
+            $table->float('cantidad');
             $table->boolean('usado');
-            $table->unsignedBigInteger('ingreso_insumo_id');
+            $table->unsignedBigInteger('ingreso_insumo_id')->unique();
             $table->foreign('ingreso_insumo_id')->references('id')->on('ingresos_insumos');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');

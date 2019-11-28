@@ -13,8 +13,8 @@ class CreateInsumoPlatoTable extends Migration
     public function up()
     {
         Schema::create('insumo_plato', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('cantidad');
+            $table->bigIncrements('id');
+            $table->float('cantidad');
             $table->unsignedBigInteger('insumo_id');
             $table->foreign('insumo_id')->references('id')->on('insumos');
             $table->unsignedBigInteger('plato_id');

@@ -62,5 +62,4 @@
 </li>
 
 {{-- @endif --}}
-
-
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i class='nav-icon fa fa-question'></i> Asistencias</a></li>

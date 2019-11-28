@@ -48,6 +48,9 @@ class Inscripcion extends Model
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }
+    public function asistencia(){
+        return $this->hasOne('App\Models\Asistencia');
+    }
     // public function menuAsignadoMenu(){
     //     return $this->hasOneThrough('App\Models\Menu', 'App\Models\MenuAsignado','menu_id','id');
     // }
@@ -63,6 +66,9 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getNombreInscripcionAttribute(){
+        return $this->user->persona->nombre.' '.$this->user->persona->apellido; 
+    }
     
 
     /*

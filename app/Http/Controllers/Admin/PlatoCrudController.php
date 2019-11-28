@@ -33,22 +33,7 @@ class PlatoCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['comedor','menu', 'descripcion']);
-
-        $this->crud->setColumnDetails('comedor', [
-            'label' => 'Comedor',
-            'type' => 'select',
-            'name' => 'comedor_id', // the db column for the foreign key
-            'entity' => 'comedor', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Comedor", // foreign key model
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas('comedor', function ($q) use ($column, $searchTerm) {
-                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
-                });
-            },
-        ]);
+        $this->crud->addColumns(['menu', 'descripcion']);
 
         $this->crud->setColumnDetails('menu', [
             'label' => 'Menu',

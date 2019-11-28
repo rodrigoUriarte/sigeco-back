@@ -43,6 +43,9 @@ class PlatoAsignado extends Model
     public function plato(){
         return $this->belongsTo('App\Models\Plato');
     }
+    public function lotes(){
+        return $this->belongsToMany('App\Models\Lote','lote_plato_asignado','plato_asignado_id','lote_id')->withPivot('cantidad')->withTimestamps();
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -52,10 +52,10 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<b>SGC</b>',
+    'project_logo'   => '<b><font color="white">SGC</font></b>',
 
     // Horizontal navbar classes. Helps make the admin panel look similar to your project's design.
-    'header_class' => 'app-header bg-transparent border-0 navbar position-relative',
+    'header_class' => 'app-header navbar navbar-color bg-primary border-0',
         // Try adding bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
         // You might need to add "navbar-dark" too if the background color is a dark one.
 
@@ -71,12 +71,14 @@ return [
         // Try sidebar-hidden, sidebar-fixed, sidebar-compact, sidebar-lg-show
 
     // Sidebar element classes.
-    'sidebar_class' => 'sidebar sidebar-pills sidebar-bg-transparent',
+    'sidebar_class' => 'sidebar', // add "sidebar-light" for light sidebar
         // Try removing our sidebar-pills class and adding a background class like bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
 
     // ------
     // FOOTER
     // ------
+ 
+    'footer_class' => 'app-footer d-none',
 
     // Developer or company name. Shown in footer.
     'developer_name' => 'Rodrigo Uriarte',
@@ -147,7 +149,7 @@ return [
 
     // The prefix used in all base routes (the 'admin' in admin/dashboard)
     // You can make sure all your URLs use this prefix by using the backpack_url() helper instead of url()
-    'route_prefix' => 'admin',
+    'route_prefix' => 'unam',
 
     // Set this to false if you would like to use your own AuthController and PasswordController
     // (you then need to setup your auth routes manually in your routes.php file)

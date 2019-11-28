@@ -81,6 +81,9 @@ class InscripcionRequest extends FormRequest
                     ->ignore($this->id),
             ],
 
+            'comedor_id' => [Rule::exists('comedores','id')],
+
+
             //FALTARIA VALIDAR FECHA ASISTENCIA Y LA SANCION?
 
 
