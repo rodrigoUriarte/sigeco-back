@@ -17,3 +17,5 @@ Route::get('/', function () {
 
 Route::get('/api/plato', 'Api\PlatoController@index');
 Route::get('/api/plato/{id}', 'Api\PlatoController@show');
+
+Route::get('/reporteLotes', 'Admin\LoteCrudController@reporteLotes')->name('lote.reporteLotes');

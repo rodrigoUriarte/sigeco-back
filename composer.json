@@ -11,10 +11,12 @@
         "php": "^7.2",
         "backpack/crud": "v4.x-dev as 4.0.0",
         "backpack/permissionmanager": "^4.0",
+        "barryvdh/laravel-dompdf": "^0.8.5",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "owen-it/laravel-auditing": "^9.3"
     },
     "require-dev": {
         "backpack/generators": "^2.0",

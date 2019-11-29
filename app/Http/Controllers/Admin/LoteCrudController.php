@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\LoteRequest;
+use App\Models\Lote;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -21,6 +22,7 @@ class LoteCrudController extends CrudController
 
     public function setup()
     {
+        $this->crud->setListView('personalizadas.vistaLote', $this->data);
         $this->crud->setModel('App\Models\Lote');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lote');
         $this->crud->setEntityNameStrings('lote', 'lotes');
@@ -75,5 +77,18 @@ class LoteCrudController extends CrudController
     {
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+    }
+
+    public function reporteLotes()
+    {        
+        /**
+         * toma en cuenta que para ver los mismos 
+         * datos debemos hacer la misma consulta
+        **/
+        $lotes = Lote::all(); 
+
+        $pdf = \PDF::loadView('reportes.reporteLotes', compact('lotes'));
+
+        return $pdf->stream('listado.pdf');
     }
 }
