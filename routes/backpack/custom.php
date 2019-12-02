@@ -25,4 +25,6 @@ Route::group([
     Route::crud('ingresoInsumo', 'IngresoInsumoCrudController');
     Route::crud('platoAsignado', 'PlatoAsignadoCrudController');
     Route::crud('asistencia', 'AsistenciaCrudController');
+    Route::crud('regla', 'ReglaCrudController');
+    Route::crud('sancion', 'SancionCrudController');
 }); // this should be the absolute last line of this file

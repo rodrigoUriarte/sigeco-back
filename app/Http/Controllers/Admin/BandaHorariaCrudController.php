@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\BandaHorariaRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Carbon;
 
 /**
  * Class BandaHorariaCrudController
@@ -79,7 +80,8 @@ class BandaHorariaCrudController extends CrudController
     }
 
     protected function setupShowOperation()
-    {
+    {  
+
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

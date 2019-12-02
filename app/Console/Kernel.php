@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\RegistrarInasistencias',
+        'App\Console\Commands\RegistrarSancionesMensuales',
+        'App\Console\Commands\RegistrarSancionesSemanales',
     ];
 
     /**
@@ -24,8 +26,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('registrar:inasistencia')
+        ->everyMinute();
+        $schedule->command('registrar:sancionesMensuales')
+        ->monthly();
+        $schedule->command('registrar:sancionesSemanales')
+        ->weeklyOn(1, '00:00');
+
     }
 
     /**

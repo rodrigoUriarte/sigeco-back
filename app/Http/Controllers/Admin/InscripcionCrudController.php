@@ -6,6 +6,7 @@ use App\Http\Requests\InscripcionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
+
 /**
  * Class InscripcionCrudController
  * @package App\Http\Controllers\Admin
@@ -25,11 +26,14 @@ class InscripcionCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/inscripcion');
         $this->crud->setEntityNameStrings('inscripcion', 'inscripciones');
 
-        $this->crud->enableExportButtons();
-        
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        }
+
+        //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
 
@@ -88,7 +92,6 @@ class InscripcionCrudController extends CrudController
             //     });
             // },
         ]);
-
     }
 
     protected function setupCreateOperation()
@@ -118,25 +121,26 @@ class InscripcionCrudController extends CrudController
                 // optional
                 'default' => 0, // set the default value of the select2
                 'options'   => (function ($query) {
-                    return $query->where('user_id','=',backpack_user()->id)->get();
-                }), 
-                    // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+                    return $query->where('user_id', '=', backpack_user()->id)->get();
+                }),
+                // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
             ]
         );
         $this->crud->addField(
             [
-            'label' => "Banda Horaria",
-            'type' => 'select2',
-            'name' => 'banda_horaria_id', // the db column for the foreign key
-            'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\BandaHoraria", // foreign key model
-            // optional
-            'default' => 0, // set the default value of the select2
-            'options'   => (function ($query) {
-                return $query->where('comedor_id','=',backpack_user()->persona->comedor_id)->get();
-            }), 
-        ]);
+                'label' => "Banda Horaria",
+                'type' => 'select2',
+                'name' => 'banda_horaria_id', // the db column for the foreign key
+                'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
+                'attribute' => 'descripcion', // foreign key attribute that is shown to user
+                'model' => "App\Models\BandaHoraria", // foreign key model
+                // optional
+                'default' => 0, // set the default value of the select2
+                'options'   => (function ($query) {
+                    return $query->where('comedor_id', '=', backpack_user()->persona->comedor_id)->get();
+                }),
+            ]
+        );
 
         $this->crud->addField([   // date_picker
             'name' => 'fecha_inscripcion',

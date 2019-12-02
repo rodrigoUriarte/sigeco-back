@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AsistenciaRequest;
+use App\Models\Asistencia;
+use App\Models\BackpackUser;
+use App\Models\Inscripcion;
+use App\Models\Regla;
+use App\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 /**
@@ -26,6 +32,11 @@ class AsistenciaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/asistencia');
         $this->crud->setEntityNameStrings('asistencia', 'asistencias');
 
+        //Si el usuario tiene rol de comensal solo mostrar sus entradas
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        }
+
         //SI el usuario es un admin muestra solo las asistencias del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
@@ -34,15 +45,15 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['inscripcion', 'asistio', 'fecha_asistencia']);
+        $this->crud->addColumns(['fecha_inscripcion', 'comensal', 'asistio', 'fecha_asistencia']);
 
-        $this->crud->setColumnDetails('inscripcion', [
+        $this->crud->setColumnDetails('fecha_inscripcion', [
             //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
-            'label' => 'Comensal',
+            'label' => 'Fecha Inscripcion',
             'type' => 'select',
             'name' => 'inscripcion_id', // the db column for the foreign key
             'entity' => 'inscripcion', // the method that defines the relationship in your Model
-            'attribute' => 'nombreInscripcion', // foreign key attribute that is shown to user
+            'attribute' => 'fecha_inscripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Inscripcion", // foreign key model
             // 'searchLogic' => function ($query, $column, $searchTerm) {
             //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
@@ -51,14 +62,31 @@ class AsistenciaCrudController extends CrudController
             // },
         ]);
 
-        $this->crud->setColumnDetails('asistio',[
+        if (backpack_user()->hasRole('admin')) {
+
+            $this->crud->setColumnDetails('comensal', [
+                //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
+                'label' => 'Comensal',
+                'type' => 'select',
+                'name' => 'inscripcion_id', // the db column for the foreign key
+                'entity' => 'inscripcion', // the method that defines the relationship in your Model
+                'attribute' => 'nombreInscripcion', // foreign key attribute that is shown to user
+                'model' => "App\Models\Inscripcion", // foreign key model
+                // 'searchLogic' => function ($query, $column, $searchTerm) {
+                //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
+                //         $q->where('nombreInscripcion', 'like', '%' . $searchTerm . '%');
+                //     });
+                // },
+            ]);
+        }
+
+        $this->crud->setColumnDetails('asistio', [
             'name' => 'asistio',
             'label' => 'Asistio',
             'type' => 'boolean',
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
-
     }
 
     protected function setupCreateOperation()
@@ -76,9 +104,9 @@ class AsistenciaCrudController extends CrudController
                 'default' => 0, // set the default value of the select2
                 'options'   => (function ($query) {
                     return $query
-                    ->where('comedor_id', backpack_user()->persona->comedor_id)
-                    ->where('fecha_inscripcion', Carbon::now()->toDateString())
-                    ->get();
+                        ->where('comedor_id', backpack_user()->persona->comedor_id)
+                        ->where('fecha_inscripcion', Carbon::now()->toDateString())
+                        ->get();
                 }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
             ]
         );
@@ -105,5 +133,11 @@ class AsistenciaCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->setupListOperation();
     }
 }

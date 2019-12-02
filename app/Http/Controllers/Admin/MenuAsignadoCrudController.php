@@ -31,6 +31,10 @@ class MenuAsignadoCrudController extends CrudController
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         }
+        //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        }
     }
 
     protected function setupListOperation()
@@ -110,26 +114,26 @@ class MenuAsignadoCrudController extends CrudController
             // optional:
             'date_picker_options' => [
                 'todayBtn' => 'linked',
-               'format' => 'dd-mm-yyyy',
-               'language' => 'es',
-               //'startDate' => Carbon::now(),
+                'format' => 'dd-mm-yyyy',
+                'language' => 'es',
+                //'startDate' => Carbon::now(),
             ],
             //'default' => $fecha,
-         ]);
+        ]);
 
-         $this->crud->addField([   // date_picker
+        $this->crud->addField([   // date_picker
             'name' => 'fecha_fin',
             'type' => 'date_picker',
             'label' => 'Fecha Fin',
             // optional:
             'date_picker_options' => [
                 'todayBtn' => 'linked',
-               'format' => 'dd-mm-yyyy',
-               'language' => 'es',
-               //'startDate' => Carbon::now(),
+                'format' => 'dd-mm-yyyy',
+                'language' => 'es',
+                //'startDate' => Carbon::now(),
             ],
             //'default' => $fecha,
-         ]);
+        ]);
     }
 
     protected function setupUpdateOperation()

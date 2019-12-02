@@ -15,14 +15,17 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class LoteCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
     {
+        $this->crud->denyAccess(['delete', 'create', 'update']);
+
         $this->crud->setListView('personalizadas.vistaLote', $this->data);
+
         $this->crud->setModel('App\Models\Lote');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lote');
         $this->crud->setEntityNameStrings('lote', 'lotes');
@@ -62,15 +65,13 @@ class LoteCrudController extends CrudController
     }
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(LoteRequest::class);
+        //$this->crud->setValidation(LoteRequest::class);
 
-        // TODO: remove setFromDb() and manually define Fields
-        $this->crud->setFromDb();
     }
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        //$this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
