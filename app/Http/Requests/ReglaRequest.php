@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ReglaRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class ReglaRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'comedor_id' => [Rule::exists('comedores', 'id')],
+            'descripcion' => ['required','string'],
+            'tiempo' => ['required','string'],
+            'cantidad_faltas' => ['required','integer','min:1'],
+            'dias_sancion' => ['required','integer','min:1'],
         ];
     }
 

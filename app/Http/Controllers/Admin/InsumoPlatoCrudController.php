@@ -107,9 +107,9 @@ class InsumoPlatoCrudController extends CrudController
         //deberia ser un select la cantidad, o sea tener una tabla de unidades de medida
         $this->crud->addField(
             [
-                'label' => "Cantidad",
-                'type' => 'text',
                 'name' => 'cantidad',
+                'label' => "Cantidad",
+                'type' => "number",
             ]
         );
     }

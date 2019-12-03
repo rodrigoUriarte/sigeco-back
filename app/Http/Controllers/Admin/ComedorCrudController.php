@@ -24,7 +24,9 @@ class ComedorCrudController extends CrudController
         $this->crud->setModel('App\Models\Comedor');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comedor');
         $this->crud->setEntityNameStrings('comedor', 'comedores');
+        
     }
+
 
     protected function setupListOperation()
     {

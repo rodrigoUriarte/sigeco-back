@@ -28,37 +28,40 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
   <div class="{{ $crud->getListContentClass() }}">
     <div class="">
 
-
+      @if(backpack_user()->hasRole('admin'))
       <div class="card text-left">
 
         <div class="card-header">
-
           <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
             aria-expanded="false" aria-controls="collapseExample">
             GENERAR REPORTE
           </button>
         </div>
 
-
         <div class="collapse" id="collapseExample">
           <div class="card-body">
-            <form action="{{route('lotes.reporteLotes')}}" method="GET" enctype="multipart/form-data">
+            <form action="{{route('inscripciones.reporteInscripciones')}}" method="GET" enctype="multipart/form-data">
               <h5>FILTROS</h5>
               <hr>
               <div class="row">
                 <div class="form-group col-md-3">
-                  <label>Insumo : </label>
-                  <input class="form-control" type="text" name="filtro_insumo" id="filtro_insumo"
-                    placeholder="Ingrese un insumo a filtrar" style="width: 100%;">
+                  <label>Usuario : </label>
+                  <input class="form-control" type="text" name="filtro_usuario" id="filtro_usuario"
+                    placeholder="Ingrese un usuario a filtrar" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Fecha Vencimiento Hasta : </label>
-                  <input class="form-control" type="date" name="filtro_fecha_vencimiento" id="filtro_fecha_vencimiento"
-                    placeholder="Ingrese una fecha a filtrar" style="width: 100%;">
+                  <label>Fecha Inscripcion : </label>
+                  <input class="form-control" type="date" name="filtro_fecha_inscripcion" id="filtro_fecha_inscripcion"
+                    placeholder="Ingrese una fecha de inscripcion a filtrar" style="width: 100%;">
                 </div>
+                <div class="form-group col-md-3">
+                    <label>Menu Asignado : </label>
+                    <input class="form-control" type="text" name="filtro_menu" id="filtro_menu"
+                      placeholder="Ingrese un menu asignado a filtrar" style="width: 100%;">
+                  </div>
               </div>
               <hr>
-              @csrf 
+              @csrf
               <div align="right">
                 <button type="submit" class="btn  btn-success  btn-flat btn-sm">Generar Reporte</button>
               </div>
@@ -75,10 +78,8 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
         </div> --}}
 
       </div>
-
-
-
     </div>
+    @endif
 
     <div class="row mb-0">
       <div class="col-6">

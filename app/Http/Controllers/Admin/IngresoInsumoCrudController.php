@@ -35,7 +35,7 @@ class IngresoInsumoCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad']);
+        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad','creado']);
 
         $this->crud->setColumnDetails('user_id', [
             'label' => 'Usuario',
@@ -66,6 +66,13 @@ class IngresoInsumoCrudController extends CrudController
                 });
             },
         ]);
+
+        $this->crud->setColumnDetails('creado', [
+            'name' => "created_at", // The db column name
+            'label' => "Fecha Ingreso", // Table column heading
+            'type' => "datetime",
+             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+         ]);
     }
 
     protected function setupCreateOperation()
@@ -102,9 +109,9 @@ class IngresoInsumoCrudController extends CrudController
         ]);
         $this->crud->addField(
             [
-                'label' => "Cantidad",
-                'type' => 'text',
                 'name' => 'cantidad',
+                'label' => "Cantidad",
+                'type' => "number",
             ]
         );
         $this->crud->addField([

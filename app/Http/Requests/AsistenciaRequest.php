@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AsistenciaRequest extends FormRequest
 {
@@ -26,7 +27,10 @@ class AsistenciaRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'comedor_id' => [Rule::exists('comedores', 'id')],
+            'inscripcion_id' => ['required',Rule::unique('asistencias')->ignore($this->id)],
+            'asistio' => ['boolean'],
+            'fecha_asistencia' => ['date'],
         ];
     }
 

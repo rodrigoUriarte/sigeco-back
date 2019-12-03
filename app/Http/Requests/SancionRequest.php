@@ -26,7 +26,7 @@ class SancionRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            //NO SE REALIZA VALIDACION YA QUE LOS DATOS SON CARGADOS AUTOMATICAMENTE MENSUAL O SEMANALMENTE
         ];
     }
 

@@ -30,7 +30,7 @@ class IngresoInsumoRequest extends FormRequest
             'insumo_id' => ['required', Rule::exists('insumos', 'id')],
             'user_id' => [Rule::exists('users', 'id')],
             'comedor_id' => [Rule::exists('comedores','id')],
-            'cantidad' => ['required', 'numeric'],
+            'cantidad' => ['required','numeric','min:1'],
             'fecha_vencimiento' => 'required|date|after:yesterday',
         ];
     }

@@ -30,6 +30,10 @@ class BandaHorariaCrudController extends CrudController
             $this->crud->addClause('where', 'comedor_id', '=', 
             backpack_user()->persona->comedor_id);
         }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        }
     }
 
     protected function setupListOperation()

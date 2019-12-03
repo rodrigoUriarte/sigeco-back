@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\InscripcionRequest;
+use App\Models\BackpackUser;
+use App\Models\Inscripcion;
+use App\Models\Menu;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\Request;
+
 
 /**
  * Class InscripcionCrudController
@@ -33,6 +38,7 @@ class InscripcionCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
+            $this->crud->setListView('personalizadas.vistaInscripcion', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
@@ -168,5 +174,58 @@ class InscripcionCrudController extends CrudController
     {
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+    }
+
+    public function reporteInscripciones(Request $request)
+    {        
+
+        $inscripciones = Inscripcion::all(); 
+
+        $filtro_usuario = $request->filtro_usuario;
+        $filtro_fecha_inscripcion = $request->filtro_fecha_inscripcion;
+        $filtro_menu = $request->filtro_menu;
+
+        $usuario = null;
+        $fecha_inscripcion = null;
+        $menu = null;
+
+        if ($request->filtro_usuario != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            $usuario = BackpackUser::where('name',$filtro_usuario);
+            foreach ($inscripciones as $id => $inscripcion) {
+                if ($inscripcion->user->name != $filtro_usuario) {
+                    $inscripciones->pull($id);
+                }
+            }
+        }
+
+        if ($request->filtro_fecha_inscripcion != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            $inscripcionx = Inscripcion::where('fecha_inscripcion',$filtro_fecha_inscripcion);
+            foreach ($inscripciones as $id => $inscripcion) {
+                if ($inscripcion->fecha_inscripcion != $filtro_fecha_inscripcion) {
+                    $inscripciones->pull($id);
+                }
+            }
+        }
+
+        if ($request->filtro_menu != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            $menu = Menu::where('descripcion',$filtro_menu);
+            foreach ($inscripciones as $id => $inscripcion) {
+                if ($inscripcion->menuAsignado->menu->descripcion != $filtro_menu) {
+                    $inscripciones->pull($id);
+                }
+            }
+        }
+
+        $pdf = \PDF::loadView('reportes.reporteInscripciones', 
+        compact('inscripciones','usuario','filtro_usuario','fecha_inscripcion','filtro_fecha_inscripcion','menu','filtro_menu'));
+
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $y = $canvas->get_height() - 20;
+        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        $nombre = 'Reporte-Inscripciones-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        return $pdf->stream($nombre);
+
     }
 }

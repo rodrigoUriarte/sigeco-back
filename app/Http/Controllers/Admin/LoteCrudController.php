@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\LoteRequest;
+use App\Models\Insumo;
 use App\Models\Lote;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+
 
 /**
  * Class LoteCrudController
@@ -24,7 +28,6 @@ class LoteCrudController extends CrudController
     {
         $this->crud->denyAccess(['delete', 'create', 'update']);
 
-        $this->crud->setListView('personalizadas.vistaLote', $this->data);
 
         $this->crud->setModel('App\Models\Lote');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lote');
@@ -32,6 +35,7 @@ class LoteCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo los lotes del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
+            $this->crud->setListView('personalizadas.vistaLote', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
@@ -80,16 +84,43 @@ class LoteCrudController extends CrudController
         $this->setupListOperation();
     }
 
-    public function reporteLotes()
+    public function reporteLotes(Request $request)
     {        
-        /**
-         * toma en cuenta que para ver los mismos 
-         * datos debemos hacer la misma consulta
-        **/
         $lotes = Lote::all(); 
 
-        $pdf = \PDF::loadView('reportes.reporteLotes', compact('lotes'));
+        $filtro_insumo = $request->filtro_insumo;
+        $filtro_fecha_vencimiento = $request->filtro_fecha_vencimiento;
 
-        return $pdf->stream('listado.pdf');
+        $insumo = null;
+        $fecha_vencimiento = null;
+
+        if ($request->filtro_insumo != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            $insumo = Insumo::where('descripcion',$filtro_insumo);
+            foreach ($lotes as $id => $lote) {
+                if ($lote->insumo->descripcion != $filtro_insumo) {
+                    $lotes->pull($id);
+                }
+            }
+        }
+
+        if ($request->filtro_fecha_vencimiento != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            $lotex = Lote::where('fecha_vencimiento',$filtro_fecha_vencimiento);
+            foreach ($lotes as $id => $lote) {
+                if ($lote->fecha_vencimiento > $filtro_fecha_vencimiento) {
+                    $lotes->pull($id);
+                }
+            }
+        }
+
+        $pdf = \PDF::loadView('reportes.reporteLotes', 
+        compact('lotes','insumo','filtro_insumo','fecha_vencimiento','filtro_fecha_vencimiento'));
+
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $y = $canvas->get_height() - 20;
+        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        $nombre = 'Reporte-Lotes-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        return $pdf->stream($nombre);
     }
 }

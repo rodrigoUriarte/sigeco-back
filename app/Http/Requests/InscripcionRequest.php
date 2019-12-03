@@ -8,6 +8,7 @@ use App\Models\Inscripcion;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use App\Models\MenuAsignado;
+use App\Models\Sancion;
 use Illuminate\Validation\Rule;
 
 class InscripcionRequest extends FormRequest
@@ -78,14 +79,21 @@ class InscripcionRequest extends FormRequest
                             ->where('fecha_inscripcion', '=', $this->fecha_inscripcion)
                             ->where('user_id', '=', backpack_user()->id);
                     })
-                    ->ignore($this->id),
-            ],
+                    ->ignore($this->id),   
+                
+                    function ($attribute, $value, $fail) {
+                        $existe_sancion = Sancion::where('comedor_id', '=', $this->comedor_id)
+                        ->where('user_id', '=', $this->user_id)
+                        ->where('desde', '<=', $value)
+                        ->where('hasta', '>=', $value)
+                        ->count();
+                        if ($existe_sancion > 0) {
+                            $fail('Tiene una sancion vigente para esta fecha de inscripcion');
+                        }
+                    },
+                ],
 
-            'comedor_id' => [Rule::exists('comedores','id')],
-
-
-            //FALTARIA VALIDAR FECHA ASISTENCIA Y LA SANCION?
-
+            'comedor_id' => [Rule::exists('comedores', 'id')],
 
 
         ];
