@@ -24,6 +24,14 @@ class PersonaCrudController extends CrudController
         $this->crud->setModel('App\Models\Persona');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/persona');
         $this->crud->setEntityNameStrings('persona', 'personas');
+        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        }
     }
 
     protected function setupListOperation()
@@ -74,7 +82,6 @@ class PersonaCrudController extends CrudController
                 });
             },
         ]);
-        
     }
 
     protected function setupCreateOperation()

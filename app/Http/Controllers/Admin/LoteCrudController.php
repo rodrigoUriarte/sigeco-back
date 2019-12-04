@@ -26,7 +26,6 @@ class LoteCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->denyAccess(['delete', 'create', 'update']);
 
 
         $this->crud->setModel('App\Models\Lote');
@@ -37,6 +36,11 @@ class LoteCrudController extends CrudController
         if (backpack_user()->hasRole('admin')) {
             $this->crud->setListView('personalizadas.vistaLote', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            $this->crud->denyAccess(['delete', 'create', 'update']);
+        }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update','delete','list','show']);
         }
     }
 

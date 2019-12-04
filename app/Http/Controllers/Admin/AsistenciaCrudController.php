@@ -34,8 +34,10 @@ class AsistenciaCrudController extends CrudController
 
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
-            $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
-            $this->crud->denyAccess(['create', 'update','delete']);
+            $this->crud->addClause('whereHas', 'inscripcion', function ($query) {
+                $query->where('user_id', backpack_user()->id);
+            });
+            $this->crud->denyAccess(['create', 'update', 'delete']);
         }
 
         //SI el usuario es un admin muestra solo las asistencias del comedor del cual es responsable
@@ -46,7 +48,7 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['fecha_inscripcion', 'comensal', 'asistio', 'fecha_asistencia']);
+        $this->crud->addColumns(['fecha_inscripcion', 'asistio', 'fecha_asistencia']);
 
         $this->crud->setColumnDetails('fecha_inscripcion', [
             //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
@@ -64,6 +66,8 @@ class AsistenciaCrudController extends CrudController
         ]);
 
         if (backpack_user()->hasRole('admin')) {
+
+            $this->crud->addColumns(['comensal']);
 
             $this->crud->setColumnDetails('comensal', [
                 //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION

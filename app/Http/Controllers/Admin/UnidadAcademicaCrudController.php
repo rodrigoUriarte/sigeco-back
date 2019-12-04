@@ -24,6 +24,14 @@ class UnidadAcademicaCrudController extends CrudController
         $this->crud->setModel('App\Models\UnidadAcademica');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/unidadAcademica');
         $this->crud->setEntityNameStrings('Unidad Academica', 'Unidades Academicas');
+
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        }
     }
 
     protected function setupListOperation()

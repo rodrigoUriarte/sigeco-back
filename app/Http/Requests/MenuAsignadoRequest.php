@@ -40,7 +40,8 @@ class MenuAsignadoRequest extends FormRequest
             //La fecha de inicio y la fecha fin deben ser obligatoriamente el primer dia de un mes
             //El menu asignado solo se puede agregar para el mes siguiente.
             'fecha_inicio' => [
-                'required', 'date', 'after: 15 days', 'before:' . $ls ,'date_equals:' . $pd ,
+                'required', 
+                // 'date', 'after: 15 days', 'before:' . $ls ,'date_equals:' . $pd ,
 
                 Rule::unique('menus_asignados')
                 ->where(function ($query) {

@@ -29,11 +29,45 @@ class InsumoPlatoCrudController extends CrudController
          if (backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        }
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['insumo', 'plato', 'cantidad']);
+        $this->crud->addColumns(['menu','plato', 'insumo', 'cantidad']);
+
+        $this->crud->setColumnDetails('menu', [
+            'label' => 'Menu',
+            'type' => 'select',
+            'name' => 'plato_id', // the db column for the foreign key
+            'entity' => 'plato', // the method that defines the relationship in your Model
+            'attribute' => 'nombreMenu', // foreign key attribute that is shown to user
+            'model' => "App\Models\Plato", // foreign key model
+            // 'searchLogic' => function ($query, $column, $searchTerm) {
+            //     $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
+            //         $q->where('nombreMenu', 'like', '%' . $searchTerm . '%');
+            //         //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+            //     });
+            // },
+        ]);
+
+        $this->crud->setColumnDetails('plato', [
+            'label' => 'Plato',
+            'type' => 'select',
+            'name' => 'plato_id', // the db column for the foreign key
+            'entity' => 'plato', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion', // foreign key attribute that is shown to user
+            'model' => "App\Models\Plato", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
+                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
+                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
+                });
+            },
+        ]);
 
         $this->crud->setColumnDetails('insumo', [
             'label' => 'Insumo',
@@ -49,20 +83,7 @@ class InsumoPlatoCrudController extends CrudController
                 });
             },
         ]);
-        $this->crud->setColumnDetails('plato', [
-            'label' => 'Plato',
-            'type' => 'select',
-            'name' => 'plato_id', // the db column for the foreign key
-            'entity' => 'plato', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Plato", // foreign key model
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
-                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
-                });
-            },
-        ]);
+
     }
 
     protected function setupCreateOperation()
@@ -108,7 +129,7 @@ class InsumoPlatoCrudController extends CrudController
         $this->crud->addField(
             [
                 'name' => 'cantidad',
-                'label' => "Cantidad",
+                'label' => "Cantidad necesaria por plato",
                 'type' => "number",
             ]
         );

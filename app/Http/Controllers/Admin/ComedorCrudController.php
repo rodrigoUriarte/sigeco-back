@@ -24,6 +24,14 @@ class ComedorCrudController extends CrudController
         $this->crud->setModel('App\Models\Comedor');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comedor');
         $this->crud->setEntityNameStrings('comedor', 'comedores');
+
+        if (backpack_user()->hasRole('admin')) {
+            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        }
+
+        if (backpack_user()->hasRole('comensal')) {
+            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        }
         
     }
 

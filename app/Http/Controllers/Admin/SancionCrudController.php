@@ -21,9 +21,6 @@ class SancionCrudController extends CrudController
 
     public function setup()
     {
-
-        $this->crud->denyAccess(['delete', 'create', 'update']);
-
         $this->crud->setModel('App\Models\Sancion');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/sancion');
         $this->crud->setEntityNameStrings('sancion', 'sanciones');
@@ -31,10 +28,13 @@ class SancionCrudController extends CrudController
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+            $this->crud->denyAccess(['create', 'update','delete']);
         }
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            $this->crud->denyAccess(['create', 'update','delete']);
+
         }
     }
 

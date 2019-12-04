@@ -40,6 +40,8 @@ class InscripcionCrudController extends CrudController
         if (backpack_user()->hasRole('admin')) {
             $this->crud->setListView('personalizadas.vistaInscripcion', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            $this->crud->denyAccess(['create', 'update','delete']);
+
         }
     }
 

@@ -34,6 +34,7 @@ class MenuAsignadoCrudController extends CrudController
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            $this->crud->denyAccess(['create', 'update','delete']);
         }
     }
 

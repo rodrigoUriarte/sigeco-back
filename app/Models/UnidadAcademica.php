@@ -58,4 +58,8 @@ class UnidadAcademica extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setNombreAttribute($value)
+    {
+        $this->attributes['nombre'] = strtoupper($value);
+    }
 }

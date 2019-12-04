@@ -33,7 +33,7 @@ class PlatoAsignadoRequest extends FormRequest
             'fecha' => [
                 'required',
                 'date',
-                'before: 3 hours',
+                //'before: 3 hours',
                 Rule::unique('platos_asignados')
                     ->where(function ($query) {
                         return $query
