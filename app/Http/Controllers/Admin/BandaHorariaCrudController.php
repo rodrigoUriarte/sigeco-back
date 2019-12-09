@@ -26,13 +26,31 @@ class BandaHorariaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/bandaHoraria');
         $this->crud->setEntityNameStrings('Banda Horaria', 'Bandas Horarias');
 
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->addClause('where', 'comedor_id', '=', 
-            backpack_user()->persona->comedor_id);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+
+        if (backpack_user()->hasPermissionTo('createBandaHoraria')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateBandaHoraria')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteBandaHoraria')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listBandaHoraria')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showBandaHoraria')) {
+            $this->crud->allowAccess('show');
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addClause(
+                'where',
+                'comedor_id',
+                '=',
+                backpack_user()->persona->comedor_id
+            );
         }
     }
 
@@ -40,6 +58,26 @@ class BandaHorariaCrudController extends CrudController
     {
         $this->crud->addColumns(['descripcion', 'hora_inicio', 'hora_fin', 'limite_comensales']);
 
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
+        ]);
+        $this->crud->setColumnDetails('hora_inicio', [
+            'name' => "hora_inicio", // The db column name
+            'label' => "Hora Inicio", // Table column heading
+            'type' => "text",
+        ]);
+        $this->crud->setColumnDetails('hora_fin', [
+            'name' => "hora_fin", // The db column name
+            'label' => "Hora Fin", // Table column heading
+            'type' => "text",
+        ]);
+        $this->crud->setColumnDetails('limite_comensales', [
+            'name' => "limite_comensales", // The db column name
+            'label' => "Limite Comensales", // Table column heading
+            'type' => "number",
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -51,7 +89,7 @@ class BandaHorariaCrudController extends CrudController
             'type'  => 'hidden',
             'value' => backpack_user()->persona->comedor_id,
         ]);
-        
+
         $this->crud->addField([
             'name' => 'descripcion',
             'type' => 'text',
@@ -72,10 +110,9 @@ class BandaHorariaCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'limite_comensales',
-            'type' => 'text',
+            'type' => 'number',
             'label' => 'Limite Comensales'
         ]);
-
     }
 
     protected function setupUpdateOperation()
@@ -84,7 +121,7 @@ class BandaHorariaCrudController extends CrudController
     }
 
     protected function setupShowOperation()
-    {  
+    {
 
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();

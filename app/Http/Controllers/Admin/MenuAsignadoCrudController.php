@@ -27,21 +27,38 @@ class MenuAsignadoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/menuAsignado');
         $this->crud->setEntityNameStrings('Menu Asignado', 'Menus Asignados');
 
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createMenuAsignado')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateMenuAsignado')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteMenuAsignado')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listMenuAsignado')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showMenuAsignado')) {
+            $this->crud->allowAccess('show');
+        }
+
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         }
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
-            $this->crud->denyAccess(['create', 'update','delete']);
         }
     }
 
     protected function setupListOperation()
     {
         //Si el usuario tiene rol de admin mostrar a que usuario corresponde cada menu asignado
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
 
             $this->crud->addColumns(['usuario']);
 
@@ -76,6 +93,20 @@ class MenuAsignadoCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('fecha_inicio', [
+            'name' => "fecha_inicio", // The db column name
+            'label' => "Fecha Inicio", // Table column heading
+            'type' => "date",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        ]);
+
+        $this->crud->setColumnDetails('fecha_fin', [
+            'name' => "fecha_fin", // The db column name
+            'label' => "Fecha Fin", // Table column heading
+            'type' => "date",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
     }
 

@@ -25,14 +25,29 @@ class PlatoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/plato');
         $this->crud->setEntityNameStrings('plato', 'platos');
         
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createPlato')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updatePlato')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deletePlato')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listPlato')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showPlato')) {
+            $this->crud->allowAccess('show');
+        }
+
         //SI el usuario es un admin muestra solo los platos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
-        }
     }
 
     protected function setupListOperation()
@@ -52,6 +67,12 @@ class PlatoCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
         ]);
         
     }

@@ -25,19 +25,57 @@ class ReglaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/regla');
         $this->crud->setEntityNameStrings('regla', 'reglas');
 
-        //SI el usuario es un admin muestra solo los platos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createRegla')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateRegla')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteRegla')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listRegla')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showRegla')) {
+            $this->crud->allowAccess('show');
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        //SI el usuario es un admin muestra solo los platos del comedor del cual es responsable
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
 
     protected function setupListOperation()
     {
         $this->crud->addColumns(['descripcion', 'cantidad_faltas', 'tiempo', 'dias_sancion']);
+
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('cantidad_faltas', [
+            'name' => "cantidad_faltas", // The db column name
+            'label' => "Cantidad Faltas", // Table column heading
+            'type' => "number",
+        ]);
+
+        $this->crud->setColumnDetails('tiempo', [
+            'name' => "tiempo", // The db column name
+            'label' => "Tiempo", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('dias_sancion', [
+            'name' => "dias_sancion", // The db column name
+            'label' => "Dias Sancion", // Table column heading
+            'type' => "number",
+        ]);
     }
 
     protected function setupCreateOperation()

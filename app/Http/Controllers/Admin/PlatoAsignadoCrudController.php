@@ -30,14 +30,29 @@ class PlatoAsignadoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/platoAsignado');
         $this->crud->setEntityNameStrings('Plato Asignado', 'Platos Asignados');
 
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createPlatoAsignado')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updatePlatoAsignado')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deletePlatoAsignado')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listPlatoAsignado')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showPlatoAsignado')) {
+            $this->crud->allowAccess('show');
+        }
+
         //SI el usuario es un admin muestra solo los platos asignados del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
-        }
     }
 
     protected function setupListOperation()
@@ -72,6 +87,13 @@ class PlatoAsignadoCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('fecha', [
+            'name' => "fecha", // The db column name
+            'label' => "Fecha", // Table column heading
+            'type' => "date",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
 
     }
@@ -116,7 +138,7 @@ class PlatoAsignadoCrudController extends CrudController
                 'entity' => 'plato', // the method that defines the relationship in your Model
                 'attribute' => "descripcion", // foreign key attribute that is shown to user
                 'model' => "App\Models\Plato", // foreign key model
-                'data_source' => url("api/plato"), // url to controller search function (with /{id} should return model)
+                'data_source' => url("admin/calculoPreparacionPlatos"), // url to controller search function (with /{id} should return model)
                 'placeholder' => 'Seleccione un plato', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
                 'dependencies' => ['fecha','menu_id'],

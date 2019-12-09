@@ -67,9 +67,12 @@ class MenuAsignado extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getRangoFechasAttribute()
-    {
+    public function getRangoFechasAttribute(){
         return "{$this->fecha_inicio} / {$this->fecha_fin}";
+    }
+
+    public function getDescripcionMenuAttribute(){
+        return $this->menu->descripcion; 
     }
 
     /*

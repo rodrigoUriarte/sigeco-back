@@ -32,16 +32,33 @@ class AsistenciaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/asistencia');
         $this->crud->setEntityNameStrings('asistencia', 'asistencias');
 
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createAsistencia')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateAsistencia')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteAsistencia')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listAsistencia')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showAsistencia')) {
+            $this->crud->allowAccess('show');
+        }
+
         //Si el usuario tiene rol de comensal solo mostrar sus entradas
         if (backpack_user()->hasRole('comensal')) {
             $this->crud->addClause('whereHas', 'inscripcion', function ($query) {
                 $query->where('user_id', backpack_user()->id);
             });
-            $this->crud->denyAccess(['create', 'update', 'delete']);
         }
 
         //SI el usuario es un admin muestra solo las asistencias del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
@@ -58,14 +75,29 @@ class AsistenciaCrudController extends CrudController
             'entity' => 'inscripcion', // the method that defines the relationship in your Model
             'attribute' => 'fecha_inscripcion', // foreign key attribute that is shown to user
             'model' => "App\Models\Inscripcion", // foreign key model
-            // 'searchLogic' => function ($query, $column, $searchTerm) {
-            //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-            //         $q->where('nombreInscripcion', 'like', '%' . $searchTerm . '%');
-            //     });
-            // },
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
+                    $q->where('fecha_inscripcion', 'like', '%' . $searchTerm . '%');
+                });
+            },
         ]);
 
-        if (backpack_user()->hasRole('admin')) {
+        $this->crud->setColumnDetails('asistio', [
+            'name' => 'asistio',
+            'label' => 'Asistio',
+            'type' => 'boolean',
+            // optionally override the Yes/No texts
+            'options' => [0 => 'NO', 1 => 'SI']
+        ]);
+
+        $this->crud->setColumnDetails('fecha_asistencia', [
+            'name' => "fecha_asistencia", // The db column name
+            'label' => "Fecha Asistencia", // Table column heading
+            'type' => "datetime",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        ]);
+
+        if (backpack_user()->hasRole('operativo')) {
 
             $this->crud->addColumns(['comensal']);
 
@@ -84,14 +116,6 @@ class AsistenciaCrudController extends CrudController
                 // },
             ]);
         }
-
-        $this->crud->setColumnDetails('asistio', [
-            'name' => 'asistio',
-            'label' => 'Asistio',
-            'type' => 'boolean',
-            // optionally override the Yes/No texts
-            'options' => [0 => 'NO', 1 => 'SI']
-        ]);
     }
 
     protected function setupCreateOperation()

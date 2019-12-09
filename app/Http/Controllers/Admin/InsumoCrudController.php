@@ -25,19 +25,46 @@ class InsumoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/insumo');
         $this->crud->setEntityNameStrings('insumo', 'insumos');
         
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createInsumo')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateInsumo')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteInsumo')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listInsumo')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showInsumo')) {
+            $this->crud->allowAccess('show');
+        }
+
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
-        }
     }
 
     protected function setupListOperation()
     {
         $this->crud->addColumns(['descripcion','unidad_medida']);
+
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('unidad_medida', [
+            'name' => "unidad_medida", // The db column name
+            'label' => "Unidad Medida", // Table column heading
+            'type' => "text",
+        ]);
 
     }
 

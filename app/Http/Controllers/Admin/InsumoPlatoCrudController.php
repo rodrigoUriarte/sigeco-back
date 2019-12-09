@@ -25,14 +25,29 @@ class InsumoPlatoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/insumoPlato');
         $this->crud->setEntityNameStrings('Insumo Plato', 'Insumos Platos');
 
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createInsumoPlato')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateInsumoPlato')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteInsumoPlato')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listInsumoPlato')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showInsumoPlato')) {
+            $this->crud->allowAccess('show');
+        }
+
          //SI el usuario es un admin muestra solo los insumosXplato del comedor del cual es responsable
-         if (backpack_user()->hasRole('admin')) {
+         if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
-        }
     }
 
     protected function setupListOperation()
@@ -44,7 +59,7 @@ class InsumoPlatoCrudController extends CrudController
             'type' => 'select',
             'name' => 'plato_id', // the db column for the foreign key
             'entity' => 'plato', // the method that defines the relationship in your Model
-            'attribute' => 'nombreMenu', // foreign key attribute that is shown to user
+            'attribute' => 'descripcionMenu', // foreign key attribute that is shown to user
             'model' => "App\Models\Plato", // foreign key model
             // 'searchLogic' => function ($query, $column, $searchTerm) {
             //     $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
@@ -82,6 +97,12 @@ class InsumoPlatoCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('cantidad', [
+            'name' => "cantidad", // The db column name
+            'label' => "Cantidad", // Table column heading
+            'type' => "number",
         ]);
 
     }

@@ -25,20 +25,40 @@ class ComedorCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comedor');
         $this->crud->setEntityNameStrings('comedor', 'comedores');
 
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
-        }
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        if (backpack_user()->hasPermissionTo('createComedor')) {
+            $this->crud->allowAccess('create');
         }
-        
+        if (backpack_user()->hasPermissionTo('updateComedor')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteComedor')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listComedor')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showComedor')) {
+            $this->crud->allowAccess('show');
+        }
     }
-
 
     protected function setupListOperation()
     {
         $this->crud->addColumns(['descripcion', 'direccion', 'unidad_academica']);
+
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('direccion', [
+            'name' => "direccion", // The db column name
+            'label' => "Direccion", // Table column heading
+            'type' => "text",
+        ]);
 
         $this->crud->setColumnDetails('unidad_academica', [
             'label' => 'Unidad Academica',

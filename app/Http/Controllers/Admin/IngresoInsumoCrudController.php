@@ -27,13 +27,27 @@ class IngresoInsumoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/ingresoInsumo');
         $this->crud->setEntityNameStrings('Ingreso Insumo', 'Ingresos Insumos');
 
-        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createIngresoInsumo')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateIngresoInsumo')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteIngresoInsumo')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listIngresoInsumo')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showIngresoInsumo')) {
+            $this->crud->allowAccess('show');
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
 
@@ -69,6 +83,19 @@ class IngresoInsumoCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('fecha_vencimiento', [
+            'name' => "fecha_vencimiento", // The db column name
+            'label' => "Fecha Vencimiento", // Table column heading
+            'type' => "date",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        ]);
+
+        $this->crud->setColumnDetails('cantidad', [
+            'name' => "cantidad", // The db column name
+            'label' => "Cantidad", // Table column heading
+            'type' => "number",
         ]);
 
         $this->crud->setColumnDetails('creado', [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Admin\Extra;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inscripcion;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Plato;
 use Facade\Ignition\DumpRecorder\Dump;
 
-class PlatoController extends Controller
+class CalculoPreparacionPlatos extends Controller
 {
 
     public function platosDisponibles(Request $request)
@@ -63,8 +63,6 @@ class PlatoController extends Controller
     public function index(Request $request)
     {
 
-        // $pd = $this->platosDisponibles($request);
-
         $search_term = $request->input('q');
 
         // $page = $request->input('page');
@@ -96,32 +94,6 @@ class PlatoController extends Controller
 
         return $options;
 
-
-        // //FUNCION QUE ANDA
-        // $search_term = $request->input('q');
-
-        // $form = collect($request->input('form'))->pluck('value', 'name');
-
-        // $options = Plato::query();
-
-        // // if no category has been selected, show no options
-        // if (!$form['menu_id']) {
-        //     return [];
-        // }
-
-        // // if a category has been selected, only show articles in that category
-        // if ($form['menu_id']) {
-        //     $options = $options->where('menu_id', $form['menu_id']);
-        // }
-
-        // if ($search_term) {
-        //     $results = $options->where('descripcion', 'LIKE', '%' . $search_term . '%')->paginate(10);
-        // } else {
-        //     $results = $options->paginate(10);
-        // }
-
-        // $options=$options->paginate(10);
-        // return $options;
     }
 
 

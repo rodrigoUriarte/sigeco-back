@@ -9,6 +9,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 /**
@@ -32,15 +33,28 @@ class LoteCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lote');
         $this->crud->setEntityNameStrings('lote', 'lotes');
 
-        //SI el usuario es un admin muestra solo los lotes del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->setListView('personalizadas.vistaLote', $this->data);
-            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
-            $this->crud->denyAccess(['delete', 'create', 'update']);
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createLote')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateLote')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteLote')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listLote')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showLote')) {
+            $this->crud->allowAccess('show');
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        //SI el usuario es un admin muestra solo los lotes del comedor del cual es responsable
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->setListView('personalizadas.vistaLote', $this->data);
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
 
@@ -61,6 +75,20 @@ class LoteCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('fecha_vencimiento', [
+            'name' => "fecha_vencimiento", // The db column name
+            'label' => "Fecha Vencimiento", // Table column heading
+            'type' => "date",
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        ]);
+
+        
+        $this->crud->setColumnDetails('cantidad', [
+            'name' => "cantidad", // The db column name
+            'label' => "Cantidad", // Table column heading
+            'type' => "number",
         ]);
 
         $this->crud->setColumnDetails('usado',[
@@ -116,7 +144,7 @@ class LoteCrudController extends CrudController
             }
         }
 
-        $pdf = \PDF::loadView('reportes.reporteLotes', 
+        $pdf = PDF::loadView('reportes.reporteLotes', 
         compact('lotes','insumo','filtro_insumo','fecha_vencimiento','filtro_fecha_vencimiento'));
 
         $dom_pdf = $pdf->getDomPDF();
@@ -127,4 +155,6 @@ class LoteCrudController extends CrudController
         $nombre = 'Reporte-Lotes-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
         return $pdf->stream($nombre);
     }
+
+
 }

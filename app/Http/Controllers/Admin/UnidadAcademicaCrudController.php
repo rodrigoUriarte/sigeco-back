@@ -25,18 +25,34 @@ class UnidadAcademicaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/unidadAcademica');
         $this->crud->setEntityNameStrings('Unidad Academica', 'Unidades Academicas');
 
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
-        }
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        if (backpack_user()->hasPermissionTo('createUnidadAcademica')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateUnidadAcademica')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteUnidadAcademica')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listUnidadAcademica')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showUnidadAcademica')) {
+            $this->crud->allowAccess('show');
         }
     }
 
     protected function setupListOperation()
     {
         $this->crud->addColumns(['nombre']);
+
+        $this->crud->setColumnDetails('nombre', [
+            'name' => "nombre", // The db column name
+            'label' => "Nombre", // Table column heading
+            'type' => "text",
+        ]);
     }
 
     protected function setupCreateOperation()

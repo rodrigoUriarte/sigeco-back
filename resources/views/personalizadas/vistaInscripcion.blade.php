@@ -28,7 +28,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
   <div class="{{ $crud->getListContentClass() }}">
     <div class="">
 
-      @if(backpack_user()->hasRole('admin'))
+      @if(backpack_user()->hasRole('operativo'))
       <div class="card text-left">
 
         <div class="card-header">
@@ -55,10 +55,10 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     placeholder="Ingrese una fecha de inscripcion a filtrar" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
-                    <label>Menu Asignado : </label>
-                    <input class="form-control" type="text" name="filtro_menu" id="filtro_menu"
-                      placeholder="Ingrese un menu asignado a filtrar" style="width: 100%;">
-                  </div>
+                  <label>Menu Asignado : </label>
+                  <input class="form-control" type="text" name="filtro_menu" id="filtro_menu"
+                    placeholder="Ingrese un menu asignado a filtrar" style="width: 100%;">
+                </div>
               </div>
               <hr>
               @csrf
@@ -68,89 +68,81 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
             </form>
           </div>
 
-          {{-- <div class="card-footer text-muted">
-            <form action="{{route('lote.reporteLotes')}}" method="GET" enctype="multipart/form-data">
-          @csrf
-          <div align="right">
-            <button type="submit" class="btn  btn-success  btn-flat btn-sm">Generar Reporte</button>
-          </div>
-          </form>
-        </div> --}}
-
-      </div>
-    </div>
-    @endif
-
-    <div class="row mb-0">
-      <div class="col-6">
-        @if ( $crud->buttons()->where('stack', 'top')->count() || $crud->exportButtons())
-        <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
-
-          @include('crud::inc.button_stack', ['stack' => 'top'])
-
         </div>
-        @endif
-      </div>
-      <div class="col-6">
-        <div id="datatable_search_stack" class="float-right"></div>
-      </div>
-    </div>
-
-    {{-- Backpack List Filters --}}
-    @if ($crud->filtersEnabled())
-    @include('crud::inc.filters_navbar')
-    @endif
-
-    <div class="overflow-hidden mt-2">
-
-      <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs"
-        cellspacing="0">
-        <thead>
-          <tr>
-            {{-- Table columns --}}
-            @foreach ($crud->columns() as $column)
-            <th data-orderable="{{ var_export($column['orderable'], true) }}" data-priority="{{ $column['priority'] }}"
-              data-visible="{{ var_export($column['visibleInTable'] ?? true) }}"
-              data-visible-in-modal="{{ var_export($column['visibleInModal'] ?? true) }}"
-              data-visible-in-export="{{ var_export($column['visibleInExport'] ?? true) }}">
-              {!! $column['label'] !!}
-            </th>
-            @endforeach
-
-            @if ( $crud->buttons()->where('stack', 'line')->count() )
-            <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}"
-              data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
-            @endif
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        <tfoot>
-          <tr>
-            {{-- Table columns --}}
-            @foreach ($crud->columns() as $column)
-            <th>{!! $column['label'] !!}</th>
-            @endforeach
-
-            @if ( $crud->buttons()->where('stack', 'line')->count() )
-            <th>{{ trans('backpack::crud.actions') }}</th>
-            @endif
-          </tr>
-        </tfoot>
-      </table>
-
-      @if ( $crud->buttons()->where('stack', 'bottom')->count() )
-      <div id="bottom_buttons" class="hidden-print">
-        @include('crud::inc.button_stack', ['stack' => 'bottom'])
-
-        <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
       </div>
       @endif
 
-    </div><!-- /.box-body -->
+      <div class="row mb-0">
+        <div class="col-6">
+          @if ( $crud->buttons()->where('stack', 'top')->count() || $crud->exportButtons())
+          <div class="hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
-  </div><!-- /.box -->
-</div>
+            @include('crud::inc.button_stack', ['stack' => 'top'])
+
+          </div>
+          @endif
+        </div>
+        <div class="col-6">
+          <div id="datatable_search_stack" class="float-right"></div>
+        </div>
+      </div>
+
+      {{-- Backpack List Filters --}}
+      @if ($crud->filtersEnabled())
+      @include('crud::inc.filters_navbar')
+      @endif
+
+      <div class="overflow-hidden mt-2">
+
+        <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs"
+          cellspacing="0">
+          <thead>
+            <tr>
+              {{-- Table columns --}}
+              @foreach ($crud->columns() as $column)
+              <th data-orderable="{{ var_export($column['orderable'], true) }}"
+                data-priority="{{ $column['priority'] }}"
+                data-visible="{{ var_export($column['visibleInTable'] ?? true) }}"
+                data-visible-in-modal="{{ var_export($column['visibleInModal'] ?? true) }}"
+                data-visible-in-export="{{ var_export($column['visibleInExport'] ?? true) }}">
+                {!! $column['label'] !!}
+              </th>
+              @endforeach
+
+              @if ( $crud->buttons()->where('stack', 'line')->count() )
+              <th data-orderable="false" data-priority="{{ $crud->getActionsColumnPriority() }}"
+                data-visible-in-export="false">{{ trans('backpack::crud.actions') }}</th>
+              @endif
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+            <tr>
+              {{-- Table columns --}}
+              @foreach ($crud->columns() as $column)
+              <th>{!! $column['label'] !!}</th>
+              @endforeach
+
+              @if ( $crud->buttons()->where('stack', 'line')->count() )
+              <th>{{ trans('backpack::crud.actions') }}</th>
+              @endif
+            </tr>
+          </tfoot>
+        </table>
+
+        @if ( $crud->buttons()->where('stack', 'bottom')->count() )
+        <div id="bottom_buttons" class="hidden-print">
+          @include('crud::inc.button_stack', ['stack' => 'bottom'])
+
+          <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
+        </div>
+        @endif
+
+      </div><!-- /.box-body -->
+
+    </div><!-- /.box -->
+  </div>
 
 </div>
 

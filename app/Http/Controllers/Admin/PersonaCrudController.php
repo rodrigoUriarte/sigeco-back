@@ -24,19 +24,59 @@ class PersonaCrudController extends CrudController
         $this->crud->setModel('App\Models\Persona');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/persona');
         $this->crud->setEntityNameStrings('persona', 'personas');
-        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
-            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
-        }
+        
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        if (backpack_user()->hasPermissionTo('createPersona')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updatePersona')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deletePersona')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listPersona')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showPersona')) {
+            $this->crud->allowAccess('show');
+        }
+        
+        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
 
     protected function setupListOperation()
     {
         $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'unidad_academica', 'comedor', 'usuario']);
+
+        $this->crud->setColumnDetails('dni', [
+            'name' => "dni", // The db column name
+            'label' => "DNI", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('nombre', [
+            'name' => "nombre", // The db column name
+            'label' => "Nombre", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('apellido', [
+            'name' => "apellido", // The db column name
+            'label' => "Apellido", // Table column heading
+            'type' => "text",
+        ]);
+
+        $this->crud->setColumnDetails('telefono', [
+            'name' => 'telefono', // The db column name
+            'label' => "Telefono", // Table column heading
+            'type' => 'phone',
+            // 'limit' => 10, // if you want to truncate the phone number to a different number of characters
+         ]);
 
         $this->crud->setColumnDetails('unidad_academica', [
             'label' => 'Unidad Academica',

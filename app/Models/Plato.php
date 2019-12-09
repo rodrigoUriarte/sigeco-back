@@ -62,7 +62,7 @@ class Plato extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getNombreMenuAttribute(){
+    public function getDescripcionMenuAttribute(){
         return $this->menu->descripcion; 
     }
 

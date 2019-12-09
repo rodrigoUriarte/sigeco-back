@@ -25,20 +25,41 @@ class MenuCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/menu');
         $this->crud->setEntityNameStrings('menu', 'menus');
 
+        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        if (backpack_user()->hasPermissionTo('createMenu')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateMenu')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteMenu')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listMenu')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showMenu')) {
+            $this->crud->allowAccess('show');
+        }
+
         //SI el usuario es un admin muestra solo los menus del comedor del cual es responsable
-        if (backpack_user()->hasRole('admin')) {
+        if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
 
-        if (backpack_user()->hasRole('comensal')) {
-            $this->crud->denyAccess(['create', 'update','delete','list','show']);
-        }
     }
 
     protected function setupListOperation()
     {
 
         $this->crud->addColumns(['descripcion']);
+
+        $this->crud->setColumnDetails('descripcion', [
+            'name' => "descripcion", // The db column name
+            'label' => "Descripcion", // Table column heading
+            'type' => "text",
+        ]);
 
     }
 

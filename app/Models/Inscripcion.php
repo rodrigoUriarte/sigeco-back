@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\FormatDate\FormatsDates;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Inscripcion extends Model
 {
     use CrudTrait;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -19,8 +20,7 @@ class Inscripcion extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id','banda_horaria_id','menu_asignado_id','fecha_inscripcion','fecha_asistencia','comedor_id'];
-    //protected $dates = ['fecha_incripcion','fecha_asistencia'];
+    protected $fillable = ['user_id', 'banda_horaria_id', 'menu_asignado_id', 'fecha_inscripcion', 'comedor_id'];
 
     // protected $hidden = [];
     // protected $dates = [];
@@ -36,19 +36,24 @@ class Inscripcion extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('App\Models\BackpackUser');
     }
-    public function bandaHoraria(){
+    public function bandaHoraria()
+    {
         return $this->belongsTo('App\Models\BandaHoraria');
     }
-    public function menuAsignado(){
+    public function menuAsignado()
+    {
         return $this->belongsTo('App\Models\MenuAsignado');
     }
-    public function comedor(){
+    public function comedor()
+    {
         return $this->belongsTo('App\Models\Comedor');
     }
-    public function asistencia(){
+    public function asistencia()
+    {
         return $this->hasOne('App\Models\Asistencia');
     }
     // public function menuAsignadoMenu(){
@@ -66,10 +71,13 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getNombreInscripcionAttribute(){
-        return $this->user->persona->nombre.' '.$this->user->persona->apellido; 
+    public function getFechaInscripcionAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
     }
-    
+    public function getNombreInscripcionAttribute(){
+        return $this->user->name; 
+    }
 
     /*
     |--------------------------------------------------------------------------
