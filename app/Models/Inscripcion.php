@@ -73,7 +73,8 @@ class Inscripcion extends Model
     */
     public function getFechaInscripcionAttribute($date)
     {
-        return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
+        $format = Carbon::rawCreateFromFormat('Y-m-d', $date)->format('d-m-Y');
+        return $format;
     }
     public function getNombreInscripcionAttribute(){
         return $this->user->name; 
@@ -84,4 +85,5 @@ class Inscripcion extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
 }

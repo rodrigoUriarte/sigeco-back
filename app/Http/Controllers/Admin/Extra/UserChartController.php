@@ -34,6 +34,7 @@ class UserChartController extends Controller
             return $query->where('fecha_inscripcion','<=',$hasta);
         })
         ->get()
+        ->sortBy('fecha_inscripcion')
         ->groupBy('fecha_inscripcion')
         ->map(function ($item) {
             // Return the number of persons with that age
@@ -53,6 +54,7 @@ class UserChartController extends Controller
             });
         })
         ->get()
+        ->sortBy('inscripcion.fecha_inscripcion')
         ->groupBy('inscripcion.fecha_inscripcion')
         ->map(function ($item) {
             // Return the number of persons with that age
@@ -72,6 +74,7 @@ class UserChartController extends Controller
             });
         })
         ->get()
+        ->sortBy('inscripcion.fecha_inscripcion')
         ->groupBy('inscripcion.fecha_inscripcion')
         ->map(function ($item) {
             // Return the number of persons with that age
@@ -79,9 +82,10 @@ class UserChartController extends Controller
         });
     
         $inscripciones->labels($ins->keys());
-        $inscripciones->dataset('Inscripciones por dia', 'bar', $ins->values())->color('red');
+        $inscripciones->dataset('Inscripciones por dia', 'bar', $ins->values())->color('blue');
         $inscripciones->dataset('Asistencias por dia', 'bar', $as->values())->color('green');
-        $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('blue');
+        $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('red');
         return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
+        echo "hola";
     }
 }

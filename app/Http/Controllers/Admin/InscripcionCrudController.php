@@ -91,7 +91,6 @@ class InscripcionCrudController extends CrudController
             'name' => "fecha_inscripcion", // The db column name
             'label' => "Fecha Inscripcion", // Table column heading
             'type' => "date",
-            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
 
         $this->crud->setColumnDetails('banda_horaria', [
