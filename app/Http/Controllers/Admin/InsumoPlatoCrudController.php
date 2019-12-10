@@ -52,7 +52,7 @@ class InsumoPlatoCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['menu','plato', 'insumo', 'cantidad']);
+        $this->crud->addColumns(['menu','plato', 'insumo', 'cantidad', 'unidad_medida']);
 
         $this->crud->setColumnDetails('menu', [
             'label' => 'Menu',
@@ -103,6 +103,15 @@ class InsumoPlatoCrudController extends CrudController
             'name' => "cantidad", // The db column name
             'label' => "Cantidad", // Table column heading
             'type' => "number",
+            'decimals' => 2,
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+        ]);
+
+        $this->crud->setColumnDetails('unidad_medida', [
+            'name' => "insumo.unidad_medida", // The db column name
+            'label' => "Unidad Medida", // Table column heading
+            'type' => "text",
         ]);
 
     }

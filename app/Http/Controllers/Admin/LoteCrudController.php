@@ -60,7 +60,7 @@ class LoteCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['insumo', 'fecha_vencimiento', 'cantidad', 'usado']);
+        $this->crud->addColumns(['insumo', 'fecha_vencimiento', 'cantidad', 'unidad_medida', 'usado']);
 
         $this->crud->setColumnDetails('insumo', [
             'label' => 'Insumo',
@@ -89,6 +89,15 @@ class LoteCrudController extends CrudController
             'name' => "cantidad", // The db column name
             'label' => "Cantidad", // Table column heading
             'type' => "number",
+            'decimals' => 2,
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+        ]);
+
+        $this->crud->setColumnDetails('unidad_medida', [
+            'name' => "insumo.unidad_medida", // The db column name
+            'label' => "Unidad Medida", // Table column heading
+            'type' => "text",
         ]);
 
         $this->crud->setColumnDetails('usado',[

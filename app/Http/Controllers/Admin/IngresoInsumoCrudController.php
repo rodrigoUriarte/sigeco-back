@@ -53,7 +53,7 @@ class IngresoInsumoCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad','creado']);
+        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad','unidad_medida','creado']);
 
         $this->crud->setColumnDetails('user_id', [
             'label' => 'Usuario',
@@ -96,13 +96,23 @@ class IngresoInsumoCrudController extends CrudController
             'name' => "cantidad", // The db column name
             'label' => "Cantidad", // Table column heading
             'type' => "number",
+            'decimals' => 2,
+            'dec_point' => ',',
+            'thousands_sep' => '.',
         ]);
+
+        $this->crud->setColumnDetails('unidad_medida', [
+            'name' => "insumo.unidad_medida", // The db column name
+            'label' => "Unidad Medida", // Table column heading
+            'type' => "text",
+        ]);
+        
 
         $this->crud->setColumnDetails('creado', [
             'name' => "created_at", // The db column name
             'label' => "Fecha Ingreso", // Table column heading
             'type' => "datetime",
-             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+             //'format' => 'l j F Y', // use something else than the base.default_date_format config value
          ]);
     }
 
