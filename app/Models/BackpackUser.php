@@ -37,7 +37,7 @@ class BackpackUser extends User
     }
     public function persona()
     {
-        return $this->hasOne('App\Models\Persona');
+        return $this->belongsTo('App\Models\Persona');
     }
     public function inscripciones()
     {

@@ -52,7 +52,7 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'email', 'unidad_academica', 'comedor', 'usuario']);
+        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'email', 'unidad_academica', 'comedor']);
 
         $this->crud->setColumnDetails('dni', [
             'name' => "dni", // The db column name
@@ -152,13 +152,13 @@ class PersonaCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name' => 'telefono',
-            'type' => 'email',
-            'label' => 'Email'
+            'type' => 'text',
+            'label' => 'Telefono'
         ]);
         $this->crud->addField([
             'name' => 'email',
-            'type' => 'text',
-            'label' => 'Telelfono'
+            'type' => 'email',
+            'label' => 'Email'
         ]);
 
          if (backpack_user()->hasRole('superAdmin')) {
@@ -187,17 +187,17 @@ class PersonaCrudController extends CrudController
                 'default' => 1, // set the default value of the select2
                
             ]);
-            $this->crud->addField([  // Select2
-                'label' => "Usuario",
-                'type' => 'select2',
-                'name' => 'user_id', // the db column for the foreign key
-                'entity' => 'user', // the method that defines the relationship in your Model
-                'attribute' => 'name', // foreign key attribute that is shown to user
-                'model' => "App\Models\BackpackUser", // foreign key model
+            // $this->crud->addField([  // Select2
+            //     'label' => "Usuario",
+            //     'type' => 'select2',
+            //     'name' => 'user_id', // the db column for the foreign key
+            //     'entity' => 'user', // the method that defines the relationship in your Model
+            //     'attribute' => 'name', // foreign key attribute that is shown to user
+            //     'model' => "App\Models\BackpackUser", // foreign key model
 
-                // optional
-                'default' => 1, // set the default value of the select2
-            ]);
+            //     // optional
+            //     'default' => 1, // set the default value of the select2
+            // ]);
         }
 
         if (backpack_user()->hasRole('operativo')) {
@@ -231,22 +231,22 @@ class PersonaCrudController extends CrudController
                             ->get();
                 }),
             ]);
-            $this->crud->addField([  // Select2
-                'label' => "Usuario",
-                'type' => 'select2',
-                'name' => 'user_id', // the db column for the foreign key
-                'entity' => 'user', // the method that defines the relationship in your Model
-                'attribute' => 'name', // foreign key attribute that is shown to user
-                'model' => "App\Models\BackpackUser", // foreign key model
+            // $this->crud->addField([  // Select2
+            //     'label' => "Usuario",
+            //     'type' => 'select2',
+            //     'name' => 'user_id', // the db column for the foreign key
+            //     'entity' => 'user', // the method that defines the relationship in your Model
+            //     'attribute' => 'name', // foreign key attribute that is shown to user
+            //     'model' => "App\Models\BackpackUser", // foreign key model
 
-                // optional
-                'default' => 1, // set the default value of the select2
-                'options'   => (function (Builder $query) {
-                        return $query->whereHas('persona', function (Builder $query) {
-                            $query->where('comedor_id', backpack_user()->persona->comedor_id);
-                        })->get();
-                }),
-            ]);
+            //     // optional
+            //     'default' => 1, // set the default value of the select2
+            //     'options'   => (function (Builder $query) {
+            //             return $query->whereHas('persona', function (Builder $query) {
+            //                 $query->where('comedor_id', backpack_user()->persona->comedor_id);
+            //             })->get();
+            //     }),
+            // ]);
         }
     }
 

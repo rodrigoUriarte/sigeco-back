@@ -72,18 +72,18 @@ class RolePermissionsTableSeeder extends Seeder
                 'role_id' => '1',
                 'permission_id' => '80',
             ],
-            [
-                'role_id' => '1',
-                'permission_id' => '81',
-            ],
+            // [
+            //     'role_id' => '1',
+            //     'permission_id' => '81',
+            // ],
             [
                 'role_id' => '1',
                 'permission_id' => '82',
             ],
-            [
-                'role_id' => '1',
-                'permission_id' => '83',
-            ],
+            // [
+            //     'role_id' => '1',
+            //     'permission_id' => '83',
+            // ],
             [
                 'role_id' => '1',
                 'permission_id' => '84',
@@ -364,18 +364,18 @@ class RolePermissionsTableSeeder extends Seeder
                 'role_id' => '3',
                 'permission_id' => '75',
             ],
-            [
-                'role_id' => '3',
-                'permission_id' => '81',
-            ],
+            // [
+            //     'role_id' => '3',
+            //     'permission_id' => '81',
+            // ],
             [
                 'role_id' => '3',
                 'permission_id' => '82',
             ],
-            [
-                'role_id' => '3',
-                'permission_id' => '83',
-            ],
+            // [
+            //     'role_id' => '3',
+            //     'permission_id' => '83',
+            // ],
             [
                 'role_id' => '3',
                 'permission_id' => '84',

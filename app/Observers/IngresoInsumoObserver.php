@@ -38,7 +38,6 @@ class IngresoInsumoObserver
     public function updating(IngresoInsumo $ingresoInsumo)
     {
 
-        // $lote = Lote::where('ingreso_insumo_id',$ingresoInsumo->id)->first();
         $lote = $ingresoInsumo->lote;
 
         if ($lote->usado == true) {

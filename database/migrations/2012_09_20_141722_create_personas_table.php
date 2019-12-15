@@ -24,9 +24,6 @@ class CreatePersonasTable extends Migration
             $table->foreign('comedor_id')->references('id')->on('comedores');
             $table->unsignedBigInteger('unidad_academica_id');
             $table->foreign('unidad_academica_id')->references('id')->on('unidades_academicas');
-            $table->unsignedBigInteger('user_id');
-            // ->unique();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

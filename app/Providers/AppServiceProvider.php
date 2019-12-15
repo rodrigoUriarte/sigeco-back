@@ -9,12 +9,14 @@ use App\Models\IngresoInsumo;
 use App\Models\Menu;
 use App\Models\Plato;
 use App\Models\Insumo;
+use App\Models\Persona;
 use App\Models\PlatoAsignado;
 use App\Observers\BandaHorariaObserver;
 use App\Observers\IngresoInsumoObserver;
 use App\Observers\MenuObserver;
 use App\Observers\PlatoObserver;
 use App\Observers\InsumoObserver;
+use App\Observers\PersonaObserver;
 use App\Observers\PlatoAsignadoObserver;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
     {
         IngresoInsumo::observe(IngresoInsumoObserver::class);
         PlatoAsignado::observe(PlatoAsignadoObserver::class);
+        Persona::observe(PersonaObserver::class);
 
         /**
          * Paginate a standard Laravel Collection.
