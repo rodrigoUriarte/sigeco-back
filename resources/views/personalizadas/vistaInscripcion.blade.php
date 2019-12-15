@@ -50,9 +50,12 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     placeholder="Ingrese un usuario a filtrar" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Fecha Inscripcion : </label>
-                  <input class="form-control" type="date" name="filtro_fecha_inscripcion" id="filtro_fecha_inscripcion"
-                    placeholder="Ingrese una fecha de inscripcion a filtrar" style="width: 100%;">
+                  <label>Fecha Inscripcion Desde : </label>
+                  <input class="form-control" type="date" name="filtro_fecha_inscripcion_desde" id="filtro_fecha_inscripcion_desde" style="width: 100%;">
+                </div>
+                <div class="form-group col-md-3">
+                  <label>Fecha Inscripcion Hasta : </label>
+                  <input class="form-control" type="date" name="filtro_fecha_inscripcion_hasta" id="filtro_fecha_inscripcion_hasta" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
                   <label>Menu Asignado : </label>

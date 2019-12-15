@@ -6,6 +6,7 @@ use App\Support\FormatDate\FormatsDates;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class Inscripcion extends Model
 {
@@ -20,7 +21,7 @@ class Inscripcion extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id', 'banda_horaria_id', 'menu_asignado_id', 'fecha_inscripcion', 'comedor_id'];
+    protected $fillable = ['fecha_inscripcion', 'retira', 'user_id', 'banda_horaria_id', 'menu_asignado_id', 'comedor_id'];
 
     // protected $hidden = [];
     // protected $dates = [];
@@ -71,10 +72,10 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getFechaInscripcionAttribute($date)
+    public function getFechaInscripcionFormatoAttribute()
     {
-        $format = Carbon::rawCreateFromFormat('Y-m-d', $date)->format('d-m-Y');
-        return $format;
+        $myDate = Date::createFromFormat('Y-m-d', $this->fecha_inscripcion);
+        return date_format($myDate,'d-m-Y');
     }
     public function getNombreInscripcionAttribute(){
         return $this->user->name; 

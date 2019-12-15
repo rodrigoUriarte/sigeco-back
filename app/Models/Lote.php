@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class Lote extends Model
 {
@@ -59,6 +60,11 @@ class Lote extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getFechaVencimientoFormatoAttribute()
+    {
+        $myDate = Date::createFromFormat('Y-m-d', $this->fecha_vencimiento);
+        return date_format($myDate,'d-m-Y');
+    }
 
     /*
     |--------------------------------------------------------------------------

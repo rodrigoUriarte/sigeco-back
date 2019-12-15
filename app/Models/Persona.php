@@ -19,7 +19,7 @@ class Persona extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['dni','nombre','apellido','telefono','unidad_academica_id','comedor_id','user_id'];
+    protected $fillable = ['dni','nombre','apellido','telefono','email','unidad_academica_id','comedor_id','user_id'];
     // protected $hidden = [];
     // protected $dates = [];
 

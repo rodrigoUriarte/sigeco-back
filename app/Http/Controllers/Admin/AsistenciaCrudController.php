@@ -73,7 +73,7 @@ class AsistenciaCrudController extends CrudController
             'type' => 'select',
             'name' => 'inscripcion_id', // the db column for the foreign key
             'entity' => 'inscripcion', // the method that defines the relationship in your Model
-            'attribute' => 'fecha_inscripcion', // foreign key attribute that is shown to user
+            'attribute' => 'fecha_inscripcion_formato', // foreign key attribute that is shown to user
             'model' => "App\Models\Inscripcion", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {

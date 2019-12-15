@@ -7,8 +7,8 @@
     <hr>
     <h4>Filtros Aplicados</h4>
     <div style="margin-bottom: 5px; margin-left: 20px">Insumo: {{$filtro_insumo?? 'No aplicado'}}.</div>
-    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento:
-        {{$filtro_fecha_vencimiento?? 'No aplicado' }}.</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Desde: {{$filtro_fecha_vencimiento_desde?? 'No aplicado' }}.</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Hasta: {{$filtro_fecha_vencimiento_hasta?? 'No aplicado' }}.</div>
     <hr>
     <table width="100%">
         <thead>
@@ -24,8 +24,8 @@
             @foreach ($lotes as $lote)
             <tr>
                 <td>{{$lote->insumo->descripcion}} </td>
-                <td>{{$lote->fecha_vencimiento}} </td>
-                <td align="right">{{$lote->cantidad}} </td>
+                <td>{{$lote->fecha_vencimiento_formato}} </td>
+                <td style="text-align:right">{{$lote->cantidad}} </td>
                 <td>
                     @if($lote->usado == 0)
                     NO

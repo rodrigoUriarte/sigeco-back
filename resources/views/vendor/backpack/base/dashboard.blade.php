@@ -13,8 +13,8 @@ $widgets['before_content'][] =
 $widgets['after_content'][] =
 [
 'type' => 'jumbotron',
-'heading' => trans('backpack::base.welcome'),
-'content' => trans('backpack::base.use_sidebar'),
+'heading' => 'BIENVENIDO!',
+'content' => 'En la barra lateral encontrara las operaciones disponibles',
 'button_link' => backpack_url('logout'),
 'button_text' => trans('backpack::base.logout'),
 ];

@@ -16,7 +16,8 @@ class CreateAsistenciasTable extends Migration
             $table->bigIncrements('id');
             $table->dateTime('fecha_asistencia')->nullable();
             $table->boolean('asistio');
-            $table->unsignedBigInteger('inscripcion_id')->unique();
+            $table->unsignedBigInteger('inscripcion_id');
+            // ->unique();
             $table->foreign('inscripcion_id')->references('id')->on('inscripciones');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');

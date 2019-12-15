@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\PersonaRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class PersonaCrudController
@@ -24,8 +25,8 @@ class PersonaCrudController extends CrudController
         $this->crud->setModel('App\Models\Persona');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/persona');
         $this->crud->setEntityNameStrings('persona', 'personas');
-        
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createPersona')) {
             $this->crud->allowAccess('create');
@@ -42,7 +43,7 @@ class PersonaCrudController extends CrudController
         if (backpack_user()->hasPermissionTo('showPersona')) {
             $this->crud->allowAccess('show');
         }
-        
+
         //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
@@ -51,7 +52,7 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'unidad_academica', 'comedor', 'usuario']);
+        $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'email', 'unidad_academica', 'comedor', 'usuario']);
 
         $this->crud->setColumnDetails('dni', [
             'name' => "dni", // The db column name
@@ -76,7 +77,13 @@ class PersonaCrudController extends CrudController
             'label' => "Telefono", // Table column heading
             'type' => 'phone',
             // 'limit' => 10, // if you want to truncate the phone number to a different number of characters
-         ]);
+        ]);
+
+        $this->crud->setColumnDetails('email', [
+            'name' => "email", // The db column name
+            'label' => "Email", // Table column heading
+            'type' => "email",
+        ]);
 
         $this->crud->setColumnDetails('unidad_academica', [
             'label' => 'Unidad Academica',
@@ -145,42 +152,102 @@ class PersonaCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name' => 'telefono',
+            'type' => 'email',
+            'label' => 'Email'
+        ]);
+        $this->crud->addField([
+            'name' => 'email',
             'type' => 'text',
             'label' => 'Telelfono'
         ]);
-        $this->crud->addField([  // Select2
-            'label' => "Unidad Academica",
-            'type' => 'select2',
-            'name' => 'unidad_academica_id', // the db column for the foreign key
-            'entity' => 'unidadAcademica', // the method that defines the relationship in your Model
-            'attribute' => 'nombre', // foreign key attribute that is shown to user
-            'model' => "App\Models\UnidadAcademica", // foreign key model
 
-            // optional
-            'default' => 1, // set the default value of the select2
-        ]);
-        $this->crud->addField([  // Select2
-            'label' => "Comedor",
-            'type' => 'select2',
-            'name' => 'comedor_id', // the db column for the foreign key
-            'entity' => 'comedor', // the method that defines the relationship in your Model
-            'attribute' => 'descripcion', // foreign key attribute that is shown to user
-            'model' => "App\Models\Comedor", // foreign key model
+         if (backpack_user()->hasRole('superAdmin')) {
 
-            // optional
-            'default' => 1, // set the default value of the select2
-        ]);
-        $this->crud->addField([  // Select2
-            'label' => "Usuario",
-            'type' => 'select2',
-            'name' => 'user_id', // the db column for the foreign key
-            'entity' => 'user', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\BackpackUser", // foreign key model
+            $this->crud->addField([  // Select2
+                'label' => "Unidad Academica",
+                'type' => 'select2',
+                'name' => 'unidad_academica_id', // the db column for the foreign key
+                'entity' => 'unidadAcademica', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model' => "App\Models\UnidadAcademica", // foreign key model
 
-            // optional
-            'default' => 1, // set the default value of the select2
-        ]);
+                // optional
+                'default' => 1, // set the default value of the select2
+
+            ]);
+            $this->crud->addField([  // Select2
+                'label' => "Comedor",
+                'type' => 'select2',
+                'name' => 'comedor_id', // the db column for the foreign key
+                'entity' => 'comedor', // the method that defines the relationship in your Model
+                'attribute' => 'descripcion', // foreign key attribute that is shown to user
+                'model' => "App\Models\Comedor", // foreign key model
+
+                // optional
+                'default' => 1, // set the default value of the select2
+               
+            ]);
+            $this->crud->addField([  // Select2
+                'label' => "Usuario",
+                'type' => 'select2',
+                'name' => 'user_id', // the db column for the foreign key
+                'entity' => 'user', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model' => "App\Models\BackpackUser", // foreign key model
+
+                // optional
+                'default' => 1, // set the default value of the select2
+            ]);
+        }
+
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addField([  // Select2
+                'label' => "Unidad Academica",
+                'type' => 'select2',
+                'name' => 'unidad_academica_id', // the db column for the foreign key
+                'entity' => 'unidadAcademica', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model' => "App\Models\UnidadAcademica", // foreign key model
+
+                // optional
+                'default' => 1, // set the default value of the select2
+                'options'   => (function ($query) {
+                    return $query->where('id', backpack_user()->persona->unidad_academica_id)
+                        ->get();
+                }),
+            ]);
+            $this->crud->addField([  // Select2
+                'label' => "Comedor",
+                'type' => 'select2',
+                'name' => 'comedor_id', // the db column for the foreign key
+                'entity' => 'comedor', // the method that defines the relationship in your Model
+                'attribute' => 'descripcion', // foreign key attribute that is shown to user
+                'model' => "App\Models\Comedor", // foreign key model
+
+                // optional
+                'default' => 1, // set the default value of the select2
+                'options'   => (function ($query) {
+                        return $query->where('id', backpack_user()->persona->comedor_id)
+                            ->get();
+                }),
+            ]);
+            $this->crud->addField([  // Select2
+                'label' => "Usuario",
+                'type' => 'select2',
+                'name' => 'user_id', // the db column for the foreign key
+                'entity' => 'user', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model' => "App\Models\BackpackUser", // foreign key model
+
+                // optional
+                'default' => 1, // set the default value of the select2
+                'options'   => (function (Builder $query) {
+                        return $query->whereHas('persona', function (Builder $query) {
+                            $query->where('comedor_id', backpack_user()->persona->comedor_id);
+                        })->get();
+                }),
+            ]);
+        }
     }
 
     protected function setupUpdateOperation()

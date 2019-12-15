@@ -15,6 +15,7 @@ class CreateInscripcionesTable extends Migration
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('fecha_inscripcion');
+            $table->boolean('retira');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('banda_horaria_id');

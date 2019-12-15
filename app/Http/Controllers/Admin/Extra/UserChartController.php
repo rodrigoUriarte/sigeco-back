@@ -35,7 +35,7 @@ class UserChartController extends Controller
         })
         ->get()
         ->sortBy('fecha_inscripcion')
-        ->groupBy('fecha_inscripcion')
+        ->groupBy('fecha_inscripcion_formato')
         ->map(function ($item) {
             // Return the number of persons with that age
             return count($item);
@@ -86,6 +86,5 @@ class UserChartController extends Controller
         $inscripciones->dataset('Asistencias por dia', 'bar', $as->values())->color('green');
         $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('red');
         return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
-        echo "hola";
     }
 }

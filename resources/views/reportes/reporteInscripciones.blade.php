@@ -7,7 +7,8 @@
     <hr>
     <h4>Filtros Aplicados</h4>
     <div style="margin-bottom: 5px; margin-left: 20px">Usuario: {{$filtro_usuario?? 'No aplicado'}}.</div>
-    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Inscripcion: {{$filtro_fecha_inscripcion?? 'No aplicado' }}.</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Inscripcion Desde: {{$filtro_fecha_inscripcion_desde?? 'No aplicado' }}.</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Inscripcion Hasta: {{$filtro_fecha_inscripcion_hasta?? 'No aplicado' }}.</div>
     <div style="margin-bottom: 5px; margin-left: 20px">Menu Asignado: {{$filtro_menu?? 'No aplicado' }}.</div>
     <hr>
     <table width="100%">
@@ -24,7 +25,7 @@
             @foreach ($inscripciones as $inscripcion)
             <tr>
                 <td>{{$inscripcion->user->name}} </td>
-                <td>{{$inscripcion->fecha_inscripcion}} </td>
+                <td>{{$inscripcion->fecha_inscripcion_formato}} </td>
                 <td>{{$inscripcion->bandaHoraria->descripcion}} </td>
                 <td>{{$inscripcion->menuAsignado->menu->descripcion}} </td>
             </tr>

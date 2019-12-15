@@ -52,9 +52,12 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     placeholder="Ingrese un insumo a filtrar" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
+                  <label>Fecha Vencimiento Desde : </label>
+                  <input class="form-control" type="date" name="filtro_fecha_vencimiento_desde" id="filtro_fecha_vencimiento_desde" style="width: 100%;">
+                </div>
+                <div class="form-group col-md-3">
                   <label>Fecha Vencimiento Hasta : </label>
-                  <input class="form-control" type="date" name="filtro_fecha_vencimiento" id="filtro_fecha_vencimiento"
-                    placeholder="Ingrese una fecha a filtrar" style="width: 100%;">
+                  <input class="form-control" type="date" name="filtro_fecha_vencimiento_hasta" id="filtro_fecha_vencimiento_hasta" style="width: 100%;">
                 </div>
               </div>
               <hr>

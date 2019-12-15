@@ -10,7 +10,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
-
+use Illuminate\Support\Facades\Date;
 
 /**
  * Class LoteCrudController
@@ -33,7 +33,7 @@ class LoteCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/lote');
         $this->crud->setEntityNameStrings('lote', 'lotes');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createLote')) {
             $this->crud->allowAccess('create');
@@ -84,7 +84,7 @@ class LoteCrudController extends CrudController
             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
 
-        
+
         $this->crud->setColumnDetails('cantidad', [
             'name' => "cantidad", // The db column name
             'label' => "Cantidad", // Table column heading
@@ -100,7 +100,7 @@ class LoteCrudController extends CrudController
             'type' => "text",
         ]);
 
-        $this->crud->setColumnDetails('usado',[
+        $this->crud->setColumnDetails('usado', [
             'name' => 'usado',
             'label' => 'Usado',
             'type' => 'boolean',
@@ -126,17 +126,14 @@ class LoteCrudController extends CrudController
     }
 
     public function reporteLotes(Request $request)
-    {        
-        $lotes = Lote::all(); 
+    {
+        $lotes = Lote::all();
 
         $filtro_insumo = $request->filtro_insumo;
-        $filtro_fecha_vencimiento = $request->filtro_fecha_vencimiento;
-
-        $insumo = null;
-        $fecha_vencimiento = null;
+        $filtro_fecha_vencimiento_desde = $request->filtro_fecha_vencimiento_desde;
+        $filtro_fecha_vencimiento_hasta = $request->filtro_fecha_vencimiento_hasta;
 
         if ($request->filtro_insumo != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-            $insumo = Insumo::where('descripcion',$filtro_insumo);
             foreach ($lotes as $id => $lote) {
                 if ($lote->insumo->descripcion != $filtro_insumo) {
                     $lotes->pull($id);
@@ -144,26 +141,43 @@ class LoteCrudController extends CrudController
             }
         }
 
-        if ($request->filtro_fecha_vencimiento != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-            $lotex = Lote::where('fecha_vencimiento',$filtro_fecha_vencimiento);
+        if ($request->filtro_fecha_vencimiento_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($lotes as $id => $lote) {
-                if ($lote->fecha_vencimiento > $filtro_fecha_vencimiento) {
+                if ($lote->fecha_vencimiento < $filtro_fecha_vencimiento_desde) {
                     $lotes->pull($id);
                 }
             }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate = Date::createFromFormat('Y-m-d', $filtro_fecha_vencimiento_desde);
+            $filtro_fecha_vencimiento_desde = date_format($myDate, 'd-m-Y');
         }
 
-        $pdf = PDF::loadView('reportes.reporteLotes', 
-        compact('lotes','insumo','filtro_insumo','fecha_vencimiento','filtro_fecha_vencimiento'));
+        if ($request->filtro_fecha_vencimiento_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($lotes as $id => $lote) {
+                if ($lote->fecha_vencimiento > $filtro_fecha_vencimiento_hasta) {
+                    $lotes->pull($id);
+                }
+            }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate2 = Date::createFromFormat('Y-m-d', $filtro_fecha_vencimiento_hasta);
+            $filtro_fecha_vencimiento_hasta = date_format($myDate2, 'd-m-Y');
+        }
+
+
+
+
+
+        $pdf = PDF::loadView(
+            'reportes.reporteLotes',
+            compact('lotes', 'filtro_insumo', 'filtro_fecha_vencimiento_desde', 'filtro_fecha_vencimiento_hasta')
+        );
 
         $dom_pdf = $pdf->getDomPDF();
         $canvas = $dom_pdf->get_canvas();
-        $y = $canvas->get_height() - 20;
+        $y = $canvas->get_height() - 15;
         $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
         $nombre = 'Reporte-Lotes-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
         return $pdf->stream($nombre);
     }
-
-
 }

@@ -11,7 +11,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
-
+use Illuminate\Support\Facades\Date;
 
 /**
  * Class InscripcionCrudController
@@ -32,7 +32,7 @@ class InscripcionCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/inscripcion');
         $this->crud->setEntityNameStrings('inscripcion', 'inscripciones');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createInscripcion')) {
             $this->crud->allowAccess('create');
@@ -123,6 +123,14 @@ class InscripcionCrudController extends CrudController
             //     });
             // },
         ]);
+
+        $this->crud->setColumnDetails('retira', [
+            'name' => 'retira',
+            'label' => 'Retira',
+            'type' => 'boolean',
+            // optionally override the Yes/No texts
+            'options' => [0 => 'NO', 1 => 'SI']
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -188,6 +196,12 @@ class InscripcionCrudController extends CrudController
             ],
             'default' => Carbon::now()->toDateString(),
         ]);
+
+        $this->crud->addField([
+            'name' => 'retira',
+            'label' => 'Retira',
+            'type' => 'checkbox'
+        ]);
     }
 
     protected function setupUpdateOperation()
@@ -207,15 +221,11 @@ class InscripcionCrudController extends CrudController
         $inscripciones = Inscripcion::all();
 
         $filtro_usuario = $request->filtro_usuario;
-        $filtro_fecha_inscripcion = $request->filtro_fecha_inscripcion;
+        $filtro_fecha_inscripcion_desde = $request->filtro_fecha_inscripcion_desde;
+        $filtro_fecha_inscripcion_hasta = $request->filtro_fecha_inscripcion_hasta;
         $filtro_menu = $request->filtro_menu;
 
-        $usuario = null;
-        $fecha_inscripcion = null;
-        $menu = null;
-
         if ($request->filtro_usuario != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-            $usuario = BackpackUser::where('name', $filtro_usuario);
             foreach ($inscripciones as $id => $inscripcion) {
                 if ($inscripcion->user->name != $filtro_usuario) {
                     $inscripciones->pull($id);
@@ -223,17 +233,29 @@ class InscripcionCrudController extends CrudController
             }
         }
 
-        if ($request->filtro_fecha_inscripcion != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-            $inscripcionx = Inscripcion::where('fecha_inscripcion', $filtro_fecha_inscripcion);
+        if ($request->filtro_fecha_inscripcion_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {
-                if ($inscripcion->fecha_inscripcion != $filtro_fecha_inscripcion) {
+                if ($inscripcion->fecha_inscripcion < $filtro_fecha_inscripcion_desde) {
                     $inscripciones->pull($id);
                 }
             }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate = Date::createFromFormat('Y-m-d', $filtro_fecha_inscripcion_desde);
+            $filtro_fecha_inscripcion_desde = date_format($myDate, 'd-m-Y');
+        }
+
+        if ($request->filtro_fecha_inscripcion_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($inscripciones as $id => $inscripcion) {
+                if ($inscripcion->fecha_inscripcion > $filtro_fecha_inscripcion_hasta) {
+                    $inscripciones->pull($id);
+                }
+            }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate2 = Date::createFromFormat('Y-m-d', $filtro_fecha_inscripcion_hasta);
+            $filtro_fecha_inscripcion_hasta = date_format($myDate2, 'd-m-Y');
         }
 
         if ($request->filtro_menu != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-            $menu = Menu::where('descripcion', $filtro_menu);
             foreach ($inscripciones as $id => $inscripcion) {
                 if ($inscripcion->menuAsignado->menu->descripcion != $filtro_menu) {
                     $inscripciones->pull($id);
@@ -243,12 +265,12 @@ class InscripcionCrudController extends CrudController
 
         $pdf = PDF::loadView(
             'reportes.reporteInscripciones',
-            compact('inscripciones', 'usuario', 'filtro_usuario', 'fecha_inscripcion', 'filtro_fecha_inscripcion', 'menu', 'filtro_menu')
+            compact('inscripciones', 'filtro_usuario', 'filtro_fecha_inscripcion_desde', 'filtro_fecha_inscripcion_hasta', 'filtro_menu')
         );
 
         $dom_pdf = $pdf->getDomPDF();
         $canvas = $dom_pdf->get_canvas();
-        $y = $canvas->get_height() - 20;
+        $y = $canvas->get_height() - 15;
         $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
         $nombre = 'Reporte-Inscripciones-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
