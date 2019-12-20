@@ -36,10 +36,6 @@ class PersonaRequest extends FormRequest
             'email' => 'required', 
             'unidad_academica_id' => 'required',
             'comedor_id' => 'required',
-            // 'user_id' => ['required',Rule::unique('personas')->ignore($this->id)],
-
-
-            // 'name' => 'required|min:5|max:255'
         ];
     }
 

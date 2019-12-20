@@ -73,7 +73,7 @@ class InscripcionRequest extends FormRequest
                 'bail',
                 'required',
                 'date',
-                //'after: 3 hours',
+                'after: 3 hours',
                 Rule::unique('inscripciones')
                     ->where(function ($query) {
                         return $query

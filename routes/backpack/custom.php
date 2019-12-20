@@ -28,6 +28,7 @@ Route::group([
     Route::crud('regla', 'ReglaCrudController');
     Route::crud('sancion', 'SancionCrudController');
     Route::crud('user', 'Extra\CustomUserCrudController');
+    Route::crud('auditoria', 'AuditoriaCrudController');
 
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
     Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@show');
@@ -37,5 +38,4 @@ Route::group([
 
     Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
 });
-
 // this should be the absolute last line of this file

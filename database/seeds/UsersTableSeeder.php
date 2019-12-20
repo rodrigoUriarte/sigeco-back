@@ -30,5 +30,21 @@ class UsersTableSeeder extends Seeder
                 'model_id' => '1',
             ]
         ]);
+        DB::table('users')->insert([
+            [
+                'name' => 'Auditor',
+                'email' => 'auditor@comedor.com',
+                'password' => bcrypt('comedor1234'),
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
+        ]);
+        DB::table('model_has_roles')->insert([
+            [
+                'role_id' => '5',
+                'model_type' => 'App\Models\BackpackUser',
+                'model_id' => '2',
+            ]
+        ]);
     }
 }

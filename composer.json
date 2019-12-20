@@ -13,6 +13,7 @@
         "backpack/permissionmanager": "^5.0",
         "barryvdh/laravel-dompdf": "^0.8.5",
         "barryvdh/laravel-elfinder": "^0.4.3",
+        "caouecs/laravel-lang": "~4.0",
         "consoletvs/charts": "^6.5",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",

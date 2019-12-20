@@ -132,6 +132,19 @@
 </li>
 @endif
 
+@if(backpack_user()->hasRole('auditor'))
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+		{{ trans('backpack::base.dashboard') }}</a></li>
+
+<li class="nav-item nav-dropdown">
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> AUDITORIA</a>
+	<ul class="nav-dropdown-items">
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('auditoria') }}'><i class='nav-icon fas fa-search'></i> Registros Auditorias</a></li>
+	</ul>
+</li>
+
+@endif
+
 
 
 
