@@ -90,8 +90,6 @@ class LoteCrudController extends CrudController
             'label' => "Cantidad", // Table column heading
             'type' => "number",
             'decimals' => 2,
-            'dec_point' => ',',
-            'thousands_sep' => '.',
         ]);
 
         $this->crud->setColumnDetails('unidad_medida', [

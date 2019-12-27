@@ -77,8 +77,6 @@ class BandaHorariaCrudController extends CrudController
             'name' => "limite_comensales", // The db column name
             'label' => "Limite Comensales", // Table column heading
             'type' => "number",
-            'dec_point' => ',',
-            'thousands_sep' => '.',
         ]);
     }
 

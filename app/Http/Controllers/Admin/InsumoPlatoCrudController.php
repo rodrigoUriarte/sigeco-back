@@ -104,8 +104,6 @@ class InsumoPlatoCrudController extends CrudController
             'label' => "Cantidad", // Table column heading
             'type' => "number",
             'decimals' => 2,
-            'dec_point' => ',',
-            'thousands_sep' => '.',
         ]);
 
         $this->crud->setColumnDetails('unidad_medida', [
@@ -161,6 +159,7 @@ class InsumoPlatoCrudController extends CrudController
                 'name' => 'cantidad',
                 'label' => "Cantidad necesaria por plato",
                 'type' => "number",
+                'attributes' => ["step" => "any"], // allow decimals
             ]
         );
     }

@@ -29,11 +29,11 @@ class PersonaRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => ['required',Rule::unique('personas')->ignore($this->id)],
+            'dni' => ['required','digits:8',Rule::unique('personas')->ignore($this->id)],
             'nombre' => 'required',
             'apellido' => 'required',
-            'telefono' => ['required',Rule::unique('personas')->ignore($this->id)],
-            'email' => 'required', 
+            'telefono' => ['required','digits:10',Rule::unique('personas')->ignore($this->id)],
+            'email' => ['required','email:rfc,dns',Rule::unique('personas')->ignore($this->id)],
             'unidad_academica_id' => 'required',
             'comedor_id' => 'required',
         ];

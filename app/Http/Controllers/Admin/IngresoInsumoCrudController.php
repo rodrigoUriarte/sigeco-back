@@ -97,8 +97,6 @@ class IngresoInsumoCrudController extends CrudController
             'label' => "Cantidad", // Table column heading
             'type' => "number",
             'decimals' => 2,
-            'dec_point' => ',',
-            'thousands_sep' => '.',
         ]);
 
         $this->crud->setColumnDetails('unidad_medida', [
@@ -153,6 +151,8 @@ class IngresoInsumoCrudController extends CrudController
                 'name' => 'cantidad',
                 'label' => "Cantidad",
                 'type' => "number",
+                'attributes' => ["step" => "any"], // allow decimals
+
             ]
         );
         $this->crud->addField([
