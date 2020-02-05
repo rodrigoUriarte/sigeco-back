@@ -45,6 +45,9 @@ Route::group([
 
     Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
 
+    Route::get('/calculoEstimacionCompra', 'Extra\CalculoEstimacionCompra@index')->name('calculoEstimacionCompra');
+    Route::get('/calculoEstimacionCompra/reporte', 'Extra\CalculoEstimacionCompra@reporte')->name('reporteCalculoEstimacionCompra');
+
     Route::get('/ayuda', 'Extra\AyudaController@index')->name('ayuda');
 
 });
