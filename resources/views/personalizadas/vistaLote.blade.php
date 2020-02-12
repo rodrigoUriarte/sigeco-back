@@ -52,12 +52,16 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     placeholder="Ingrese un insumo a filtrar" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Fecha Vencimiento Desde : </label>
+                  <label>Fecha Vencimiento Desde: </label>
                   <input class="form-control" type="date" name="filtro_fecha_vencimiento_desde" id="filtro_fecha_vencimiento_desde" style="width: 100%;">
                 </div>
                 <div class="form-group col-md-3">
-                  <label>Fecha Vencimiento Hasta : </label>
+                  <label>Fecha Vencimiento Hasta: </label>
                   <input class="form-control" type="date" name="filtro_fecha_vencimiento_hasta" id="filtro_fecha_vencimiento_hasta" style="width: 100%;">
+                </div>
+                <div class="form-group col-md-3">
+                  <label>Incluir lotes vacios: </label>
+                  <input class="form-control" type="checkbox" checked="checked" name="filtro_lotes_vacios" id="filtro_lotes_vacios" style="width: 100%;">
                 </div>
               </div>
               <hr>
@@ -67,15 +71,6 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
               </div>
             </form>
           </div>
-
-          {{-- <div class="card-footer text-muted">
-            <form action="{{route('lote.reporteLotes')}}" method="GET" enctype="multipart/form-data">
-          @csrf
-          <div align="right">
-            <button type="submit" class="btn  btn-success  btn-flat btn-sm">Generar Reporte</button>
-          </div>
-          </form>
-        </div> --}}
 
       </div>
 

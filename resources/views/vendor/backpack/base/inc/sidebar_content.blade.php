@@ -11,7 +11,8 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION ASISTENCIAS</a>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION ASISTENCIAS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menuAsignado') }}'><i
 					class='nav-icon fas fa-calendar-alt'></i> Menus Asignados</a></li>
@@ -24,9 +25,12 @@
 
 	</ul>
 </li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
+	class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
 @endif
 
-{{-- ADMIN --}}
+{{-- OPERATIVO --}}
 @if(backpack_user()->hasRole('operativo'))
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
@@ -43,7 +47,8 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION COMEDORES</a>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION COMEDORES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
 					class='nav-icon fas fa-clock'></i> Bandas Horarias</a></li>
@@ -53,7 +58,8 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION ASISTENCIAS</a>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION ASISTENCIAS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menuAsignado') }}'><i
 					class='nav-icon fas fa-calendar-alt'></i> Menus Asignados</a></li>
@@ -69,7 +75,8 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION
 		INSUMOS/PLATOS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu') }}'><i
@@ -84,7 +91,8 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION
 		INGRESOS/EGRESOS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon fas fa-boxes'></i>
@@ -96,6 +104,9 @@
 	</ul>
 </li>
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
+			class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
+
 @endif
 
 
@@ -105,7 +116,8 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION USUARIOS</a>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION USUARIOS</a>
 	<ul class="nav-dropdown-items">
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon fas fa-user"></i>
 				<span>Users</span></a></li>
@@ -120,7 +132,8 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> GESTION
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		GESTION
 		UA/COMEDORES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('unidadAcademica') }}"><i
@@ -132,19 +145,48 @@
 </li>
 @endif
 
+{{-- AUDITOR --}}
 @if(backpack_user()->hasRole('auditor'))
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i> AUDITORIA</a>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		AUDITORIA</a>
 	<ul class="nav-dropdown-items">
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('auditoria') }}'><i class='nav-icon fas fa-search'></i> Registros Auditorias</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('auditoria') }}'><i
+					class='nav-icon fas fa-search'></i> Registros Auditorias</a></li>
 	</ul>
 </li>
 
 @endif
 
+{{-- SECRETARIO --}}
+@if(backpack_user()->hasRole('secretario'))
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+		{{ trans('backpack::base.dashboard') }}</a></li>
+
+<li class="nav-item nav-dropdown">
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		ESTADISTICAS</a>
+	<ul class="nav-dropdown-items">
+		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
+					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
+	</ul>
+</li>
+
+<li class="nav-item nav-dropdown">
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+		REPORTES</a>
+	<ul class="nav-dropdown-items">
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('inscripcion') }}'><i
+					class='nav-icon fas fa-calendar-plus'></i> Inscripciones</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon fas fa-boxes'></i>
+				Lotes</a></li>
+	</ul>
+</li>
+
+@endif
 
 
 

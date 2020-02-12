@@ -29,7 +29,6 @@ class UnidadAcademicaRequest extends FormRequest
     {
         return [
             'nombre' => ['required', Rule::unique('unidades_academicas')->ignore($this->id)],
-            // 'name' => 'required|min:5|max:255'
         ];
     }
 

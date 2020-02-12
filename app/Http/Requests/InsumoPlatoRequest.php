@@ -30,7 +30,7 @@ class InsumoPlatoRequest extends FormRequest
         return [
             'insumo_id' => ['required', Rule::exists('insumos', 'id')],
             'plato_id' => ['required', Rule::exists('platos', 'id')],
-            'cantidad' => ['required','numeric','min:1'],
+            'cantidad' => ['required','numeric','min:0.1'],
             'comedor_id' => [
                 Rule::unique('insumo_plato')
                     ->where(function ($query) {

@@ -20,71 +20,74 @@ class UserChartController extends Controller
      */
     public function index(Request $request)
     {
+        if (backpack_user()->hasPermissionTo('verEstadistica')) {
+            $desde = $request->filtro_fecha_desde;
+            $hasta = $request->filtro_fecha_hasta;
 
-        $desde = $request->filtro_fecha_desde;
-        $hasta = $request->filtro_fecha_hasta;
+            $inscripciones = new UserChart;
 
-        $inscripciones = new UserChart;
+            $ins = Inscripcion::where('comedor_id', backpack_user()->persona->comedor_id)
+                ->when($desde, function ($query, $desde) {
+                    return $query->where('fecha_inscripcion', '>=', $desde);
+                })
+                ->when($hasta, function ($query, $hasta) {
+                    return $query->where('fecha_inscripcion', '<=', $hasta);
+                })
+                ->get()
+                ->sortBy('fecha_inscripcion')
+                ->groupBy('fecha_inscripcion_formato')
+                ->map(function ($item) {
+                    // Return the number of persons with that age
+                    return count($item);
+                });
 
-        $ins = Inscripcion::where('comedor_id', backpack_user()->persona->comedor_id)
-        ->when($desde, function($query,$desde){
-            return $query->where('fecha_inscripcion','>=',$desde);
-        })
-        ->when($hasta, function($query,$hasta){
-            return $query->where('fecha_inscripcion','<=',$hasta);
-        })
-        ->get()
-        ->sortBy('fecha_inscripcion')
-        ->groupBy('fecha_inscripcion_formato')
-        ->map(function ($item) {
-            // Return the number of persons with that age
-            return count($item);
-        });
+            $as = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
+                ->where('asistio', true)
+                ->when($desde, function ($query) use ($desde) {
+                    return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($desde) {
+                        $query->where('fecha_inscripcion', '>=', $desde);
+                    });
+                })
+                ->when($hasta, function ($query) use ($hasta) {
+                    return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($hasta) {
+                        $query->where('fecha_inscripcion', '<=', $hasta);
+                    });
+                })
+                ->get()
+                ->sortBy('inscripcion.fecha_inscripcion')
+                ->groupBy('inscripcion.fecha_inscripcion')
+                ->map(function ($item) {
+                    // Return the number of persons with that age
+                    return count($item);
+                });
 
-        $as = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
-        ->where('asistio',true)
-        ->when($desde, function($query) use($desde){
-            return $query->whereHas('inscripcion', function (EloquentBuilder $query) use($desde){
-                $query->where('fecha_inscripcion','>=',$desde);
-            });
-        })
-        ->when($hasta, function($query) use($hasta){
-            return $query->whereHas('inscripcion', function (EloquentBuilder $query)use($hasta){
-                $query->where('fecha_inscripcion','<=',$hasta);
-            });
-        })
-        ->get()
-        ->sortBy('inscripcion.fecha_inscripcion')
-        ->groupBy('inscripcion.fecha_inscripcion')
-        ->map(function ($item) {
-            // Return the number of persons with that age
-            return count($item);
-        });
+            $inas = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
+                ->where('asistio', false)
+                ->when($desde, function ($query) use ($desde) {
+                    return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($desde) {
+                        $query->where('fecha_inscripcion', '>=', $desde);
+                    });
+                })
+                ->when($hasta, function ($query) use ($hasta) {
+                    return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($hasta) {
+                        $query->where('fecha_inscripcion', '<=', $hasta);
+                    });
+                })
+                ->get()
+                ->sortBy('inscripcion.fecha_inscripcion')
+                ->groupBy('inscripcion.fecha_inscripcion')
+                ->map(function ($item) {
+                    // Return the number of persons with that age
+                    return count($item);
+                });
 
-        $inas = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
-        ->where('asistio',false)
-        ->when($desde, function($query) use($desde){
-            return $query->whereHas('inscripcion', function (EloquentBuilder $query) use($desde){
-                $query->where('fecha_inscripcion','>=',$desde);
-            });
-        })
-        ->when($hasta, function($query) use($hasta){
-            return $query->whereHas('inscripcion', function (EloquentBuilder $query)use($hasta){
-                $query->where('fecha_inscripcion','<=',$hasta);
-            });
-        })
-        ->get()
-        ->sortBy('inscripcion.fecha_inscripcion')
-        ->groupBy('inscripcion.fecha_inscripcion')
-        ->map(function ($item) {
-            // Return the number of persons with that age
-            return count($item);
-        });
-    
-        $inscripciones->labels($ins->keys());
-        $inscripciones->dataset('Inscripciones por dia', 'bar', $ins->values())->color('blue');
-        $inscripciones->dataset('Asistencias por dia', 'bar', $as->values())->color('green');
-        $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('red');
-        return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
+            $inscripciones->labels($ins->keys());
+            $inscripciones->dataset('Inscripciones por dia', 'bar', $ins->values())->color('blue');
+            $inscripciones->dataset('Asistencias por dia', 'bar', $as->values())->color('green');
+            $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('red');
+            return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
+        }else{
+            return abort(403,'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');
+        }
     }
 }

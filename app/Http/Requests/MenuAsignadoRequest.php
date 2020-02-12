@@ -28,20 +28,23 @@ class MenuAsignadoRequest extends FormRequest
      */
     public function rules()
     {
-        $ls = Carbon::now()->addMonth()->lastOfMonth();
-        $fi = Carbon::createFromDate($this->fecha_inicio);
-        $pd = Carbon::parse($fi)->firstOfMonth();
-        $ff = Carbon::parse($pd)->addMonth(); //->subSecond();
+        $firstDayofNextMonth = Carbon::now()->addMonth()->startOfMonth()->toDateString();
+        $lastDayofNextMonth = Carbon::now()->addMonth()->endOfMonth()->toDateString();
+
+        // $ls = Carbon::now()->addMonth()->lastOfMonth();
+        // $fi = Carbon::createFromDate($this->fecha_inicio);
+        // $pd = Carbon::parse($fi)->firstOfMonth();
+        // $ff = Carbon::parse($pd)->addMonth(); //->subSecond();
+
         return [
             'user_id' => 'required',
             'menu_id' => 'required',
-            //El menu asignado debe ser asignado por un mes entero. Desde el primer dia del mes hasta el primer dia del mes siguiente.
+            //El menu asignado debe ser asignado por un mes entero. Desde el primer dia del mes hasta el ultimo dia de dicho mes
             //Ademas se debe agregar el menu asignado 15 dias antes del primer dia del mes a asignar.
-            //La fecha de inicio y la fecha fin deben ser obligatoriamente el primer dia de un mes
             //El menu asignado solo se puede agregar para el mes siguiente.
             'fecha_inicio' => [
                 'required', 
-                'date', 'after: 15 days', 'before:' . $ls ,'date_equals:' . $pd ,
+                'date', 'after: 15 days', 'date_equals:' . $firstDayofNextMonth ,
 
                 Rule::unique('menus_asignados')
                 ->where(function ($query) {
@@ -51,7 +54,7 @@ class MenuAsignadoRequest extends FormRequest
                 })
                 ->ignore($this->id),
             ],
-            'fecha_fin' => 'required|date|date_equals:' . $ff,
+            'fecha_fin' => 'required|date|date_equals:' . $lastDayofNextMonth,
         ];
     }
 

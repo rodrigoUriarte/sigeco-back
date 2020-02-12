@@ -12,6 +12,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\MessageBag;
+use Illuminate\Validation\ValidationException;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class InscripcionCrudController
@@ -22,8 +26,12 @@ class InscripcionCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as traitUpdate;
+    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation {
+        destroy as traitDestroy;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
@@ -85,7 +93,7 @@ class InscripcionCrudController extends CrudController
             ]);
         }
 
-        $this->crud->addColumns(['fecha_inscripcion', 'banda_horaria', 'menu_asignado']);
+        $this->crud->addColumns(['fecha_inscripcion', 'banda_horaria', 'menu_asignado', 'retira']);
 
         $this->crud->setColumnDetails('fecha_inscripcion', [
             'name' => "fecha_inscripcion", // The db column name
@@ -206,7 +214,32 @@ class InscripcionCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $id = $this->crud->request->id;
+        $hoy = Carbon::now();
+        $fi = Inscripcion::find($id)->fecha_inscripcion;
+        $fi = Carbon::parse($fi);
+        $diff = $fi->diffInHours($hoy, false);
+        if ($fi->diffInHours($hoy, false) >= -3) {
+            return Alert::info('No se puede editar una inscripcion despues de la fecha limite.')->flash();
+        } else {
+            return $this->setupCreateOperation();
+        }        
+    }
+
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $hoy = Carbon::now();
+        $fi = Inscripcion::find($id)->fecha_inscripcion;
+        $fi = Carbon::parse($fi);
+        $diff = $fi->diffInHours($hoy, false);
+        if ($fi->diffInHours($hoy, false) >= -3) {
+            Alert::info('No se puede eliminar una inscripcion despues de la fecha limite.')->flash();
+            return false;
+        } else {
+            return $this->crud->delete($id);
+        }
     }
 
     protected function setupShowOperation()

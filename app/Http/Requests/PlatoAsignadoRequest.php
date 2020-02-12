@@ -27,16 +27,17 @@ class PlatoAsignadoRequest extends FormRequest
     public function rules()
     {
         return [
-            'comedor_id' => [Rule::exists('comedores','id')],
+            'comedor_id' => [Rule::exists('comedores', 'id')],
             'menu_id' => ['required', Rule::exists('menus', 'id')],
             'plato_id' => ['required', Rule::exists('platos', 'id')],
             'fecha' => [
                 'required',
                 'date',
-                'before: 3 hours',
+                //'before: 3 hours',
                 Rule::unique('platos_asignados')
                     ->where(function ($query) {
                         return $query
+                            ->where('comedor_id', '=', $this->comedor_id)
                             ->where('fecha', '=', $this->fecha)
                             ->where('menu_id', '=', $this->menu_id);
                     })

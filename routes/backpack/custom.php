@@ -37,5 +37,8 @@ Route::group([
     Route::get('/reporteInscripciones', 'InscripcionCrudController@reporteInscripciones')->name('inscripciones.reporteInscripciones');
 
     Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
+
+    Route::get('/ayuda', 'Extra\AyudaController@index')->name('ayuda');
+
 });
 // this should be the absolute last line of this file

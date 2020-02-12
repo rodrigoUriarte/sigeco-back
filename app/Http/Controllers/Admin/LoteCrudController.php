@@ -130,6 +130,7 @@ class LoteCrudController extends CrudController
         $filtro_insumo = $request->filtro_insumo;
         $filtro_fecha_vencimiento_desde = $request->filtro_fecha_vencimiento_desde;
         $filtro_fecha_vencimiento_hasta = $request->filtro_fecha_vencimiento_hasta;
+        $filtro_lotes_vacios = $request->filtro_lotes_vacios;
 
         if ($request->filtro_insumo != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($lotes as $id => $lote) {
@@ -161,13 +162,18 @@ class LoteCrudController extends CrudController
             $filtro_fecha_vencimiento_hasta = date_format($myDate2, 'd-m-Y');
         }
 
-
-
-
+        if ($request->filtro_lotes_vacios == null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+                foreach ($lotes as $id => $lote) {
+                    if ($lote->cantidad == 0) {
+                        $lotes->pull($id);
+                    }
+                }
+            
+        }
 
         $pdf = PDF::loadView(
             'reportes.reporteLotes',
-            compact('lotes', 'filtro_insumo', 'filtro_fecha_vencimiento_desde', 'filtro_fecha_vencimiento_hasta')
+            compact('lotes', 'filtro_insumo', 'filtro_fecha_vencimiento_desde', 'filtro_fecha_vencimiento_hasta', 'filtro_lotes_vacios')
         );
 
         $dom_pdf = $pdf->getDomPDF();

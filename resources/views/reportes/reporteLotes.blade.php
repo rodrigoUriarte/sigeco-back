@@ -9,6 +9,7 @@
     <div style="margin-bottom: 5px; margin-left: 20px">Insumo: {{$filtro_insumo?? 'No aplicado'}}.</div>
     <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Desde: {{$filtro_fecha_vencimiento_desde?? 'No aplicado' }}.</div>
     <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Hasta: {{$filtro_fecha_vencimiento_hasta?? 'No aplicado' }}.</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Incluir Lotes Vacios: {{$filtro_lotes_vacios?? 'No aplicado' }}.</div>
     <hr>
     <table width="100%">
         <thead>

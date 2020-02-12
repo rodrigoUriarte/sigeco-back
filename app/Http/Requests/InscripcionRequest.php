@@ -89,7 +89,7 @@ class InscripcionRequest extends FormRequest
                         ->where('hasta', '>=', $value)
                         ->count();
                     if ($existe_sancion > 0) {
-                        $fail('Tiene una sancion vigente para esta fecha de inscripcion');
+                        $fail('Tiene una sancion vigente para la fecha seleccionada');
                     }
                 },
             ],
@@ -119,7 +119,10 @@ class InscripcionRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'banda_horaria_id.exists' => 'No hay cupo en esta banda horaria, seleccione otra',
+            'menu_asignado_id.exists' => 'El menu asignado no coincide con la fecha de inscripcion, o no posee un menu asignado para dicha fecha',
+            'fecha_inscripcion.unique' => 'Ya tiene una inscripcion registrada en esta fecha'
+
         ];
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MenuAsignadoRequest;
+use App\Models\MenuAsignado;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class MenuAsignadoCrudController
@@ -17,7 +20,9 @@ class MenuAsignadoCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation {
+        destroy as traitDestroy;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
 
@@ -27,7 +32,7 @@ class MenuAsignadoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/menuAsignado');
         $this->crud->setEntityNameStrings('Menu Asignado', 'Menus Asignados');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createMenuAsignado')) {
             $this->crud->allowAccess('create');
@@ -170,7 +175,34 @@ class MenuAsignadoCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $id = $this->crud->request->id;
+        $this->crud->hasAccessOrFail('delete');
+
+        $hoy = Carbon::now();
+        $fi = MenuAsignado::find($id)->fecha_inicio;
+        $fi = Carbon::parse($fi);
+        $fl= $fi->subDays(15);
+        if ($hoy > $fl) {
+            return Alert::info('No se puede editar un menu asignado despues de la fecha limite.')->flash();
+        } else {
+            return $this->setupCreateOperation();
+
+        }
+    }
+
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $hoy = Carbon::now();
+        $fi = MenuAsignado::find($id)->fecha_inicio;
+        $fi = Carbon::parse($fi);
+        $fl= $fi->subDays(15);
+        if ($hoy > $fl) {
+            return Alert::info('No se puede eliminar un menu asignado despues de la fecha limite.')->flash();
+        } else {
+            return $this->crud->delete($id);
+        }
     }
 
     protected function setupShowOperation()
