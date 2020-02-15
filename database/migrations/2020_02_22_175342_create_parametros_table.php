@@ -14,7 +14,7 @@ class CreateParametrosTable extends Migration
     public function up()
     {
         Schema::create('parametros', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->time('limite_inscripcion');
             $table->integer('limite_menu_asignado');
             $table->unsignedBigInteger('comedor_id');

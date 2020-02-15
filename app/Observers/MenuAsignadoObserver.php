@@ -41,7 +41,13 @@ class MenuAsignadoObserver
         $hoy = Carbon::now();
         $fi = $menuAsignado->fecha_inicio;
         $fi = Carbon::parse($fi);
-        $fl= $fi->subMonth()->addDays($menuAsignado->comedor->parametro->limite_menu_asignado);
+        $lma = $menuAsignado->comedor->parametro->limite_menu_asignado;
+        if (Carbon::now()->daysInMonth < $lma) {
+            $lma = Carbon::now()->daysInMonth-1;
+        } else {
+            $lma = $lma -1;
+        }
+        $fl= $fi->subMonth()->addDays($lma);
         if ($hoy > $fl) {
             // Alert::info('No se puede eliminar un menu asignado despues de la fecha limite.')->flash();
             // redirect()->to('admin/inscripcion');

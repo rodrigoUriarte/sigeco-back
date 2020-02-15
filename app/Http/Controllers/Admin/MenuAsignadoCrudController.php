@@ -180,10 +180,18 @@ class MenuAsignadoCrudController extends CrudController
         $ma = MenuAsignado::find($id);
         $fi = $ma->fecha_inicio;
         $fi = Carbon::parse($fi);
-        $fl= $fi->subMonth()->addDays($ma->comedor->parametro->limite_menu_asignado);
+
+        $lma = $ma->comedor->parametro->limite_menu_asignado;
+        if (Carbon::now()->daysInMonth < $lma) {
+            $lma = Carbon::now()->daysInMonth-1;
+        } else {
+            $lma = $lma -1;
+        }
+
+        $fl= $fi->subMonth()->addDays($lma);
         if ($hoy > $fl) {
             Alert::info('No se puede editar un menu asignado despues de la fecha limite.')->flash();
-            return Redirect::to('admin/inscripcion');
+            return Redirect::to('admin/menuAsignado');
         } else {
             $this->crud->applyConfigurationFromSettings('update');
             $this->crud->hasAccessOrFail('update');

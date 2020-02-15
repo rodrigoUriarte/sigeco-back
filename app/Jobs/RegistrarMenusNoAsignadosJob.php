@@ -39,8 +39,13 @@ class RegistrarMenusNoAsignadosJob implements ShouldQueue
     public function handle()
     {
         $lma = Comedor::find($this->comedor_id)->parametro->limite_menu_asignado;
-        $diaLimite = Carbon::now()->startOfMonth()->addDays($lma)->toDateString();
-        $pdm = Carbon::now()->startOfMonth()->toDateString();
+        if (Carbon::now()->daysInMonth < $lma) {
+            $lma = Carbon::now()->daysInMonth-1;
+        } else {
+            $lma = $lma -1;
+        }
+        $diaLimite = Carbon::now()->startOfMonth()->addDays($lma);
+        $pdm = Carbon::now()->startOfMonth();
 
         $users = BackpackUser::whereHas('persona', function ($query) {
             $query->where('comedor_id', $this->comedor_id);

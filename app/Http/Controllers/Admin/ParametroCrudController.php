@@ -55,13 +55,13 @@ class ParametroCrudController extends CrudController
 
         $this->crud->setColumnDetails('limite_inscripcion', [
             'name' => "limite_inscripcion", // The db column name
-            'label' => "Hora limite inscripciones", // Table column heading
+            'label' => "Hora hasta la que se permiten agregar inscripciones", // Table column heading
             'type' => "text",
         ]);
 
         $this->crud->setColumnDetails('limite_menu_asignado', [
             'name' => "limite_menu_asignado", // The db column name
-            'label' => "Dias limite menus asignados", // Table column heading
+            'label' => "Dia del mes para agregar menus asignados automaticamente", // Table column heading
             'type' => "number",
         ]);
     }
@@ -78,14 +78,15 @@ class ParametroCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'limite_inscripcion',
-            'label' => 'Hora hasta la que se permiten inscripciones',
+            'label' => 'Hora hasta la que se permiten agregar inscripciones',
             'type' => 'time'
         ]);
 
+        //Este dia del mes se cre
         $this->crud->addField([
             'name' => 'limite_menu_asignado',
             'type' => 'number',
-            'label' => 'Primeros dias del mes en que se puede cargar un menu asignado'
+            'label' => 'Dia del mes para agregar menus asignados automaticamente, hasta el dia anterior lo haran los comensales'
         ]);
     }
 

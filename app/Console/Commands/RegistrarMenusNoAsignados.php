@@ -43,7 +43,14 @@ class RegistrarMenusNoAsignados extends Command
         $comedores = Comedor::all();
 
         foreach ($comedores as $comedor) {
+
+
             $lma = $comedor->parametro->limite_menu_asignado;
+            if (Carbon::now()->daysInMonth < $lma) {
+                $lma = Carbon::now()->daysInMonth-1;
+            } else {
+                $lma = $lma -1;
+            }
             $diaLimite = Carbon::now()->startOfMonth()->addDays($lma)->toDateString();
 
             if (Carbon::now()->toDateString() == $diaLimite) {
