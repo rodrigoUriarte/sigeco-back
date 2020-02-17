@@ -82,9 +82,9 @@ class UserChartController extends Controller
                 });
 
             $inscripciones->labels($ins->keys());
-            $inscripciones->dataset('Inscripciones por dia', 'bar', $ins->values())->color('blue');
-            $inscripciones->dataset('Asistencias por dia', 'bar', $as->values())->color('green');
-            $inscripciones->dataset('Insistencias por dia', 'bar', $inas->values())->color('red');
+            $inscripciones->dataset('Inscripciones por dia', 'line', $ins->values())->color('blue');
+            $inscripciones->dataset('Asistencias por dia', 'line', $as->values())->color('green');
+            $inscripciones->dataset('Insistencias por dia', 'line', $inas->values())->color('red');
             return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
         }else{
             return abort(403,'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');
