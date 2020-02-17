@@ -64,7 +64,6 @@ class PlatoCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('menu', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);

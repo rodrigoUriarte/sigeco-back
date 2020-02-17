@@ -64,7 +64,6 @@ class InsumoPlatoCrudController extends CrudController
             // 'searchLogic' => function ($query, $column, $searchTerm) {
             //     $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
             //         $q->where('nombreMenu', 'like', '%' . $searchTerm . '%');
-            //         //->orWhereDate('fecha_inicio', '=', date($searchTerm));
             //     });
             // },
         ]);
@@ -79,7 +78,6 @@ class InsumoPlatoCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);
@@ -94,7 +92,6 @@ class InsumoPlatoCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('insumo', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);

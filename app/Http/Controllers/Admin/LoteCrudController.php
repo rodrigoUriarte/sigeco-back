@@ -74,7 +74,6 @@ class LoteCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('insumo', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);

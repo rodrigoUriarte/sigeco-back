@@ -97,12 +97,11 @@ class AsistenciaCrudController extends CrudController
             $this->crud->addColumns(['comensal']);
 
             $this->crud->setColumnDetails('comensal', [
-                //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
                 'label' => 'Comensal',
                 'type' => 'select',
                 'name' => 'inscripcion_id', // the db column for the foreign key
                 'entity' => 'inscripcion', // the method that defines the relationship in your Model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'attribute' => "nombre", // foreign key attribute that is shown to user
                 'model' => "App\Models\Inscripcion", // foreign key model
                 // 'searchLogic' => function ($query, $column, $searchTerm) {
                 //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {

@@ -56,12 +56,7 @@ class MenuAsignado extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    // public function scopeDentroRango($query,$fecha){
-    //     return $query
-    //     ->where('user_id','=',backpack_user()->id)
-    //     ->whereDate('$this->fecha_inicio','<=',$fecha)
-    //     ->whereDate('$this->fecha_fin','>=',$fecha);
-    // }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

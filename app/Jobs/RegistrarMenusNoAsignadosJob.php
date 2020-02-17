@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Models\BackpackUser;
+use App\Models\Comedor;
+use App\Models\Menu;
+use App\Models\MenuAsignado;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class RegistrarMenusNoAsignadosJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+
+    protected $comedor_id;
+
+    public function __construct($comedor_id)
+    {
+        $this->comedor_id = $comedor_id;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $lma = Comedor::find($this->comedor_id)->parametro->limite_menu_asignado;
+        $diaLimite = Carbon::now()->startOfMonth()->addDays($lma)->toDateString();
+        $pdm = Carbon::now()->startOfMonth()->toDateString();
+
+        $users = BackpackUser::whereHas('persona', function ($query) {
+            $query->where('comedor_id', $this->comedor_id);
+        })
+        ->whereDoesntHave('menusAsignados', function ($query) use ($diaLimite,$pdm) {
+            $query->where('created_at', '>=', $pdm);
+            $query->where('created_at', '<=', $diaLimite);
+        })
+        // ->whereHas('menusAsignados', function ($query) use ($pdm) {
+        //     $query->where('created_at', '>=', $pdm);
+        // })
+        ->get();
+
+        foreach ($users as $user) {
+            if ($user->hasRole('comensal')) {
+                $uma = $user->menusAsignados->sortByDesc('fecha_fin')->first();
+
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => Carbon::parse('first day of next month')->toDateString(),
+                    'fecha_fin' => Carbon::parse('last day of next month')->toDateString(),
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::findOrFail($uma->menu_id)->id,
+                    'comedor_id' => Comedor::findOrFail($user->persona->comedor->id)->id,
+                ]);
+            }
+        }
+
+    }
+}

@@ -17,7 +17,7 @@ class Asistencia extends Model
 
     protected $table = 'asistencias';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
     // protected $guarded = ['id'];
     protected $fillable = ['fecha_asistencia','asistio','inscripcion_id','comedor_id'];
     // protected $hidden = [];

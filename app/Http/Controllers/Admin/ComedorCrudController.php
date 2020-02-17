@@ -70,7 +70,6 @@ class ComedorCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('unidadAcademica', function ($q) use ($column, $searchTerm) {
                     $q->where('nombre', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);

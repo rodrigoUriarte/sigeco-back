@@ -95,7 +95,6 @@ class PersonaCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('unidadAcademica', function ($q) use ($column, $searchTerm) {
                     $q->where('nombre', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);
@@ -110,7 +109,6 @@ class PersonaCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('comedor', function ($q) use ($column, $searchTerm) {
                     $q->where('descripcion', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);
@@ -125,7 +123,6 @@ class PersonaCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
                     $q->where('name', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);

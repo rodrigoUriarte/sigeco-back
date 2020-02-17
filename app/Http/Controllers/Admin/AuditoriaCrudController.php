@@ -65,7 +65,6 @@ class AuditoriaCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
                     $q->where('name', 'like', '%' . $searchTerm . '%');
-                    //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
         ]);
