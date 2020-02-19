@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\BandaHoraria;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -37,9 +38,74 @@ class BandaHorariaRequest extends FormRequest
                             ->where('descripcion', '=', $this->descripcion);
                     })
                     ->ignore($this->id),
-            ],            
-            'hora_inicio' => ['required', 'date_format:H:i'],
-            'hora_fin' => ['required', 'date_format:H:i', 'after:hora_inicio'],
+            ],
+            'hora_inicio' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $bhs = BandaHoraria::where('comedor_id', '=', $this->comedor_id)
+                        ->get();
+
+                    foreach ($bhs as $bh) {
+                        if ($bh->hora_inicio <= $value && $bh->hora_fin >= $value) {
+                            $fail('La hora inicio establecida ya se encuentra ocupada por la banda horaria: ' . $bh->descripcion);
+                        }
+                    }
+                },
+            ],
+            // 'hora_inicio' => [
+            //     'required', 'date_format:H:i',
+            //     Rule::unique('bandas_horarias')
+            //         ->where(function ($query) {
+            //             return $query
+            //                 ->where('comedor_id', '=', $this->comedor_id)
+            //                 ->where('hora_inicio', '<=', $this->hora_inicio)
+            //                 ->where('hora_fin', '>=', $this->hora_inicio);
+            //         })
+            //         ->ignore($this->id),
+            // ],
+            'hora_fin' => [
+                'required', 'after:hora_inicio',
+                function ($attribute, $value, $fail) {
+                    $bhs = BandaHoraria::where('comedor_id', '=', $this->comedor_id)
+                        ->get();
+
+                    foreach ($bhs as $bh) {
+                        if ($bh->hora_inicio <= $value && $bh->hora_fin >= $value) {
+                            $fail('La hora fin establecida ya se encuentra ocupada por la banda horaria: ' . $bh->descripcion);
+                        }
+                    }
+                },
+
+                function ($attribute, $value, $fail) {
+                    $bhs = BandaHoraria::where('comedor_id', '=', $this->comedor_id)
+                        ->orderBy('hora_fin', 'desc')
+                        ->get();
+
+                    foreach ($bhs as $bh) {
+                        if ($bh->hora_inicio >= $this->hora_inicio && $bh->hora_fin <= $value) {
+                            $fail('Las horas fin y hora inicio no pueden ocupar el tiempo de otras bandas horarias: ' . $bh->descripcion);
+                        }
+                    }
+                },
+            ],
+            // 'hora_fin' => [
+            // Rule::unique('bandas_horarias')
+            //     ->where(function ($query) {
+            //         return $query
+            //             ->where('comedor_id', '=', $this->comedor_id)
+            //             ->where('hora_inicio', '<=', $this->hora_fin)
+            //             ->where('hora_fin', '>=', $this->hora_fin);
+            //     })
+            //     ->ignore($this->id),
+            // Rule::unique('bandas_horarias')
+            //     ->where(function ($query) {
+            //         return $query
+            //             ->where('comedor_id', '=', $this->comedor_id)
+            //             ->where('hora_inicio', '>=', $this->hora_inicio)
+            //             ->where('hora_fin', '<=', $this->hora_fin);
+            //     })
+            //     ->ignore($this->id),
+            // ],
             'limite_comensales' => ['required', 'integer'],
         ];
     }
@@ -64,7 +130,8 @@ class BandaHorariaRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'hora_inicio.unique' => 'La hora inicio establecida ya se encuentra ocupada por una banda horaria',
+            'hora_fin.unique' => 'La hora fin establecida ya se encuentra ocupada por una banda horaria',
         ];
     }
 }

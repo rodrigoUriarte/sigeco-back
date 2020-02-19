@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class LoteCrudController
@@ -131,6 +133,11 @@ class LoteCrudController extends CrudController
         $filtro_fecha_vencimiento_desde = $request->filtro_fecha_vencimiento_desde;
         $filtro_fecha_vencimiento_hasta = $request->filtro_fecha_vencimiento_hasta;
         $filtro_lotes_vacios = $request->filtro_lotes_vacios;
+
+        if ($filtro_fecha_vencimiento_desde > $filtro_fecha_vencimiento_hasta) {
+            Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
+            return Redirect::to('admin/lote');            
+        }
 
         if ($request->filtro_insumo != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($lotes as $id => $lote) {

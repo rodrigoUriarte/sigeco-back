@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
@@ -257,6 +258,11 @@ class InscripcionCrudController extends CrudController
         $filtro_fecha_inscripcion_desde = $request->filtro_fecha_inscripcion_desde;
         $filtro_fecha_inscripcion_hasta = $request->filtro_fecha_inscripcion_hasta;
         $filtro_menu = $request->filtro_menu;
+
+        if ($filtro_fecha_inscripcion_desde > $filtro_fecha_inscripcion_hasta) {
+            Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
+            return Redirect::to('admin/inscripcion');            
+        }
 
         if ($request->filtro_usuario != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {

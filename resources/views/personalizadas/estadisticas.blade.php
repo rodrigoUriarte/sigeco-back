@@ -2,6 +2,11 @@
 
 @section('content')
 
+@foreach (Alert::getMessages() as $type => $messages)
+    @foreach ($messages as $message)
+        <div class="alert alert-{{ $type }}">{{ $message }}</div>
+    @endforeach
+@endforeach
 
 <h2>ESTADISTICAS</h2>
 <div class="row">
@@ -11,8 +16,7 @@
 
         <div class="card-header">
             <form action="{{route('estadisticas')}}" method="GET" enctype="multipart/form-data">
-
-                <h5>Cantidad Inscripciones</h5>
+                <h5>Cantidad Inscripciones-Asistencias-Inasistencias</h5>
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -31,6 +35,7 @@
                 <div align="right">
                     <button type="submit" class="btn  btn-success  btn-flat btn-sm">Filtrar</button>
                 </div>
+
             </form>
         </div>
 
@@ -42,7 +47,10 @@
 
 </div>
 
+
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
 {!! $inscripciones->script() !!}
 
 

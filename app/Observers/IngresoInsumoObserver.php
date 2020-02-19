@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\IngresoInsumo;
 use App\Models\Lote;
 use Illuminate\Validation\ValidationException;
-
+use Prologue\Alerts\Facades\Alert;
 
 class IngresoInsumoObserver
 {
@@ -68,7 +68,7 @@ class IngresoInsumoObserver
         $lote = $ingresoInsumo->lote;
 
         if ($lote->usado == true) {
-            // throw ValidationException::withMessages(['details' => 'El lote asociado a este ingreso ya fue usado, no se puede eliminar.']);
+            Alert::add('info', 'Error message');
             return false;
         } else {
             $ingresoInsumo->lote->delete();     

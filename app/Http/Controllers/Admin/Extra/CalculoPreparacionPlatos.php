@@ -97,8 +97,8 @@ class CalculoPreparacionPlatos extends Controller
     }
 
 
-    public function show($id)
-    {
-        return Category::find($id);
-    }
+    // public function show($id)
+    // {
+    //     return Category::find($id);
+    // }
 }

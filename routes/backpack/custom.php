@@ -31,7 +31,7 @@ Route::group([
     Route::crud('auditoria', 'AuditoriaCrudController');
 
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
-    Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@show');
+    Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@index');
 
     Route::get('/reporteLotes', 'LoteCrudController@reporteLotes')->name('lotes.reporteLotes');
     Route::get('/reporteInscripciones', 'InscripcionCrudController@reporteInscripciones')->name('inscripciones.reporteInscripciones');

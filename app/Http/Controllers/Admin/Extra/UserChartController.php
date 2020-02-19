@@ -10,6 +10,8 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 class UserChartController extends Controller
 {
@@ -23,6 +25,21 @@ class UserChartController extends Controller
         if (backpack_user()->hasPermissionTo('verEstadistica')) {
             $desde = $request->filtro_fecha_desde;
             $hasta = $request->filtro_fecha_hasta;
+
+            if ($desde == null && $hasta == null) {
+                $vacio = new UserChart;
+                $emptyArray = [];
+                $vacio->labels($emptyArray);
+                $vacio->dataset('Inscripciones por dia', 'line', $emptyArray)->color('blue');
+                $vacio->dataset('Asistencias por dia', 'line', $emptyArray)->color('green');
+                $vacio->dataset('Insistencias por dia', 'line', $emptyArray)->color('red');
+                return view('personalizadas.estadisticas', ['inscripciones' => $vacio]);
+            }
+
+            if ($desde > $hasta) {
+                Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
+                return Redirect::to('admin/estadisticas');            
+            }
 
             $inscripciones = new UserChart;
 
@@ -86,8 +103,8 @@ class UserChartController extends Controller
             $inscripciones->dataset('Asistencias por dia', 'line', $as->values())->color('green');
             $inscripciones->dataset('Insistencias por dia', 'line', $inas->values())->color('red');
             return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
-        }else{
-            return abort(403,'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');
+        } else {
+            return abort(403, 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');
         }
     }
 }
