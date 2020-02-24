@@ -7,6 +7,7 @@ use App\Models\MenuAsignado;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Prologue\Alerts\Facades\Alert;
 
@@ -173,36 +174,41 @@ class MenuAsignadoCrudController extends CrudController
         ]);
     }
 
-    protected function setupUpdateOperation()
+    public function edit($id)
     {
-        $id = $this->crud->request->id;
-        $this->crud->hasAccessOrFail('delete');
+        $this->crud->hasAccessOrFail('update');
 
         $hoy = Carbon::now();
-        $fi = MenuAsignado::find($id)->fecha_inicio;
+        $ma = MenuAsignado::find($id);
+        $fi = $ma->fecha_inicio;
         $fi = Carbon::parse($fi);
-        $fl= $fi->subDays(15);
+        $fl= $fi->subMonth()->addDays($ma->comedor->parametro->limite_menu_asignado);
         if ($hoy > $fl) {
-            return Alert::info('No se puede editar un menu asignado despues de la fecha limite.')->flash();
+            Alert::info('No se puede editar un menu asignado despues de la fecha limite.')->flash();
+            return Redirect::to('admin/inscripcion');
         } else {
-            return $this->setupCreateOperation();
-
+            $this->crud->applyConfigurationFromSettings('update');
+            $this->crud->hasAccessOrFail('update');
+    
+            // get entry ID from Request (makes sure its the last ID for nested resources)
+            $id = $this->crud->getCurrentEntryId() ?? $id;
+            $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+    
+            // get the info for that entry
+            $this->data['entry'] = $this->crud->getEntry($id);
+            $this->data['crud'] = $this->crud;
+            $this->data['saveAction'] = $this->crud->getSaveAction();
+            $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
+    
+            $this->data['id'] = $id;
+            // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+            return view($this->crud->getEditView(), $this->data);
         }
     }
 
-    public function destroy($id)
+    protected function setupUpdateOperation()
     {
-        $this->crud->hasAccessOrFail('delete');
-
-        $hoy = Carbon::now();
-        $fi = MenuAsignado::find($id)->fecha_inicio;
-        $fi = Carbon::parse($fi);
-        $fl= $fi->subDays(15);
-        if ($hoy > $fl) {
-            return Alert::info('No se puede eliminar un menu asignado despues de la fecha limite.')->flash();
-        } else {
-            return $this->crud->delete($id);
-        }
+        $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()

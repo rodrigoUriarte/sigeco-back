@@ -27,7 +27,7 @@
 </li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
-	class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
+			class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
 @endif
 
 {{-- OPERATIVO --}}
@@ -54,6 +54,8 @@
 					class='nav-icon fas fa-clock'></i> Bandas Horarias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
 					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('parametro') }}'><i
+					class='nav-icon fas fa-hourglass-half'></i> Parametros</a></li>
 	</ul>
 </li>
 

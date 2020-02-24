@@ -39,10 +39,14 @@ class BandaHorariaRequest extends FormRequest
                     })
                     ->ignore($this->id),
             ],
+
+            
             'hora_inicio' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     $bhs = BandaHoraria::where('comedor_id', '=', $this->comedor_id)
+                        ->where('hora_inicio', '<=', $this->hora_inicio)
+                        ->where('hora_fin', '>=', $this->hora_inicio)
                         ->get();
 
                     foreach ($bhs as $bh) {
@@ -53,16 +57,18 @@ class BandaHorariaRequest extends FormRequest
                 },
             ],
             // 'hora_inicio' => [
-            //     'required', 'date_format:H:i',
+            //     'required',
             //     Rule::unique('bandas_horarias')
             //         ->where(function ($query) {
             //             return $query
             //                 ->where('comedor_id', '=', $this->comedor_id)
             //                 ->where('hora_inicio', '<=', $this->hora_inicio)
-            //                 ->where('hora_fin', '>=', $this->hora_inicio);
-            //         })
+            //                 ->where('hora_fin', '>=', $this->hora_inicio)
+            //         ;})
             //         ->ignore($this->id),
             // ],
+
+
             'hora_fin' => [
                 'required', 'after:hora_inicio',
                 function ($attribute, $value, $fail) {
@@ -89,6 +95,7 @@ class BandaHorariaRequest extends FormRequest
                 },
             ],
             // 'hora_fin' => [
+            // 'required', 'after:hora_inicio',
             // Rule::unique('bandas_horarias')
             //     ->where(function ($query) {
             //         return $query
@@ -106,6 +113,8 @@ class BandaHorariaRequest extends FormRequest
             //     })
             //     ->ignore($this->id),
             // ],
+
+
             'limite_comensales' => ['required', 'integer'],
         ];
     }

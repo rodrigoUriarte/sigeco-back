@@ -31,6 +31,8 @@ class InscripcionRequest extends FormRequest
      */
     public function rules()
     {
+        $limins = Carbon::createFromTimeString(backpack_user()->persona->comedor->parametro->limite_inscripcion);
+        $aux = $limins->diffInMinutes(Carbon::tomorrow());
 
         return [
 
@@ -73,7 +75,8 @@ class InscripcionRequest extends FormRequest
                 'bail',
                 'required',
                 'date',
-                'after: 3 hours',
+                //PARAMETRIZAR LOS DATOS DE ESTE REQUEST Y DEPUES REPLICAR LO HECHO EN INSCRIPCION(CONTROLLER OBSERVER Y REQUEST) PARA MENU ASIGANDO Y PLATO ASIGNADO
+                'after:'.$aux.' minutes',
                 Rule::unique('inscripciones')
                     ->where(function ($query) {
                         return $query
@@ -96,7 +99,7 @@ class InscripcionRequest extends FormRequest
 
             'comedor_id' => [Rule::exists('comedores', 'id')],
 
-
+            'retira'=> ['required', 'boolean']
         ];
     }
     /**
@@ -121,8 +124,8 @@ class InscripcionRequest extends FormRequest
         return [
             'banda_horaria_id.exists' => 'No hay cupo en esta banda horaria, seleccione otra',
             'menu_asignado_id.exists' => 'El menu asignado no coincide con la fecha de inscripcion, o no posee un menu asignado para dicha fecha',
-            'fecha_inscripcion.unique' => 'Ya tiene una inscripcion registrada en esta fecha'
-
+            'fecha_inscripcion.unique' => 'Ya tiene una inscripcion registrada en esta fecha',
+            'fecha_inscripcion.after' => 'La inscripcion para esta fecha se encuentra cerrada.'
         ];
     }
 }

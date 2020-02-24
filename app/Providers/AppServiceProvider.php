@@ -2,20 +2,26 @@
 
 namespace App\Providers;
 
+use App\Models\Asistencia;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\BandaHoraria;
 use App\Models\IngresoInsumo;
+use App\Models\Inscripcion;
 use App\Models\Menu;
 use App\Models\Plato;
 use App\Models\Insumo;
+use App\Models\MenuAsignado;
 use App\Models\Persona;
 use App\Models\PlatoAsignado;
+use App\Observers\AsistenciaObserver;
 use App\Observers\BandaHorariaObserver;
 use App\Observers\IngresoInsumoObserver;
+use App\Observers\InscripcionObserver;
 use App\Observers\MenuObserver;
 use App\Observers\PlatoObserver;
 use App\Observers\InsumoObserver;
+use App\Observers\MenuAsignadoObserver;
 use App\Observers\PersonaObserver;
 use App\Observers\PlatoAsignadoObserver;
 use Illuminate\Support\Collection;
@@ -43,6 +49,11 @@ class AppServiceProvider extends ServiceProvider
         IngresoInsumo::observe(IngresoInsumoObserver::class);
         PlatoAsignado::observe(PlatoAsignadoObserver::class);
         Persona::observe(PersonaObserver::class);
+        Asistencia::observe(AsistenciaObserver::class);
+
+        MenuAsignado::observe(MenuAsignadoObserver::class);
+        Inscripcion::observe(InscripcionObserver::class);
+
 
         /**
          * Paginate a standard Laravel Collection.

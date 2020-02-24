@@ -17,8 +17,8 @@ class InscripcionesSeeder extends Seeder
     {
         $mas = MenuAsignado::all();
         foreach ($mas as $ma) {
-            $fi = Carbon::create(2020, 3, 1);
-            for ($i = 0; $i < 31; $i++) {
+            $fi = Carbon::create(2020, 2, 1);
+            for ($i = 0; $i < 29; $i++) {
                 if ($fi->isWeekday()) {
                     $inscripcion = Inscripcion::create([
                         'fecha_inscripcion' => $fi,

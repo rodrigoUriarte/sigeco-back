@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AuditoriaRequest;
+use App\Models\Auditoria;
 use App\Models\IngresoInsumo;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -25,6 +26,11 @@ class AuditoriaCrudController extends CrudController
         $this->crud->setModel('App\Models\Auditoria');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/auditoria');
         $this->crud->setEntityNameStrings('auditoria', 'auditorias');
+
+        $this->crud->enableDetailsRow(); 
+        $this->crud->allowAccess('details_row'); 
+        $this->crud->setDetailsRowView('details_row.detalle_auditoria');
+
 
         $this->crud->denyAccess(['create', 'update','delete','list','show']);
 
@@ -87,6 +93,16 @@ class AuditoriaCrudController extends CrudController
             'label' => "Valor Nuevo", // Table column heading
             'type' => "text",
         ]);
+
+    }
+
+    public function showDetailsRow($id){
+
+        $this->crud->hasAccessOrFail('details_row');
+
+        $auditoria=Auditoria::find($id);
+
+        return view('details_row.detalle_auditoria')->with(['auditoria' => $auditoria]);
 
     }
 

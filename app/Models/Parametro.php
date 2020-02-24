@@ -2,30 +2,26 @@
 
 namespace App\Models;
 
-use App\Support\FormatDate\FormatsDates;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Date;
 
-class Inscripcion extends Model
+class Parametro extends Model
 {
     use CrudTrait;
+
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'inscripciones';
+    protected $table = 'parametros';
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['fecha_inscripcion', 'retira', 'user_id', 'banda_horaria_id', 'menu_asignado_id', 'comedor_id'];
-
+    protected $fillable = ['limite_inscripcion', 'limite_menu_asignado', 'comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['nombre','fecha_inscripcion_formato'];
 
     /*
     |--------------------------------------------------------------------------
@@ -38,25 +34,9 @@ class Inscripcion extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\BackpackUser');
-    }
-    public function bandaHoraria()
-    {
-        return $this->belongsTo('App\Models\BandaHoraria');
-    }
-    public function menuAsignado()
-    {
-        return $this->belongsTo('App\Models\MenuAsignado');
-    }
     public function comedor()
     {
         return $this->belongsTo('App\Models\Comedor');
-    }
-    public function asistencia()
-    {
-        return $this->hasOne('App\Models\Asistencia');
     }
 
     /*
@@ -70,19 +50,10 @@ class Inscripcion extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getFechaInscripcionFormatoAttribute()
-    {
-        $myDate = Date::createFromFormat('Y-m-d', $this->fecha_inscripcion);
-        return date_format($myDate,'d-m-Y');
-    }
-    public function getNombreAttribute(){
-        return $this->user->name; 
-    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-
 }

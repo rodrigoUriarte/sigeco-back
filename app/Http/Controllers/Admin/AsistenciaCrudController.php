@@ -3,14 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AsistenciaRequest;
-use App\Models\Asistencia;
-use App\Models\BackpackUser;
-use App\Models\Inscripcion;
-use App\Models\Regla;
-use App\User;
+use App\Http\Requests\UpdateAsistenciaRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 /**
@@ -32,7 +27,7 @@ class AsistenciaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/asistencia');
         $this->crud->setEntityNameStrings('asistencia', 'asistencias');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createAsistencia')) {
             $this->crud->allowAccess('create');
@@ -75,11 +70,11 @@ class AsistenciaCrudController extends CrudController
             'entity' => 'inscripcion', // the method that defines the relationship in your Model
             'attribute' => 'fecha_inscripcion_formato', // foreign key attribute that is shown to user
             'model' => "App\Models\Inscripcion", // foreign key model
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-                    $q->where('fecha_inscripcion', 'like', '%' . $searchTerm . '%');
-                });
-            },
+            // 'searchLogic' => function ($query, $column, $searchTerm) {
+            //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
+            //         $q->where('fecha_inscripcion_formato', 'like', '%' . $searchTerm . '%');
+            //     });
+            // },
         ]);
 
         $this->crud->setColumnDetails('asistio', [
@@ -107,15 +102,68 @@ class AsistenciaCrudController extends CrudController
                 'type' => 'select',
                 'name' => 'inscripcion_id', // the db column for the foreign key
                 'entity' => 'inscripcion', // the method that defines the relationship in your Model
-                'attribute' => 'nombreInscripcion', // foreign key attribute that is shown to user
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
                 'model' => "App\Models\Inscripcion", // foreign key model
                 // 'searchLogic' => function ($query, $column, $searchTerm) {
                 //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-                //         $q->where('nombreInscripcion', 'like', '%' . $searchTerm . '%');
+                //         $q->where('nombre', 'like', '%' . $searchTerm . '%');
                 //     });
                 // },
             ]);
         }
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'custom_date_range',
+                'name'  => 'from_to',
+                'label' => 'Fecha Inscripcion'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('whereHas', 'inscripcion', function ($query) use ($dates) {
+                    $query->where('fecha_inscripcion', '>=', $dates->from)
+                        ->where('fecha_inscripcion', '<=', $dates->to . ' 23:59:59');
+                });
+            }
+        );
+
+        // add a "simple" filter called Draft
+        $this->crud->addFilter(
+            [
+                'type' => 'simple',
+                'name' => 'asistio',
+                'label' => 'Asistio'
+            ],
+            false, // the simple filter has no values, just the "Draft" label specified above
+            function () { // if the filter is active (the GET parameter "draft" exits)
+                $this->crud->addClause('where', 'asistio', '1');
+                // we've added a clause to the CRUD so that only elements with draft=1 are shown in the table
+                // an alternative syntax to this would have been
+                // $this->crud->query = $this->crud->query->where('draft', '1'); 
+                // another alternative syntax, in case you had a scopeDraft() on your model:
+                // $this->crud->addClause('draft'); 
+            }
+        );
+
+        // add a "simple" filter called Draft
+        $this->crud->addFilter(
+            [
+                'type' => 'simple',
+                'name' => 'noasistio',
+                'label' => 'No Asistio'
+            ],
+            false, // the simple filter has no values, just the "Draft" label specified above
+            function () { // if the filter is active (the GET parameter "draft" exits)
+                $this->crud->addClause('where', 'asistio', '0');
+                // we've added a clause to the CRUD so that only elements with draft=1 are shown in the table
+                // an alternative syntax to this would have been
+                // $this->crud->query = $this->crud->query->where('draft', '1'); 
+                // another alternative syntax, in case you had a scopeDraft() on your model:
+                // $this->crud->addClause('draft'); 
+            }
+        );
     }
 
     protected function setupCreateOperation()
@@ -128,7 +176,7 @@ class AsistenciaCrudController extends CrudController
                 'type' => 'select2',
                 'name' => 'inscripcion_id', // the db column for the foreign key
                 'entity' => 'inscripcion', // the method that defines the relationship in your Model
-                'attribute' => 'nombreInscripcion', // foreign key attribute that is shown to user
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
                 'model' => "App\Models\Inscripcion", // foreign key model
                 'default' => 0, // set the default value of the select2
                 'options'   => (function ($query) {
@@ -161,8 +209,15 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->crud->setValidation(UpdateAsistenciaRequest::class);
+
+        $this->crud->addField([
+            'name' => 'asistio',
+            'label' => 'Asistencia fuera BH',
+            'type' => 'checkbox'
+        ]);
     }
+
 
     protected function setupShowOperation()
     {

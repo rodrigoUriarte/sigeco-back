@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,6 +27,9 @@ class PlatoAsignadoRequest extends FormRequest
      */
     public function rules()
     {
+        $limins = Carbon::createFromTimeString(backpack_user()->persona->comedor->parametro->limite_inscripcion);
+        $aux = $limins->diffInMinutes(Carbon::tomorrow());
+
         return [
             'comedor_id' => [Rule::exists('comedores', 'id')],
             'menu_id' => ['required', Rule::exists('menus', 'id')],
@@ -33,7 +37,7 @@ class PlatoAsignadoRequest extends FormRequest
             'fecha' => [
                 'required',
                 'date',
-                //'before: 3 hours',
+                'before:'.$aux.' minutes',
                 Rule::unique('platos_asignados')
                     ->where(function ($query) {
                         return $query
@@ -65,8 +69,13 @@ class PlatoAsignadoRequest extends FormRequest
      */
     public function messages()
     {
+        $limins = Carbon::createFromTimeString(backpack_user()->persona->comedor->parametro->limite_inscripcion);
+
         return [
-            //
+
+            'fecha.before' => 'Debe esperar a la hora limite ('.$limins->format('H:i').') de inscripciones para agregar un plato asignado.',
+            'fecha.unique' => 'Ya existe un plato asignado para dicho menu en la fecha seleccionada.'
+
         ];
     }
 }

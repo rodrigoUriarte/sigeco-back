@@ -2,14 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\BackpackUser;
 use App\Models\Persona;
 use Faker\Generator as Faker;
 
 $factory->define(Persona::class, function (Faker $faker) {
-    // $comedor = App\Models\Comedor::random();
-    // $idComedor = $comedor->id;
-    // $nombreComedor = $comedor->descripcion;
     $idc = App\Models\Comedor::pluck('id')->toArray();
     $uas = App\Models\UnidadAcademica::pluck('id')->toArray();
     return [

@@ -22,8 +22,6 @@ class PersonaObserver
             'email' => $persona->email,
             'password' => bcrypt($persona->dni),
             'persona_id' => $persona->id,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
         

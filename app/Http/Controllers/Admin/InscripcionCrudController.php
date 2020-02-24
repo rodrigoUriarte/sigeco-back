@@ -11,6 +11,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon as CarbonCarbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -27,12 +28,8 @@ class InscripcionCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
-        update as traitUpdate;
-    }
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation {
-        destroy as traitDestroy;
-    }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function setup()
@@ -213,34 +210,44 @@ class InscripcionCrudController extends CrudController
         ]);
     }
 
-    protected function setupUpdateOperation()
+    public function edit($id)
     {
-        $id = $this->crud->request->id;
+        $this->crud->hasAccessOrFail('update');
+
         $hoy = Carbon::now();
-        $fi = Inscripcion::find($id)->fecha_inscripcion;
+        $ins = Inscripcion::find($id);
+        $fi = $ins->fecha_inscripcion;
         $fi = Carbon::parse($fi);
-        $diff = $fi->diffInHours($hoy, false);
-        if ($fi->diffInHours($hoy, false) >= -3) {
-            return Alert::info('No se puede editar una inscripcion despues de la fecha limite.')->flash();
+        $limins = Carbon::createFromTimeString($ins->comedor->parametro->limite_inscripcion);
+        //$diff = $fi->diffInMinutes($hoy, false);
+        $aux = $limins->diffInMinutes(Carbon::tomorrow());
+
+        if ($fi->diffInMinutes($hoy, false) >= -$aux) {
+            Alert::info('No se puede editar una inscripcion despues de la fecha limite.')->flash();
+            return Redirect::to('admin/inscripcion');
         } else {
-            return $this->setupCreateOperation();
-        }        
+            $this->crud->applyConfigurationFromSettings('update');
+            $this->crud->hasAccessOrFail('update');
+    
+            // get entry ID from Request (makes sure its the last ID for nested resources)
+            $id = $this->crud->getCurrentEntryId() ?? $id;
+            $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+    
+            // get the info for that entry
+            $this->data['entry'] = $this->crud->getEntry($id);
+            $this->data['crud'] = $this->crud;
+            $this->data['saveAction'] = $this->crud->getSaveAction();
+            $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
+    
+            $this->data['id'] = $id;
+            // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+            return view($this->crud->getEditView(), $this->data);
+        }
     }
 
-    public function destroy($id)
+    protected function setupUpdateOperation()
     {
-        $this->crud->hasAccessOrFail('delete');
-
-        $hoy = Carbon::now();
-        $fi = Inscripcion::find($id)->fecha_inscripcion;
-        $fi = Carbon::parse($fi);
-        $diff = $fi->diffInHours($hoy, false);
-        if ($fi->diffInHours($hoy, false) >= -3) {
-            Alert::info('No se puede eliminar una inscripcion despues de la fecha limite.')->flash();
-            return false;
-        } else {
-            return $this->crud->delete($id);
-        }
+        $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
@@ -261,7 +268,7 @@ class InscripcionCrudController extends CrudController
 
         if ($filtro_fecha_inscripcion_desde > $filtro_fecha_inscripcion_hasta) {
             Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
-            return Redirect::to('admin/inscripcion');            
+            return Redirect::to('admin/inscripcion');
         }
 
         if ($request->filtro_usuario != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if

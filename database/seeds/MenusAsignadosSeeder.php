@@ -18,8 +18,8 @@ class MenusAsignadosSeeder extends Seeder
         foreach ($users as $user) {
             if ($user->hasRole('comensal')) {
                 $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-03-01',
-                    'fecha_fin' => '2020-03-31',
+                    'fecha_inicio' => '2020-02-01',
+                    'fecha_fin' => '2020-02-29',
                     'user_id' => $user->id,
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,

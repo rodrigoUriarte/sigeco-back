@@ -12,19 +12,24 @@ class ComensalesSeeder extends Seeder
      *
      * @return void
      */
+
+    public function factoryWithoutObservers($class, $name = 'default')
+    {
+        $class::flushEventListeners();
+        return factory($class, $name);
+    }
     public function run()
     {
-
-        $personas = factory(App\Models\Persona::class, 50)->create();
+        $personas = $this->factoryWithoutObservers(App\Models\Persona::class, 10)->create();
         foreach ($personas as $persona) {
-            $user = BackpackUser::create([
+            $user = new BackpackUser;
+            $user->fill([
                 'name' => $persona->nombre_usuario,
                 'email' => $persona->email,
                 'password' => bcrypt($persona->dni),
                 'persona_id' => $persona->id,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
+            $user->save();
 
             DB::table('model_has_roles')->insert([
                 [

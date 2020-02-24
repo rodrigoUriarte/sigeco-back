@@ -31,10 +31,7 @@ class MenuAsignadoRequest extends FormRequest
         $firstDayofNextMonth = Carbon::now()->addMonth()->startOfMonth()->toDateString();
         $lastDayofNextMonth = Carbon::now()->addMonth()->endOfMonth()->toDateString();
 
-        // $ls = Carbon::now()->addMonth()->lastOfMonth();
-        // $fi = Carbon::createFromDate($this->fecha_inicio);
-        // $pd = Carbon::parse($fi)->firstOfMonth();
-        // $ff = Carbon::parse($pd)->addMonth(); //->subSecond();
+        $limma = backpack_user()->persona->comedor->parametro->limite_menu_asignado;
 
         return [
             'user_id' => 'required',
@@ -43,8 +40,11 @@ class MenuAsignadoRequest extends FormRequest
             //Ademas se debe agregar el menu asignado 15 dias antes del primer dia del mes a asignar.
             //El menu asignado solo se puede agregar para el mes siguiente.
             'fecha_inicio' => [
-                'required', 
-                'date', 'after: 15 days', 'date_equals:' . $firstDayofNextMonth ,
+                'required',
+                'bail', 
+                'date',
+                'after:' .$limma. 'days', 
+                'date_equals:' . $firstDayofNextMonth ,
 
                 Rule::unique('menus_asignados')
                 ->where(function ($query) {
@@ -54,7 +54,11 @@ class MenuAsignadoRequest extends FormRequest
                 })
                 ->ignore($this->id),
             ],
-            'fecha_fin' => 'required|date|date_equals:' . $lastDayofNextMonth,
+            'fecha_fin' => [
+                'required',
+                'date',
+                'date_equals:' . $lastDayofNextMonth
+            ],
         ];
     }
 
@@ -66,7 +70,6 @@ class MenuAsignadoRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
         ];
     }
 
@@ -77,8 +80,16 @@ class MenuAsignadoRequest extends FormRequest
      */
     public function messages()
     {
+        $firstDayofNextMonth = Carbon::now()->addMonth()->startOfMonth();
+        $lastDayofNextMonth = Carbon::now()->addMonth()->endOfMonth();
+        $limma = backpack_user()->persona->comedor->parametro->limite_menu_asignado;
+
         return [
-            //
+            'fecha_inicio.after' => 'El menu asignado puede agregarse los primeros '.$limma.' dias del mes anterior a la fecha inicio' ,
+            'fecha_inicio.date_equals' => 'La fecha de inicio debe ser: '.date_format($firstDayofNextMonth, 'd-m-Y') ,
+            'fecha_inicio.unique' => 'Ya tiene un menu asignado en las fechas seleccionadas' ,
+            'fecha_fin.date_equals' => 'La fecha de fin debe ser: '.date_format($lastDayofNextMonth, 'd-m-Y') ,
+
         ];
     }
 }

@@ -122,7 +122,6 @@ class BandaHorariaCrudController extends CrudController
 
     protected function setupShowOperation()
     {
-
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

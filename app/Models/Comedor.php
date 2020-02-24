@@ -73,6 +73,9 @@ class Comedor extends Model
     public function asistencias(){
         return $this->hasMany('App\Models\Asistencia');
     }
+    public function parametro (){
+        return $this->hasOne('App\Models\Parametro');
+    }
 
     /*
     |--------------------------------------------------------------------------
