@@ -46,8 +46,8 @@ class RegistrarInasistencias extends Command
             if ($comedor->bandasHorarias()->exists()) {
 
                 $ubh = $comedor->bandasHorarias->sortByDesc('hora_fin')->first();
-                $hora_fin = Carbon::parse($ubh->hora_fin)->format('H:i');
-                $now = date("H:i");
+                $hora_fin = Carbon::parse($ubh->hora_fin)->addMinute()->format('H:i');
+                $now = date("H:i"); 
 
                 if ($now == $hora_fin) {
                     dispatch(new RegistrarInasistenciasJob($comedor->id));

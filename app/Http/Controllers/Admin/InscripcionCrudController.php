@@ -135,6 +135,21 @@ class InscripcionCrudController extends CrudController
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'fecha_inscripcion',
+                'label' => 'Fecha Inscripcion'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'fecha_inscripcion', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha_inscripcion', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
 
     protected function setupCreateOperation()
@@ -226,17 +241,17 @@ class InscripcionCrudController extends CrudController
         } else {
             $this->crud->applyConfigurationFromSettings('update');
             $this->crud->hasAccessOrFail('update');
-    
+
             // get entry ID from Request (makes sure its the last ID for nested resources)
             $id = $this->crud->getCurrentEntryId() ?? $id;
             $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
-    
+
             // get the info for that entry
             $this->data['entry'] = $this->crud->getEntry($id);
             $this->data['crud'] = $this->crud;
             $this->data['saveAction'] = $this->crud->getSaveAction();
             $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
-    
+
             $this->data['id'] = $id;
             // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
             return view($this->crud->getEditView(), $this->data);

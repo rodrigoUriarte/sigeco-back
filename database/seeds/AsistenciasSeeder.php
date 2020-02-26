@@ -16,21 +16,23 @@ class AsistenciasSeeder extends Seeder
     {
         $inscripciones = Inscripcion::all();
         foreach ($inscripciones as $inscripcion) {
-            $rand = rand($min=2,$max=4);
-            if ($rand % 2 == 0) {
-                $asistencia = Asistencia::create([
-                    'fecha_asistencia' => Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateTimeString(),
-                    'asistio' => true,
-                    'inscripcion_id' => $inscripcion->id,
-                    'comedor_id' => $inscripcion->comedor_id,
-                ]);
-            } else {
-                $asistencia = Asistencia::create([
-                    'fecha_asistencia' => null,
-                    'asistio' => false,
-                    'inscripcion_id' => $inscripcion->id,
-                    'comedor_id' => $inscripcion->comedor_id,
-                ]);
+            if (Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateString() <= Carbon::now()->toDateString()) {
+                $rand = rand($min = 2, $max = 4);
+                if ($rand % 2 == 0) {
+                    $asistencia = Asistencia::create([
+                        'fecha_asistencia' => Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateTimeString(),
+                        'asistio' => true,
+                        'inscripcion_id' => $inscripcion->id,
+                        'comedor_id' => $inscripcion->comedor_id,
+                    ]);
+                } else {
+                    $asistencia = Asistencia::create([
+                        'fecha_asistencia' => null,
+                        'asistio' => false,
+                        'inscripcion_id' => $inscripcion->id,
+                        'comedor_id' => $inscripcion->comedor_id,
+                    ]);
+                }
             }
         }
     }

@@ -3,6 +3,7 @@
 use App\Models\BackpackUser;
 use App\Models\Menu;
 use App\Models\MenuAsignado;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class MenusAsignadosSeeder extends Seeder
@@ -23,6 +24,8 @@ class MenusAsignadosSeeder extends Seeder
                     'user_id' => $user->id,
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,01,01),
+                    'updated_at' => Carbon::createFromDate(2020,01,01)
                 ]);
             }
         }

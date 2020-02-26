@@ -1,33 +1,35 @@
 {{-- Date Range Backpack CRUD filter --}}
 
-<li filter-name="{{ $filter->name }}" filter-type="{{ $filter->type }}"
+<li filter-name="{{ $filter->name }}"
+	filter-type="{{ $filter->type }}"
 	class="nav-item dropdown {{ Request::get($filter->name)?'active':'' }}">
-	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-		aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
+	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
 	<div class="dropdown-menu p-0">
 		<div class="form-group backpack-filter mb-0">
 			<div class="input-group date">
-				<div class="input-group-prepend">
-					<span class="input-group-text"><i class="fa fa-calendar"></i></span>
-				</div>
-				<input class="form-control pull-right" id="daterangepicker-{{ str_slug($filter->name) }}" type="text"
-					@if ($filter->currentValue)
-				@php
-				$dates = (array)json_decode($filter->currentValue);
-				$start_date = $dates['from'];
-				$end_date = $dates['to'];
-				$date_range = implode(' ~ ', $dates);
-				$date_range = str_replace('-', '/', $date_range);
-				$date_range = str_replace('~', '-', $date_range);
+		        <div class="input-group-prepend">
+		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+		        </div>
+		        <input class="form-control pull-right"
+		        		id="daterangepicker-{{ str_slug($filter->name) }}"
+		        		type="text"
+		        		@if ($filter->currentValue)
+							@php
+								$dates = (array)json_decode($filter->currentValue);
+								$start_date = $dates['from'];
+								$end_date = $dates['to'];
+					        	$date_range = implode(' ~ ', $dates);
+					        	$date_range = str_replace('-', '/', $date_range);
+					        	$date_range = str_replace('~', '-', $date_range);
 
-				@endphp
-				placeholder="{{ $date_range }}"
-				@endif
-				>
-				<div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
-					<a class="input-group-text" href=""><i class="fa fa-times"></i></a>
-				</div>
-			</div>
+					        @endphp
+					        placeholder="{{ $date_range }}"
+						@endif
+		        		>
+		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
+		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
+		        </div>
+		    </div>
 		</div>
 	</div>
 </li>
@@ -39,18 +41,16 @@
 {{-- push things in the after_styles section --}}
 
 @push('crud_list_styles')
-<!-- include select2 css-->
-<link rel="stylesheet" type="text/css" href="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.css') }}" />
-<style>
-	.input-group.date {
-		width: 320px;
-		max-width: 100%;
-	}
-
-	.daterangepicker.dropdown-menu {
-		z-index: 3001 !important;
-	}
-</style>
+    <!-- include select2 css-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.css') }}" />
+	<style>
+		.input-group.date {
+			width: 320px;
+			max-width: 100%; }
+		.daterangepicker.dropdown-menu {
+			z-index: 3001!important;
+		}
+	</style>
 @endpush
 
 
@@ -59,15 +59,15 @@
 
 @push('crud_list_scripts')
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
-<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-<script>
+	<script type="text/javascript" src="{{ asset('packages/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+  <script>
 	moment.locale('es');
 
-	function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
+  		function applyDateRangeFilter{{camel_case($filter->name)}}(start, end) {
   			if (start && end) {
   				var dates = {
-					'from': start.format('MM-DD-YYYY'),
-					'to': end.format('MM-DD-YYYY')
+					'from': start.format('YYYY-MM-DD'),
+					'to': end.format('YYYY-MM-DD')
 				};
 				var value = JSON.stringify(dates);
   			} else {
@@ -106,7 +106,7 @@
 		            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 		            'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
 		            'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
-		            'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+		            'Este mes': [moment().startOf('month'), moment().endOf('month')],
 		            'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 		        },
 				@if ($filter->currentValue)
@@ -138,7 +138,7 @@
 				applyDateRangeFilter{{camel_case($filter->name)}}(null, null);
 			})
 		});
-</script>
+  </script>
 @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

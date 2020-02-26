@@ -44,12 +44,7 @@ class AsistenciaRequest extends FormRequest
                         })
                         ->get();
 
-                    if ($banda_permitida->isEmpty()) {
-                        $fail('Fuera de banda horaria');
-                    }
-                },
-                function ($attribute, $value, $fail) {
-                    
+
                     $ultima_banda = BandaHoraria::where('comedor_id', backpack_user()->persona->comedor_id)
                         ->orderByDesc('hora_fin')
                         ->first();
@@ -60,10 +55,35 @@ class AsistenciaRequest extends FormRequest
                         $flag = true;
                     }
 
-                    if ($flag == false) {
+
+                    if ($banda_permitida->isNotEmpty()) {
+                        return true;
+                    } elseif ($flag == true) {
+                        return true;
+                    } elseif ($flag == false && $flag == false) {
+                        $fail('Fuera de su banda horaria y de la ultima banda horaria');
+                    } elseif ($flag == false) {
                         $fail('Fuera de ultima banda horaria');
+                    } elseif ($banda_permitida->isEmpty()) {
+                        $fail('Fuera de su banda horaria');
                     }
                 },
+                // function ($attribute, $value, $fail) {
+
+                //     $ultima_banda = BandaHoraria::where('comedor_id', backpack_user()->persona->comedor_id)
+                //         ->orderByDesc('hora_fin')
+                //         ->first();
+
+                //     $flag = false;
+
+                //     if ($ultima_banda->hora_inicio <= Carbon::now()->toTimeString() && $ultima_banda->hora_fin >= Carbon::now()->toTimeString()) {
+                //         $flag = true;
+                //     }
+
+                //     if ($flag == false) {
+                //         $fail('Fuera de ultima banda horaria');
+                //     }
+                // },
             ],
             'asistio' => ['boolean'],
             'fecha_asistencia' => ['date'],
@@ -90,7 +110,7 @@ class AsistenciaRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'inscripcion_id.unique' => 'Ya existe una asistencia para este comensal en el dia de la fecha'
         ];
     }
 }

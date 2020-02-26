@@ -52,10 +52,10 @@
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
 					class='nav-icon fas fa-clock'></i> Bandas Horarias</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
-					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('parametro') }}'><i
 					class='nav-icon fas fa-hourglass-half'></i> Parametros</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
+					class='nav-icon fas fa-balance-scale'></i> Reglas</a></li>
 	</ul>
 </li>
 
@@ -69,10 +69,10 @@
 					class='nav-icon fas fa-calendar-plus'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
 					class="nav-icon fas fa-calendar-check"></i> Asistencias</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
-					class='nav-icon fas fa-balance-scale'></i> Reglas</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
 					class='nav-icon fas fa-ban'></i> Sanciones</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
+					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
 	</ul>
 </li>
 

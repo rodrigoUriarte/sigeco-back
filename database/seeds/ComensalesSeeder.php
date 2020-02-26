@@ -20,7 +20,7 @@ class ComensalesSeeder extends Seeder
     }
     public function run()
     {
-        $personas = $this->factoryWithoutObservers(App\Models\Persona::class, 10)->create();
+        $personas = $this->factoryWithoutObservers(App\Models\Persona::class, 25)->create();
         foreach ($personas as $persona) {
             $user = new BackpackUser;
             $user->fill([

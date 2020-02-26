@@ -114,8 +114,8 @@ class AsistenciaCrudController extends CrudController
         // daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'custom_date_range',
-                'name'  => 'from_to',
+                'type'  => 'es_date_range',
+                'name'  => 'fecha_inscripcion',
                 'label' => 'Fecha Inscripcion'
             ],
             false,
