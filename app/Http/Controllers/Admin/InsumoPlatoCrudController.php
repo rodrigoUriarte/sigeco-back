@@ -61,11 +61,11 @@ class InsumoPlatoCrudController extends CrudController
             'entity' => 'plato', // the method that defines the relationship in your Model
             'attribute' => 'descripcionMenu', // foreign key attribute that is shown to user
             'model' => "App\Models\Plato", // foreign key model
-            // 'searchLogic' => function ($query, $column, $searchTerm) {
-            //     $query->orWhereHas('plato', function ($q) use ($column, $searchTerm) {
-            //         $q->where('nombreMenu', 'like', '%' . $searchTerm . '%');
-            //     });
-            // },
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('plato.menu', function ($q) use ($column, $searchTerm) {
+                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
+                });
+            },
         ]);
 
         $this->crud->setColumnDetails('plato', [

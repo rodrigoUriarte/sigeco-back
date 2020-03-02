@@ -106,6 +106,21 @@ class LoteCrudController extends CrudController
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'from_to',
+                'label' => 'Fecha Vencimiento'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'fecha_vencimiento', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha_vencimiento', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
     protected function setupCreateOperation()
     {

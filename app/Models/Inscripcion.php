@@ -24,8 +24,7 @@ class Inscripcion extends Model
     protected $fillable = ['fecha_inscripcion', 'retira', 'user_id', 'banda_horaria_id', 'menu_asignado_id', 'comedor_id'];
 
     // protected $hidden = [];
-    // protected $dates = [];
-    protected $appends = ['nombre','fecha_inscripcion_formato'];
+
 
     /*
     |--------------------------------------------------------------------------

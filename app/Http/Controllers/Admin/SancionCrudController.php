@@ -107,6 +107,20 @@ class SancionCrudController extends CrudController
             },
         ]);
 
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'from_to',
+                'label' => 'Fecha Desde/Hasta'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'desde', '>=', $dates->from);
+                $this->crud->addClause('where', 'hasta', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
 
     protected function setupCreateOperation()

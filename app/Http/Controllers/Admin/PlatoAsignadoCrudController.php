@@ -30,7 +30,7 @@ class PlatoAsignadoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/platoAsignado');
         $this->crud->setEntityNameStrings('Plato Asignado', 'Platos Asignados');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createPlatoAsignado')) {
             $this->crud->allowAccess('create');
@@ -52,7 +52,6 @@ class PlatoAsignadoCrudController extends CrudController
         if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
-
     }
 
     protected function setupListOperation()
@@ -94,6 +93,20 @@ class PlatoAsignadoCrudController extends CrudController
             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
 
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'fecha',
+                'label' => 'Fecha'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'fecha', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
 
     protected function setupCreateOperation()
@@ -139,7 +152,7 @@ class PlatoAsignadoCrudController extends CrudController
                 'data_source' => url("admin/calculoPreparacionPlatos"), // url to controller search function (with /{id} should return model)
                 'placeholder' => 'Seleccione un plato', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
-                'dependencies' => ['fecha','menu_id'],
+                'dependencies' => ['fecha', 'menu_id'],
                 //SE RESETEA SOLO SI EL MENU CAMBIA NO CUANDO CAMBIA LA FECHA, A CORREGIR
             ]
         );
@@ -148,7 +161,6 @@ class PlatoAsignadoCrudController extends CrudController
             'type'  => 'hidden',
             'value' => backpack_user()->persona->comedor_id,
         ]);
-
     }
 
     protected function setupUpdateOperation()

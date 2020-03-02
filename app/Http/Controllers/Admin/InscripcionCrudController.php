@@ -120,12 +120,11 @@ class InscripcionCrudController extends CrudController
             'entity' => 'menuAsignado', // the method that defines the relationship in your Model
             'attribute' => 'descripcionMenu', // foreign key attribute that is shown to user
             'model' => "App\Models\MenuAsignado", // foreign key model
-            // 'searchLogic' => function ($query, $column, $searchTerm) {
-            //     $query->orWhereHas('menuAsignado', function ($q) use ($column, $searchTerm) {
-            //         $q->where('descripcionMenu', 'like', '%' . $searchTerm . '%');
-            //         //->orWhereDate('fecha_inicio', '=', date($searchTerm));
-            //     });
-            // },
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('menuAsignado.menu', function ($q) use ($column, $searchTerm) {
+                    $q->where('descripcion', 'like', '%' . $searchTerm . '%');
+                });
+            },
         ]);
 
         $this->crud->setColumnDetails('retira', [

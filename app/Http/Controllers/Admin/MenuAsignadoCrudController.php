@@ -112,6 +112,21 @@ class MenuAsignadoCrudController extends CrudController
             'type' => "date",
             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'from_to',
+                'label' => 'Fecha Inicio/Fin'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'fecha_inicio', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha_fin', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
 
     protected function setupCreateOperation()
@@ -183,29 +198,29 @@ class MenuAsignadoCrudController extends CrudController
 
         $lma = $ma->comedor->parametro->limite_menu_asignado;
         if (Carbon::now()->daysInMonth < $lma) {
-            $lma = Carbon::now()->daysInMonth-1;
+            $lma = Carbon::now()->daysInMonth - 1;
         } else {
-            $lma = $lma -1;
+            $lma = $lma - 1;
         }
 
-        $fl= $fi->subMonth()->addDays($lma);
+        $fl = $fi->subMonth()->addDays($lma);
         if ($hoy > $fl) {
             Alert::info('No se puede editar un menu asignado despues de la fecha limite.')->flash();
             return Redirect::to('admin/menuAsignado');
         } else {
             $this->crud->applyConfigurationFromSettings('update');
             $this->crud->hasAccessOrFail('update');
-    
+
             // get entry ID from Request (makes sure its the last ID for nested resources)
             $id = $this->crud->getCurrentEntryId() ?? $id;
             $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
-    
+
             // get the info for that entry
             $this->data['entry'] = $this->crud->getEntry($id);
             $this->data['crud'] = $this->crud;
             $this->data['saveAction'] = $this->crud->getSaveAction();
             $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
-    
+
             $this->data['id'] = $id;
             // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
             return view($this->crud->getEditView(), $this->data);

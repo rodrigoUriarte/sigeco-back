@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AsistenciaRequest;
 use App\Http\Requests\UpdateAsistenciaRequest;
+use App\Models\Inscripcion;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Support\Carbon;
 
 /**
@@ -64,17 +66,17 @@ class AsistenciaCrudController extends CrudController
 
         $this->crud->setColumnDetails('fecha_inscripcion', [
             //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
-            'label' => 'Fecha Inscripcion',
-            'type' => 'select',
+            'label' => "Fecha Inscripcion",
+            'type' => "select",
             'name' => 'inscripcion_id', // the db column for the foreign key
             'entity' => 'inscripcion', // the method that defines the relationship in your Model
-            'attribute' => 'fecha_inscripcion_formato', // foreign key attribute that is shown to user
+            'attribute' => "fecha_inscripcion_formato", // foreign key attribute that is shown to user
             'model' => "App\Models\Inscripcion", // foreign key model
             // 'searchLogic' => function ($query, $column, $searchTerm) {
             //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-            //         $q->where('fecha_inscripcion_formato', 'like', '%' . $searchTerm . '%');
+            //         $q->where('fecha_inscripcion', 'like', '%'.$searchTerm.'%');
             //     });
-            // },
+            // }
         ]);
 
         $this->crud->setColumnDetails('asistio', [
@@ -103,11 +105,11 @@ class AsistenciaCrudController extends CrudController
                 'entity' => 'inscripcion', // the method that defines the relationship in your Model
                 'attribute' => "nombre", // foreign key attribute that is shown to user
                 'model' => "App\Models\Inscripcion", // foreign key model
-                // 'searchLogic' => function ($query, $column, $searchTerm) {
-                //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-                //         $q->where('nombre', 'like', '%' . $searchTerm . '%');
-                //     });
-                // },
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('inscripcion.user', function ($q) use ($column, $searchTerm) {
+                        $q->where('name', 'like', '%' . $searchTerm . '%');
+                    });
+                },
             ]);
         }
 

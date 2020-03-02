@@ -28,7 +28,7 @@ class IngresoInsumoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/ingresoInsumo');
         $this->crud->setEntityNameStrings('Ingreso Insumo', 'Ingresos Insumos');
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createIngresoInsumo')) {
             $this->crud->allowAccess('create');
@@ -54,7 +54,7 @@ class IngresoInsumoCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad','unidad_medida','creado']);
+        $this->crud->addColumns(['user_id', 'insumo_id', 'fecha_vencimiento', 'cantidad', 'unidad_medida', 'creado']);
 
         $this->crud->setColumnDetails('user_id', [
             'label' => 'Usuario',
@@ -84,6 +84,20 @@ class IngresoInsumoCrudController extends CrudController
             },
         ]);
 
+        $this->crud->setColumnDetails('unidad_medida', [
+            'label' => 'Unidad Medida',
+            'type' => 'select',
+            'name' => 'insumo_id', // the db column for the foreign key
+            'entity' => 'insumo', // the method that defines the relationship in your Model
+            'attribute' => 'unidad_medida', // foreign key attribute that is shown to user
+            'model' => "App\Models\Insumo", // foreign key model
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('insumo', function ($q) use ($column, $searchTerm) {
+                    $q->where('unidad_medida', 'like', '%' . $searchTerm . '%');
+                });
+            },
+        ]);
+
         $this->crud->setColumnDetails('fecha_vencimiento', [
             'name' => "fecha_vencimiento", // The db column name
             'label' => "Fecha Vencimiento", // Table column heading
@@ -98,19 +112,42 @@ class IngresoInsumoCrudController extends CrudController
             'decimals' => 2,
         ]);
 
-        $this->crud->setColumnDetails('unidad_medida', [
-            'name' => "insumo.unidad_medida", // The db column name
-            'label' => "Unidad Medida", // Table column heading
-            'type' => "text",
-        ]);
-        
-
         $this->crud->setColumnDetails('creado', [
             'name' => "created_at", // The db column name
             'label' => "Fecha Ingreso", // Table column heading
             'type' => "datetime",
-             //'format' => 'l j F Y', // use something else than the base.default_date_format config value
-         ]);
+            //'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        ]);
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'fecha_vencimiento',
+                'label' => 'Fecha Vencimiento'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'fecha_vencimiento', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha_vencimiento', '<=', $dates->to . ' 23:59:59');
+            }
+        );
+
+        // daterange filter
+        $this->crud->addFilter(
+            [
+                'type'  => 'es_date_range',
+                'name'  => 'fecha_ingreso',
+                'label' => 'Fecha Ingreso'
+            ],
+            false,
+            function ($value) { // if the filter is active, apply these constraints
+                $dates = json_decode($value);
+                $this->crud->addClause('where', 'created_at', '>=', $dates->from);
+                $this->crud->addClause('where', 'created_at', '<=', $dates->to . ' 23:59:59');
+            }
+        );
     }
 
     protected function setupCreateOperation()

@@ -24,8 +24,8 @@ class PlatoCrudController extends CrudController
         $this->crud->setModel('App\Models\Plato');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/plato');
         $this->crud->setEntityNameStrings('plato', 'platos');
-        
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createPlato')) {
             $this->crud->allowAccess('create');
@@ -47,7 +47,6 @@ class PlatoCrudController extends CrudController
         if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
-
     }
 
     protected function setupListOperation()
@@ -73,7 +72,6 @@ class PlatoCrudController extends CrudController
             'label' => "Descripcion", // Table column heading
             'type' => "text",
         ]);
-        
     }
 
     protected function setupCreateOperation()
@@ -85,7 +83,7 @@ class PlatoCrudController extends CrudController
             'type'  => 'hidden',
             'value' => backpack_user()->persona->comedor_id,
         ]);
-        
+
         $this->crud->addField(
             [  // Select2
                 'label' => "Menu",
