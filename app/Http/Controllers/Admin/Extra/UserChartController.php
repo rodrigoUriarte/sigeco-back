@@ -38,7 +38,7 @@ class UserChartController extends Controller
 
             if ($desde > $hasta) {
                 Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
-                return Redirect::to('admin/estadisticas');            
+                return Redirect::to('admin/estadisticas');
             }
 
             $inscripciones = new UserChart;
@@ -59,7 +59,10 @@ class UserChartController extends Controller
                 });
 
             $as = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
-                ->where('asistio', true)
+                ->where(function ($query) {
+                    $query->where('asistio', true)
+                        ->orWhere('asistencia_fbh', true);
+                })
                 ->when($desde, function ($query) use ($desde) {
                     return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($desde) {
                         $query->where('fecha_inscripcion', '>=', $desde);
@@ -79,7 +82,10 @@ class UserChartController extends Controller
                 });
 
             $inas = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
-                ->where('asistio', false)
+                ->where(function ($query) {
+                    $query->where('asistio', false)
+                        ->where('asistencia_fbh', false);
+                })
                 ->when($desde, function ($query) use ($desde) {
                     return $query->whereHas('inscripcion', function (EloquentBuilder $query) use ($desde) {
                         $query->where('fecha_inscripcion', '>=', $desde);

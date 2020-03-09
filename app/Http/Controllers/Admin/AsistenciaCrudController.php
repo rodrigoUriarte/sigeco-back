@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AsistenciaRequest;
 use App\Http\Requests\UpdateAsistenciaRequest;
+use App\Models\Asistencia;
 use App\Models\Inscripcion;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class AsistenciaCrudController
@@ -56,13 +59,18 @@ class AsistenciaCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo las asistencias del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
-            $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            //se uso el whereHas en este caso porque si no no se puede ordenar por la columna fecha inscripcion xq
+            //asisitencias y inscripciones tienen el atributo comedor_id y el query arroja un error de ambiguos.
+            // $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
+            $this->crud->addClause('whereHas', 'inscripcion', function ($query) {
+                $query->where('comedor_id', backpack_user()->persona->comedor_id);
+            });
         }
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['fecha_inscripcion', 'asistio', 'fecha_asistencia']);
+        $this->crud->addColumns(['fecha_inscripcion', 'fecha_asistencia', 'asistio', 'asistencia_fbh']);
 
         $this->crud->setColumnDetails('fecha_inscripcion', [
             //NO FUNCIONA LA BUSQUEDA POR EL ATRIBUTO DE LA INSCRIPCION
@@ -77,6 +85,19 @@ class AsistenciaCrudController extends CrudController
             //         $q->where('fecha_inscripcion', 'like', '%'.$searchTerm.'%');
             //     });
             // }
+            'orderable' => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query->leftJoin('inscripciones', 'inscripciones.id', '=', 'asistencias.inscripcion_id')
+                    ->orderBy('inscripciones.fecha_inscripcion', $columnDirection)->select('asistencias.*');
+            }
+        ]);
+
+        $this->crud->setColumnDetails('fecha_asistencia', [
+            'name' => "fecha_asistencia", // The db column name
+            'label' => "Fecha Asistencia", // Table column heading
+            'type' => "datetime",
+            //al ordenar por fecha_asistencia primero trae todos los null y despues si ordena por los que no son null
+            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
 
         $this->crud->setColumnDetails('asistio', [
@@ -87,11 +108,12 @@ class AsistenciaCrudController extends CrudController
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
 
-        $this->crud->setColumnDetails('fecha_asistencia', [
-            'name' => "fecha_asistencia", // The db column name
-            'label' => "Fecha Asistencia", // Table column heading
-            'type' => "datetime",
-            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
+        $this->crud->setColumnDetails('asistencia_fbh', [
+            'name' => 'asistencia_fbh',
+            'label' => 'Asistio FBH',
+            'type' => 'boolean',
+            // optionally override the Yes/No texts
+            'options' => [0 => 'NO', 1 => 'SI']
         ]);
 
         if (backpack_user()->hasRole('operativo')) {
@@ -196,16 +218,60 @@ class AsistenciaCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'name'  => 'asistio',
-            'type'  => 'hidden',
-            'value' => true,
-        ]);
-
-        $this->crud->addField([
             'name'  => 'fecha_asistencia',
             'type'  => 'hidden',
             'value' => Carbon::now(),
         ]);
+
+        $this->crud->addField([
+            'name'  => 'asistencia_fbh',
+            'type'  => 'hidden',
+            'value' => 0,
+        ]);
+
+        $this->crud->addField([
+            'name'  => 'asistio',
+            'type'  => 'hidden',
+            'value' => 1,
+        ]);
+
+
+    }
+
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        $asis = Asistencia::find($id);
+
+        $hoy = Carbon::now();
+        $fi = $asis->inscripcion->fecha_inscripcion;
+        $fi = Carbon::parse($fi);
+
+        if ($asis->asistio==true) {
+            Alert::info('No se puede editar una asistencia de un comensal que haya asistido normalmente')->flash();
+            return Redirect::to('admin/asistencia');
+        } elseif ($hoy->toDateString() > $fi->toDateString()) {
+            Alert::info('No se puede editar una asistencia anterior a la fecha de hoy')->flash();
+            return Redirect::to('admin/asistencia');        } 
+        else {
+            $this->crud->applyConfigurationFromSettings('update');
+            $this->crud->hasAccessOrFail('update');
+
+            // get entry ID from Request (makes sure its the last ID for nested resources)
+            $id = $this->crud->getCurrentEntryId() ?? $id;
+            $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+            // get the info for that entry
+            $this->data['entry'] = $this->crud->getEntry($id);
+            $this->data['crud'] = $this->crud;
+            $this->data['saveAction'] = $this->crud->getSaveAction();
+            $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
+
+            $this->data['id'] = $id;
+            // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+            return view($this->crud->getEditView(), $this->data);
+        }
     }
 
     protected function setupUpdateOperation()
@@ -213,8 +279,8 @@ class AsistenciaCrudController extends CrudController
         $this->crud->setValidation(UpdateAsistenciaRequest::class);
 
         $this->crud->addField([
-            'name' => 'asistio',
-            'label' => 'Asistencia fuera BH',
+            'name' => 'asistencia_fbh',
+            'label' => 'Asistencia fuera de banda horaria',
             'type' => 'checkbox'
         ]);
     }

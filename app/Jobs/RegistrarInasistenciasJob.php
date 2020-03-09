@@ -44,6 +44,7 @@ class RegistrarInasistenciasJob implements ShouldQueue
             $asistencia = Asistencia::create(
                 [
                     'asistio' => false,
+                    'asistencia_fbh' => false,
                     'inscripcion_id' => $inscripcion->id,
                     'comedor_id' => $inscripcion->user->persona->comedor_id
                 ]

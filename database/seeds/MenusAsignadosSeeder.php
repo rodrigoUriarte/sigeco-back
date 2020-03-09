@@ -24,8 +24,17 @@ class MenusAsignadosSeeder extends Seeder
                     'user_id' => $user->id,
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,
-                    'created_at' => Carbon::createFromDate(2020,01,01),
-                    'updated_at' => Carbon::createFromDate(2020,01,01)
+                    'created_at' => Carbon::createFromDate(2020,01,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,01,$user->persona->comedor->parametro->limite_menu_asignado),
+                ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-03-01',
+                    'fecha_fin' => '2020-03-31',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
                 ]);
             }
         }

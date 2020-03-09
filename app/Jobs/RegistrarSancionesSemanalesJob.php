@@ -51,6 +51,7 @@ class RegistrarSancionesSemanalesJob implements ShouldQueue
                 foreach ($users as $user) {
                     $cantidad_inasistencias = Asistencia::where('comedor_id', $this->comedor_id)
                         ->where('asistio', false)
+                        ->where('asistencia_fbh', false)
                         ->whereHas('inscripcion', function ($query) use ($user) {
                             $query
                                 ->where('user_id', $user->id)

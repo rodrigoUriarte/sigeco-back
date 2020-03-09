@@ -15,13 +15,17 @@ class InscripcionesSeeder extends Seeder
      */
     public function run()
     {
-        $mas = MenuAsignado::all();
+        //$mas = MenuAsignado::all();
+        $mas = MenuAsignado::doesntHave('inscripciones')->get();
         foreach ($mas as $ma) {
-            $fi = Carbon::create(2020, 2, 1);
-            for ($i = 0; $i < 29; $i++) {
-                if ($fi->isWeekday()) {
+            $finicio = Carbon::createFromDate($ma->fecha_inicio);
+            $diasmes= $finicio->daysInMonth;
+            $finscripcion = $finicio;
+            //$fi = Carbon::create(2020, 2, 1);
+            for ($i = 0; $i < $diasmes; $i++) {
+                if ($finscripcion->isWeekday()) {
                     $inscripcion = Inscripcion::create([
-                        'fecha_inscripcion' => $fi,
+                        'fecha_inscripcion' => $finscripcion,
                         'retira' => false,
                         'banda_horaria_id' => BandaHoraria::where('comedor_id', $ma->comedor_id)->inRandomOrder()->first()->id,
                         'user_id' => $ma->user_id,
@@ -29,7 +33,7 @@ class InscripcionesSeeder extends Seeder
                         'comedor_id' => $ma->comedor_id,
                     ]);
                 }
-                $fi->addDay();
+                $finscripcion->addDay();
             }
         }
     }
