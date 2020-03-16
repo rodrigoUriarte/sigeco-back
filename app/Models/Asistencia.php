@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class Asistencia extends Model
 {
@@ -60,6 +61,12 @@ class Asistencia extends Model
     */
     public function getComensalAttribute(){
         return $this->inscripcion->user->name; 
+    }
+    
+    public function getFechaInscripcionFormatoAttribute()
+    {
+        $myDate = Date::createFromFormat('Y-m-d', $this->inscripcion->fecha_inscripcion);
+        return date_format($myDate,'d-m-Y');
     }
 
 

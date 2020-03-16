@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class JustificacionRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class JustificacionRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'descripcion' => ['required','max:30'],
+            //'documento' => ['required'],
+            'asistencia_id' => ['required',
+            Rule::unique('justificaciones')
+                ->ignore($this->id)]
         ];
     }
 
@@ -50,7 +55,7 @@ class JustificacionRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'asistencia_id.unique' => 'Ya existe una justificacion para esta inasistencia.'
         ];
     }
 }

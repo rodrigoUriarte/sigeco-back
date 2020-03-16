@@ -11,6 +11,7 @@ use App\Models\Inscripcion;
 use App\Models\Menu;
 use App\Models\Plato;
 use App\Models\Insumo;
+use App\Models\Justificacion;
 use App\Models\MenuAsignado;
 use App\Models\Persona;
 use App\Models\PlatoAsignado;
@@ -21,6 +22,7 @@ use App\Observers\InscripcionObserver;
 use App\Observers\MenuObserver;
 use App\Observers\PlatoObserver;
 use App\Observers\InsumoObserver;
+use App\Observers\JustificacionObserver;
 use App\Observers\MenuAsignadoObserver;
 use App\Observers\PersonaObserver;
 use App\Observers\PlatoAsignadoObserver;
@@ -50,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         PlatoAsignado::observe(PlatoAsignadoObserver::class);
         Persona::observe(PersonaObserver::class);
         Asistencia::observe(AsistenciaObserver::class);
+        Justificacion::observe(JustificacionObserver::class);
 
         MenuAsignado::observe(MenuAsignadoObserver::class);
         Inscripcion::observe(InscripcionObserver::class);

@@ -90,6 +90,7 @@ class InscripcionRequest extends FormRequest
                         ->where('user_id', '=', $this->user_id)
                         ->where('desde', '<=', $value)
                         ->where('hasta', '>=', $value)
+                        ->where('activa', '=', 1)
                         ->count();
                     if ($existe_sancion > 0) {
                         $fail('Tiene una sancion vigente para la fecha seleccionada');

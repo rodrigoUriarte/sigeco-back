@@ -19,7 +19,7 @@ class Sancion extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['desde','hasta','user_id','regla_id','comedor_id'];
+    protected $fillable = ['desde','hasta','activa','user_id','regla_id','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 

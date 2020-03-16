@@ -16,6 +16,7 @@ class CreateSancionesTable extends Migration
             $table->bigIncrements('id');
             $table->date('desde');
             $table->date('hasta');
+            $table->boolean('activa');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
             $table->unsignedBigInteger('user_id');

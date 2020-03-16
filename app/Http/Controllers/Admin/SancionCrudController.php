@@ -76,7 +76,7 @@ class SancionCrudController extends CrudController
             ]);
         }
 
-        $this->crud->addColumns(['desde', 'hasta', 'regla']);
+        $this->crud->addColumns(['desde', 'hasta', 'regla', 'activa']);
 
         $this->crud->setColumnDetails('desde', [
             'name' => "desde", // The db column name
@@ -105,6 +105,14 @@ class SancionCrudController extends CrudController
                     //->orWhereDate('fecha_inicio', '=', date($searchTerm));
                 });
             },
+        ]);
+  
+        $this->crud->setColumnDetails('activa', [
+            'name' => 'activa',
+            'label' => 'Activa',
+            'type' => 'boolean',
+            // optionally override the Yes/No texts
+            'options' => [0 => 'NO', 1 => 'SI']
         ]);
 
         // daterange filter

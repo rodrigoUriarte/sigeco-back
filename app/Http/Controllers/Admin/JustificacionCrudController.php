@@ -25,36 +25,36 @@ class JustificacionCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/justificacion');
         $this->crud->setEntityNameStrings('justificacion', 'justificaciones');
 
-        // $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
-        // if (backpack_user()->hasPermissionTo('createJustificacion')) {
-        //     $this->crud->allowAccess('create');
-        // }
-        // if (backpack_user()->hasPermissionTo('updateJustificacion')) {
-        //     $this->crud->allowAccess('update');
-        // }
-        // if (backpack_user()->hasPermissionTo('deleteJustificacion')) {
-        //     $this->crud->allowAccess('delete');
-        // }
-        // if (backpack_user()->hasPermissionTo('listJustificacion')) {
-        //     $this->crud->allowAccess('list');
-        // }
-        // if (backpack_user()->hasPermissionTo('showJustificacion')) {
-        //     $this->crud->allowAccess('show');
-        // }
+        if (backpack_user()->hasPermissionTo('createJustificacion')) {
+            $this->crud->allowAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('updateJustificacion')) {
+            $this->crud->allowAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('deleteJustificacion')) {
+            $this->crud->allowAccess('delete');
+        }
+        if (backpack_user()->hasPermissionTo('listJustificacion')) {
+            $this->crud->allowAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('showJustificacion')) {
+            $this->crud->allowAccess('show');
+        }
 
-        // if (backpack_user()->hasRole('operativo')) {
-        //     $this->crud->addClause('whereHas', 'asistencia', function ($query) {
-        //         $query->where('comedor_id', backpack_user()->persona->comedor_id);
-        //     });
-        // }
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->addClause('whereHas', 'asistencia', function ($query) {
+                $query->where('comedor_id', backpack_user()->persona->comedor_id);
+            });
+        }
     }
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['asistencia_id', 'descripcion', 'documento']);
+        $this->crud->addColumns(['comensal','fecha', 'descripcion', 'documento']);
 
-        $this->crud->setColumnDetails('asistencia_id', [
+        $this->crud->setColumnDetails('comensal', [
             'label' => 'Comensal',
             'type' => 'select',
             'name' => 'asistencia_id', // the db column for the foreign key
@@ -66,6 +66,20 @@ class JustificacionCrudController extends CrudController
                     $q->where('name', 'like', '%' . $searchTerm . '%');
                 });
             },
+        ]);
+
+        $this->crud->setColumnDetails('fecha', [
+            'label' => 'Fecha Inscripcion',
+            'type' => 'select',
+            'name' => 'asistencia_id', // the db column for the foreign key
+            'entity' => 'asistencia', // the method that defines the relationship in your Model
+            'attribute' => 'fecha_inscripcion_formato', // foreign key attribute that is shown to user
+            'model' => "App\Models\Asistencia", // foreign key model
+            // 'searchLogic' => function ($query, $column, $searchTerm) {
+            //     $query->orWhereHas('asistencia.inscripcion', function ($q) use ($column, $searchTerm) {
+            //         $q->where('fecha_inscripcion', 'like', '%' . $searchTerm . '%');
+            //     });
+            // },
         ]);
 
         $this->crud->setColumnDetails('descripcion', [

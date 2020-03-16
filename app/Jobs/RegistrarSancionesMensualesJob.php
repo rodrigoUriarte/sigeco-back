@@ -70,6 +70,7 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
                             [
                                 'desde' => Carbon::now()->nextWeekday()->toDateString(),
                                 'hasta' => Carbon::now()->addWeekdays($reglaM->dias_sancion)->toDateString(),
+                                'activa' => 1,
                                 'user_id' => $user->id,
                                 'comedor_id' => $user->persona->comedor_id,
                                 'regla_id' => $reglaM->id,
