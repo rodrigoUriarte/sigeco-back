@@ -51,18 +51,26 @@ class ParametroCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['limite_inscripcion', 'limite_menu_asignado']);
+        $this->crud->addColumns(['limite_inscripcion', 'limite_menu_asignado', 'retirar']);
 
         $this->crud->setColumnDetails('limite_inscripcion', [
             'name' => "limite_inscripcion", // The db column name
-            'label' => "Hora hasta la que se permiten agregar inscripciones", // Table column heading
+            'label' => "Hora inscripciones automaticas", // Table column heading
             'type' => "text",
         ]);
 
         $this->crud->setColumnDetails('limite_menu_asignado', [
             'name' => "limite_menu_asignado", // The db column name
-            'label' => "Dia del mes para agregar menus asignados automaticamente", // Table column heading
+            'label' => "Dia menus asignados automaticos", // Table column heading
             'type' => "number",
+        ]);
+
+        $this->crud->setColumnDetails('retirar', [
+            'name' => 'retirar',
+            'label' => 'Permitir Retirar',
+            'type' => 'boolean',
+            // optionally override the Yes/No texts
+            'options' => [0 => 'NO', 1 => 'SI']
         ]);
     }
 
@@ -78,15 +86,20 @@ class ParametroCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'limite_inscripcion',
-            'label' => 'Hora hasta la que se permiten agregar inscripciones',
+            'label' => 'Hora del dia a la que se agregan las inscripciones automaticamente',
             'type' => 'time'
         ]);
 
-        //Este dia del mes se cre
         $this->crud->addField([
             'name' => 'limite_menu_asignado',
             'type' => 'number',
             'label' => 'Dia del mes para agregar menus asignados automaticamente, hasta el dia anterior lo haran los comensales'
+        ]);
+
+        $this->crud->addField([
+            'name' => 'retirar',
+            'label' => 'Permitir Retirar',
+            'type' => 'checkbox'
         ]);
     }
 

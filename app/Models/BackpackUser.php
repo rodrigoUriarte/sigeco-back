@@ -51,5 +51,8 @@ class BackpackUser extends User
     {
         return $this->hasMany('App\Models\IngresoInsumo');
     }
+    public function diasPreferencia(){
+        return $this->hasMany('App\Models\DiaPreferencia');
+    }
 
 }

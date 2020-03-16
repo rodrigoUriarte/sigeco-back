@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Asistencia;
 use App\Models\BackpackUser;
+use App\Models\DiaServicio;
 use App\Models\Regla;
 use App\Models\Sancion;
 use Illuminate\Bus\Queueable;
@@ -64,22 +65,31 @@ class RegistrarSancionesSemanalesJob implements ShouldQueue
                         ->get();
 
                     if ($inasistencias->count() >= $reglaS->cantidad_faltas) {
+                        //no son dias corridos tengo que cambiar desde hasta por una fecha concreta
 
-                        $sancion = Sancion::create(
-                            [
-                                'desde' => Carbon::now()->nextWeekday()->toDateString(),
-                                'hasta' => Carbon::now()->addWeekdays($reglaS->dias_sancion)->toDateString(),
-                                'activa' => 1,
-                                'user_id' => $user->id,
-                                'comedor_id' => $user->persona->comedor_id,
-                                'regla_id' => $reglaS->id,
+                        $dias_servicio = DiaServicio::where('comedor_id', $this->comedor_id)->get()->pluck('dia');
+                        $dia_sancion = Carbon::now()->addDay();
+                        for ($i = 0; $i < $reglaS->dias_sancion; $i++) {
+                            $nomdia = $dia_sancion->dayName;
+                            while (!$dias_servicio->contains($dia_sancion->dayName)) {
+                                $dia_sancion->addDay();
+                            }
 
-                            ]
-                        );
+                            $sancion = Sancion::create(
+                                [
+                                    'fecha' => $dia_sancion->toDateString(),
+                                    'activa' => 1,
+                                    'user_id' => $user->id,
+                                    'comedor_id' => $user->persona->comedor_id,
+                                    'regla_id' => $reglaS->id,
+                                ]
+                            );
+                            $dia_sancion->addDay();
 
-                        foreach ($inasistencias as $inasistencia) {
-                            $inasistencia->sancion_id = $sancion->id;
-                            $inasistencia->save();
+                            foreach ($inasistencias as $inasistencia) {
+                                $inasistencia->sancion_id = $sancion->id;
+                                $inasistencia->save();
+                            }
                         }
                     }
                 }

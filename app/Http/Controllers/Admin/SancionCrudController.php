@@ -76,18 +76,11 @@ class SancionCrudController extends CrudController
             ]);
         }
 
-        $this->crud->addColumns(['desde', 'hasta', 'regla', 'activa']);
+        $this->crud->addColumns(['fecha', 'regla', 'activa']);
 
-        $this->crud->setColumnDetails('desde', [
-            'name' => "desde", // The db column name
-            'label' => "Desde", // Table column heading
-            'type' => "date",
-            // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
-        ]);
-
-        $this->crud->setColumnDetails('hasta', [
-            'name' => "hasta", // The db column name
-            'label' => "Hasta", // Table column heading
+        $this->crud->setColumnDetails('fecha', [
+            'name' => "fecha", // The db column name
+            'label' => "Fecha de Sancion", // Table column heading
             'type' => "date",
             // 'format' => 'l j F Y', // use something else than the base.default_date_format config value
         ]);
@@ -120,13 +113,13 @@ class SancionCrudController extends CrudController
             [
                 'type'  => 'es_date_range',
                 'name'  => 'from_to',
-                'label' => 'Fecha Desde/Hasta'
+                'label' => 'Fecha Sancion'
             ],
             false,
             function ($value) { // if the filter is active, apply these constraints
                 $dates = json_decode($value);
-                $this->crud->addClause('where', 'desde', '>=', $dates->from);
-                $this->crud->addClause('where', 'hasta', '<=', $dates->to . ' 23:59:59');
+                $this->crud->addClause('where', 'fecha', '>=', $dates->from);
+                $this->crud->addClause('where', 'fecha', '<=', $dates->to . ' 23:59:59');
             }
         );
     }

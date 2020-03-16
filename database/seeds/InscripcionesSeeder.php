@@ -21,7 +21,6 @@ class InscripcionesSeeder extends Seeder
             $finicio = Carbon::createFromDate($ma->fecha_inicio);
             $diasmes= $finicio->daysInMonth;
             $finscripcion = $finicio;
-            //$fi = Carbon::create(2020, 2, 1);
             for ($i = 0; $i < $diasmes; $i++) {
                 if ($finscripcion->isWeekday()) {
                     $inscripcion = Inscripcion::create([

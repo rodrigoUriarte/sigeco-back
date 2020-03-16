@@ -76,6 +76,9 @@ class Comedor extends Model
     public function parametro (){
         return $this->hasOne('App\Models\Parametro');
     }
+    public function diasServicio(){
+        return $this->hasMany('App\Models\DiasServicio');
+    }
 
     /*
     |--------------------------------------------------------------------------

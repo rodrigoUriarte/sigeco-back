@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSancionesTable extends Migration
+class CreateDiasPreferenciaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,15 @@ class CreateSancionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sanciones', function (Blueprint $table) {
+        Schema::create('dias_preferencia', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('fecha');
-            $table->boolean('activa');
-            $table->unsignedBigInteger('comedor_id');
-            $table->foreign('comedor_id')->references('id')->on('comedores');
+            $table->boolean('retira');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('regla_id');
-            $table->foreign('regla_id')->references('id')->on('reglas');
+            $table->unsignedBigInteger('dia_servicio_id');
+            $table->foreign('dia_servicio_id')->references('id')->on('dias_servicio');
+            $table->unsignedBigInteger('banda_horaria_id');
+            $table->foreign('banda_horaria_id')->references('id')->on('bandas_horarias');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateSancionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sanciones');
+        Schema::dropIfExists('dias_preferencia');
     }
 }

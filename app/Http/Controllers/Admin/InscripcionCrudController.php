@@ -153,113 +153,113 @@ class InscripcionCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(InscripcionRequest::class);
+        // $this->crud->setValidation(InscripcionRequest::class);
 
-        $this->crud->addField([
-            'name'  => 'user_id',
-            'type'  => 'hidden',
-            'value' => backpack_user()->id,
-        ]);
+        // $this->crud->addField([
+        //     'name'  => 'user_id',
+        //     'type'  => 'hidden',
+        //     'value' => backpack_user()->id,
+        // ]);
 
-        $this->crud->addField([
-            'name'  => 'comedor_id',
-            'type'  => 'hidden',
-            'value' => backpack_user()->persona->comedor_id,
-        ]);
+        // $this->crud->addField([
+        //     'name'  => 'comedor_id',
+        //     'type'  => 'hidden',
+        //     'value' => backpack_user()->persona->comedor_id,
+        // ]);
 
-        $this->crud->addField(
-            [  // Select2
-                'label' => "Menu Asignado",
-                'type' => 'select2',
-                'name' => 'menu_asignado_id', // the db column for the foreign key
-                'entity' => 'menuAsignado', // the method that defines the relationship in your Model
-                'attribute' => 'rangoFechas', // foreign key attribute that is shown to user
-                'model' => "App\Models\MenuAsignado", // foreign key model
-                // optional
-                'default' => 0, // set the default value of the select2
-                'options'   => (function ($query) {
-                    return $query->where('user_id', '=', backpack_user()->id)->get();
-                }),
-                // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-            ]
-        );
-        $this->crud->addField(
-            [
-                'label' => "Banda Horaria",
-                'type' => 'select2',
-                'name' => 'banda_horaria_id', // the db column for the foreign key
-                'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
-                'attribute' => 'descripcion', // foreign key attribute that is shown to user
-                'model' => "App\Models\BandaHoraria", // foreign key model
-                // optional
-                'default' => 0, // set the default value of the select2
-                'options'   => (function ($query) {
-                    return $query->where('comedor_id', '=', backpack_user()->persona->comedor_id)->get();
-                }),
-            ]
-        );
+        // $this->crud->addField(
+        //     [  // Select2
+        //         'label' => "Menu Asignado",
+        //         'type' => 'select2',
+        //         'name' => 'menu_asignado_id', // the db column for the foreign key
+        //         'entity' => 'menuAsignado', // the method that defines the relationship in your Model
+        //         'attribute' => 'rangoFechas', // foreign key attribute that is shown to user
+        //         'model' => "App\Models\MenuAsignado", // foreign key model
+        //         // optional
+        //         'default' => 0, // set the default value of the select2
+        //         'options'   => (function ($query) {
+        //             return $query->where('user_id', '=', backpack_user()->id)->get();
+        //         }),
+        //         // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+        //     ]
+        // );
+        // $this->crud->addField(
+        //     [
+        //         'label' => "Banda Horaria",
+        //         'type' => 'select2',
+        //         'name' => 'banda_horaria_id', // the db column for the foreign key
+        //         'entity' => 'bandaHoraria', // the method that defines the relationship in your Model
+        //         'attribute' => 'descripcion', // foreign key attribute that is shown to user
+        //         'model' => "App\Models\BandaHoraria", // foreign key model
+        //         // optional
+        //         'default' => 0, // set the default value of the select2
+        //         'options'   => (function ($query) {
+        //             return $query->where('comedor_id', '=', backpack_user()->persona->comedor_id)->get();
+        //         }),
+        //     ]
+        // );
 
-        $this->crud->addField([   // date_picker
-            'name' => 'fecha_inscripcion',
-            'type' => 'date_picker',
-            'label' => 'Fecha Inscripcion',
-            // optional:
-            'date_picker_options' => [
-                'todayBtn' => 'linked',
-                'format' => 'dd-mm-yyyy',
-                'language' => 'es',
-                'startDate' => Carbon::now(),
-                'defaultViewDate' => Carbon::now(),
-                'daysOfWeekDisabled' => '0,6',
-            ],
-            'default' => Carbon::now()->toDateString(),
-        ]);
+        // $this->crud->addField([   // date_picker
+        //     'name' => 'fecha_inscripcion',
+        //     'type' => 'date_picker',
+        //     'label' => 'Fecha Inscripcion',
+        //     // optional:
+        //     'date_picker_options' => [
+        //         'todayBtn' => 'linked',
+        //         'format' => 'dd-mm-yyyy',
+        //         'language' => 'es',
+        //         'startDate' => Carbon::now(),
+        //         'defaultViewDate' => Carbon::now(),
+        //         'daysOfWeekDisabled' => '0,6',
+        //     ],
+        //     'default' => Carbon::now()->toDateString(),
+        // ]);
 
-        $this->crud->addField([
-            'name' => 'retira',
-            'label' => 'Retira',
-            'type' => 'checkbox'
-        ]);
+        // $this->crud->addField([
+        //     'name' => 'retira',
+        //     'label' => 'Retira',
+        //     'type' => 'checkbox'
+        // ]);
     }
 
-    public function edit($id)
-    {
-        $this->crud->hasAccessOrFail('update');
+    // public function edit($id)
+    // {
+    //     $this->crud->hasAccessOrFail('update');
 
-        $hoy = Carbon::now();
-        $ins = Inscripcion::find($id);
-        $fi = $ins->fecha_inscripcion;
-        $fi = Carbon::parse($fi);
-        $limins = Carbon::createFromTimeString($ins->comedor->parametro->limite_inscripcion);
-        //$diff = $fi->diffInMinutes($hoy, false);
-        $aux = $limins->diffInMinutes(Carbon::tomorrow());
+    //     $hoy = Carbon::now();
+    //     $ins = Inscripcion::find($id);
+    //     $fi = $ins->fecha_inscripcion;
+    //     $fi = Carbon::parse($fi);
+    //     $limins = Carbon::createFromTimeString($ins->comedor->parametro->limite_inscripcion);
+    //     //$diff = $fi->diffInMinutes($hoy, false);
+    //     $aux = $limins->diffInMinutes(Carbon::tomorrow());
 
-        if ($fi->diffInMinutes($hoy, false) >= -$aux) {
-            Alert::info('No se puede editar una inscripcion despues de la fecha limite.')->flash();
-            return Redirect::to('admin/inscripcion');
-        } else {
-            $this->crud->applyConfigurationFromSettings('update');
-            $this->crud->hasAccessOrFail('update');
+    //     if ($fi->diffInMinutes($hoy, false) >= -$aux) {
+    //         Alert::info('No se puede editar una inscripcion despues de la fecha limite.')->flash();
+    //         return Redirect::to('admin/inscripcion');
+    //     } else {
+    //         $this->crud->applyConfigurationFromSettings('update');
+    //         $this->crud->hasAccessOrFail('update');
 
-            // get entry ID from Request (makes sure its the last ID for nested resources)
-            $id = $this->crud->getCurrentEntryId() ?? $id;
-            $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+    //         // get entry ID from Request (makes sure its the last ID for nested resources)
+    //         $id = $this->crud->getCurrentEntryId() ?? $id;
+    //         $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
 
-            // get the info for that entry
-            $this->data['entry'] = $this->crud->getEntry($id);
-            $this->data['crud'] = $this->crud;
-            $this->data['saveAction'] = $this->crud->getSaveAction();
-            $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
+    //         // get the info for that entry
+    //         $this->data['entry'] = $this->crud->getEntry($id);
+    //         $this->data['crud'] = $this->crud;
+    //         $this->data['saveAction'] = $this->crud->getSaveAction();
+    //         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
 
-            $this->data['id'] = $id;
-            // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-            return view($this->crud->getEditView(), $this->data);
-        }
-    }
+    //         $this->data['id'] = $id;
+    //         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+    //         return view($this->crud->getEditView(), $this->data);
+    //     }
+    // }
 
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        // $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()

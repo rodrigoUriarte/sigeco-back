@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\RegistrarSancionesMensuales',
         'App\Console\Commands\RegistrarSancionesSemanales',
         'App\Console\Commands\RegistrarMenusNoAsignados',
+        'App\Console\Commands\RegistrarInscripciones',
+
     ];
 
     /**
@@ -35,6 +37,8 @@ class Kernel extends ConsoleKernel
         ->weeklyOn(1, '00:00');
         $schedule->command('registrar:menusNoAsignados')
         ->dailyAt('00:00');
+        $schedule->command('registrar:inscripciones')
+        ->everyMinute();
     }
 
     /**

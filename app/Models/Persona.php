@@ -43,7 +43,6 @@ class Persona extends Model
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

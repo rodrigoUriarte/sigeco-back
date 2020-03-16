@@ -37,6 +37,9 @@ class BandaHoraria extends Model
     public function inscripciones(){
         return $this->hasMany('App\Models\Inscripcion');
     }
+    public function diasPreferencia(){
+        return $this->hasMany('App\Models\DiaPreferencia');
+    }
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
     }

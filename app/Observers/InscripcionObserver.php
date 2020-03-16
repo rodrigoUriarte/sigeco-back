@@ -40,17 +40,17 @@ class InscripcionObserver
      */
     public function deleting(Inscripcion $inscripcion)
     {
-        $hoy = Carbon::now();
-        $fi = $inscripcion->fecha_inscripcion;
-        $fi = Carbon::parse($fi);
-        $limins = Carbon::createFromTimeString($inscripcion->comedor->parametro->limite_inscripcion);
-        $aux = $limins->diffInMinutes(Carbon::tomorrow());
+        // $hoy = Carbon::now();
+        // $fi = $inscripcion->fecha_inscripcion;
+        // $fi = Carbon::parse($fi);
+        // $limins = Carbon::createFromTimeString($inscripcion->comedor->parametro->limite_inscripcion);
+        // $aux = $limins->diffInMinutes(Carbon::tomorrow());
 
-        if ($fi->diffInMinutes($hoy, false) >= -$aux) {
-            //Alert::info('No se puede eliminar una inscripcion despues de la fecha limite.')->flash();
-            //redirect()->to('admin/inscripcion');
-            return false;
-        }
+        // if ($fi->diffInMinutes($hoy, false) >= -$aux) {
+        //     //Alert::info('No se puede eliminar una inscripcion despues de la fecha limite.')->flash();
+        //     //redirect()->to('admin/inscripcion');
+        //     return false;
+        // }
     }
 
     /**

@@ -2,9 +2,8 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Schema;
 
-class CreateParametrosTable extends Migration
+class CreateDiasServicioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +12,9 @@ class CreateParametrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('parametros', function (Blueprint $table) {
+        Schema::create('dias_servicio', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->time('limite_inscripcion');
-            $table->integer('limite_menu_asignado');
-            $table->boolean('retirar');
+            $table->enum('dia',['lunes','martes','miércoles','jueves','viernes','sábado','domingo']);
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
             $table->timestamps();
@@ -31,6 +28,6 @@ class CreateParametrosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parametros');
+        Schema::dropIfExists('dias_servicio');
     }
 }

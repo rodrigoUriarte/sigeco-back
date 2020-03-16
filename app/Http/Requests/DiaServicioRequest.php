@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ParametroRequest extends FormRequest
+class DiaServicioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +27,16 @@ class ParametroRequest extends FormRequest
     public function rules()
     {
         return [
-            'comedor_id' => ['required', Rule::unique('parametros')->ignore($this->id)],
-            'retirar' => ['required','boolean'],
-            'limite_inscripcion' =>['required'],
-            'limite_menu_asignado' => ['required','numeric','min:1','max:31']
+            'comedor_id' => ['required', Rule::exists('comedores', 'id')],
+            'dia' => [
+                'required',
+                Rule::unique('dias_servicio')
+                    ->where(function ($query) {
+                        return $query
+                            ->where('comedor_id', '=', $this->comedor_id);
+                    })
+                    ->ignore($this->id),
+                ],
         ];
     }
 
@@ -54,8 +60,7 @@ class ParametroRequest extends FormRequest
     public function messages()
     {
         return [
-            'comedor_id.unique' => 'Ya existe un parametro para su comedor'
-            //
+            'dia.unique' => 'Ya se encuentra cargado ese dia de servicio para este comedor.'
         ];
     }
 }

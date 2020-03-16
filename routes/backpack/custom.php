@@ -31,6 +31,8 @@ Route::group([
     Route::crud('auditoria', 'AuditoriaCrudController');
     Route::crud('parametro', 'ParametroCrudController');
     Route::crud('justificacion', 'JustificacionCrudController');
+    Route::crud('diaservicio', 'DiaServicioCrudController');
+    Route::crud('diapreferencia', 'DiaPreferenciaCrudController');
 
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
     Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@index');

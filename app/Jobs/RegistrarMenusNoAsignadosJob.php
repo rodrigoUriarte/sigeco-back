@@ -54,9 +54,6 @@ class RegistrarMenusNoAsignadosJob implements ShouldQueue
             $query->where('created_at', '>=', $pdm);
             $query->where('created_at', '<=', $diaLimite);
         })
-        // ->whereHas('menusAsignados', function ($query) use ($pdm) {
-        //     $query->where('created_at', '>=', $pdm);
-        // })
         ->get();
 
         foreach ($users as $user) {

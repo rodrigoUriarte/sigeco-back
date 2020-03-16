@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Parametro extends Model
+class DiaServicio extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Parametro extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'parametros';
+    protected $table = 'dias_servicio';
     protected $primaryKey = 'id';
     public $timestamps = true;
-    // protected $guarded = ['id'];
-    protected $fillable = ['limite_inscripcion','retirar', 'limite_menu_asignado', 'comedor_id'];
+    //protected $guarded = ['id'];
+    protected $fillable = ['dia','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,9 +34,11 @@ class Parametro extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function comedor()
-    {
+    public function comedor(){
         return $this->belongsTo('App\Models\Comedor');
+    }
+    public function diasPreferencia(){
+        return $this->hasMany('App\Models\DiasPreferencia');
     }
 
     /*
