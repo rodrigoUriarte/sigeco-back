@@ -218,6 +218,12 @@ class AsistenciaCrudController extends CrudController
         ]);
 
         $this->crud->addField([
+            'name'  => 'sancion_id',
+            'type'  => 'hidden',
+            'value' => null,
+        ]);
+
+        $this->crud->addField([
             'name'  => 'fecha_asistencia',
             'type'  => 'hidden',
             'value' => Carbon::now(),

@@ -30,9 +30,13 @@ Route::group([
     Route::crud('user', 'Extra\CustomUserCrudController');
     Route::crud('auditoria', 'AuditoriaCrudController');
     Route::crud('parametro', 'ParametroCrudController');
+    Route::crud('justificacion', 'JustificacionCrudController');
 
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
     Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@index');
+
+    Route::get('/calculoInasistenciasFecha', 'Extra\CalculoInasistenciasFecha@index');
+    Route::get('/calculoInasistenciasFecha/{id}', 'Extra\CalculoInasistenciasFecha@index');
 
     Route::get('/reporteLotes', 'LoteCrudController@reporteLotes')->name('lotes.reporteLotes');
     Route::get('/reporteInscripciones', 'InscripcionCrudController@reporteInscripciones')->name('inscripciones.reporteInscripciones');

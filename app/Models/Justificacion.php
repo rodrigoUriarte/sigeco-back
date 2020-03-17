@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Sancion extends Model
+class Justificacion extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Sancion extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'sanciones';
+    protected $table = 'justificaciones';
     protected $primaryKey = 'id';
     public $timestamps = true;
-    // protected $guarded = ['id'];
-    protected $fillable = ['desde','hasta','user_id','regla_id','comedor_id'];
+    //protected $guarded = ['id'];
+    protected $fillable = ['descripcion','documento','asistencia_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,18 +34,10 @@ class Sancion extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function comedor(){
-        return $this->belongsTo('App\Models\Comedor');
+    public function asistencia(){
+        return $this->belongsTo('App\Models\Asistencia');
     }
-    public function regla(){
-        return $this->belongsTo('App\Models\Regla');
-    }
-    public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
-    }
-    public function asistencias(){
-        return $this->hasMany('App\Models\Asistencia');
-    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

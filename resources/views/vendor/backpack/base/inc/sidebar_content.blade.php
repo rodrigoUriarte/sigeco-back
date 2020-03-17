@@ -73,6 +73,8 @@
 					class='nav-icon fas fa-ban'></i> Sanciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
 					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('justificacion') }}'><i
+					class='nav-icon fas fa-balance-scale-right'></i> Justificaciones</a></li>
 	</ul>
 </li>
 

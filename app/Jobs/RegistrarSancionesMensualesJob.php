@@ -50,17 +50,21 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
 
             foreach ($reglasM as $reglaM) {
                 foreach ($users as $user) {
-                    $cantidad_inasistencias = Asistencia::where('comedor_id', $this->comedor_id)
+                    //coleccion de todas las inasistencias que no tienen una sancion asociada, de un determinado usuario de la ultima semana
+                    $inasistencias = Asistencia::where('comedor_id', $this->comedor_id)
+                        ->doesntHave('sancion')
+                        ->doesntHave('justificacion')
                         ->where('asistio', false)
                         ->where('asistencia_fbh', false)
                         ->whereHas('inscripcion', function ($query) use ($user) {
                             $query
                                 ->where('user_id', $user->id)
-                                ->where('fecha_inscripcion', '>=', Carbon::now()->subMonth()->toDateString());
+                                ->where('fecha_inscripcion', '>=', Carbon::now()->subMonth()->toDateString())
+                                ->where('fecha_inscripcion', '<=', Carbon::now()->subDay()->toDateString());
                         })
-                        ->count();
+                        ->get();
 
-                    if ($cantidad_inasistencias >= $reglaM->cantidad_faltas) {
+                    if ($inasistencias->count() >= $reglaM->cantidad_faltas) {
 
                         $sancion = Sancion::create(
                             [
@@ -72,6 +76,11 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
 
                             ]
                         );
+
+                        foreach ($inasistencias as $inasistencia) {
+                            $inasistencia->sancion_id = $sancion->id;
+                            $inasistencia->save();
+                        }
                     }
                 }
             }

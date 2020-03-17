@@ -19,7 +19,6 @@ class CreateParametrosTable extends Migration
             $table->integer('limite_menu_asignado');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
-   
             $table->timestamps();
         });
     }

@@ -18,8 +18,8 @@ class AsistenciasSeeder extends Seeder
         //busco solo las inscripciones que no tengan una asistencia relacionada
         $inscripciones = Inscripcion::doesntHave('asistencia')->get();
         foreach ($inscripciones as $inscripcion) {
-            //creo asistencias solo para fechas menor o igual al dia de hoy
-            if (Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateString() <= Carbon::now()->toDateString()) {
+            //creo asistencias solo para fechas menor al dia de hoy
+            if (Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateString() < Carbon::now()->toDateString()) {
                 $rand = rand($min = 2, $max = 4);
                 if ($rand % 2 == 0) {
                     $asistencia = Asistencia::create([
@@ -28,6 +28,7 @@ class AsistenciasSeeder extends Seeder
                         'asistencia_fbh' => false,
                         'inscripcion_id' => $inscripcion->id,
                         'comedor_id' => $inscripcion->comedor_id,
+                        'sancion_id' => null
                     ]);
                 } else {
                     $asistencia = Asistencia::create([
@@ -36,6 +37,7 @@ class AsistenciasSeeder extends Seeder
                         'asistencia_fbh' => false,
                         'inscripcion_id' => $inscripcion->id,
                         'comedor_id' => $inscripcion->comedor_id,
+                        'sancion_id' => null
                     ]);
                 }
             }

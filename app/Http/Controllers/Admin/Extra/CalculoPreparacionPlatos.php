@@ -93,7 +93,6 @@ class CalculoPreparacionPlatos extends Controller
         }
 
         return $options;
-
     }
 
 

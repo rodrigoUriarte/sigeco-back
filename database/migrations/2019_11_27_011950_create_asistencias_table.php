@@ -21,6 +21,8 @@ class CreateAsistenciasTable extends Migration
             $table->foreign('inscripcion_id')->references('id')->on('inscripciones');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
+            $table->unsignedBigInteger('sancion_id')->nullable();
+            $table->foreign('sancion_id')->references('id')->on('sanciones');
             $table->timestamps();
         });
     }
