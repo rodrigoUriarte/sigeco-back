@@ -28,7 +28,6 @@ class AsistenciasSeeder extends Seeder
                         'asistencia_fbh' => false,
                         'inscripcion_id' => $inscripcion->id,
                         'comedor_id' => $inscripcion->comedor_id,
-                        'sancion_id' => null
                     ]);
                 } else {
                     $asistencia = Asistencia::create([
@@ -37,7 +36,6 @@ class AsistenciasSeeder extends Seeder
                         'asistencia_fbh' => false,
                         'inscripcion_id' => $inscripcion->id,
                         'comedor_id' => $inscripcion->comedor_id,
-                        'sancion_id' => null
                     ]);
                 }
             }

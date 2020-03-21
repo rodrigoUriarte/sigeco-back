@@ -21,7 +21,6 @@ class CreateInsumoPlatoTable extends Migration
             $table->foreign('plato_id')->references('id')->on('platos');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
-            // $table->unique(['insumo_id','plato_id', 'comedor_id']); se controla en el form request
             $table->timestamps();
         });
     }

@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Models\Asistencia;
 use App\Models\Justificacion;
+use App\Models\Sancion;
 
 class JustificacionObserver
 {
@@ -14,20 +16,11 @@ class JustificacionObserver
      */
     public function created(Justificacion $justificacion)
     {
-        if ($justificacion->asistencia->sancion) {
-            $inasistenciasRelacionadas = $justificacion->asistencia->sancion->asistencias()->withCount('justificacion')->get();
-            $justificadas=0;
-            foreach ($inasistenciasRelacionadas as $iR) {
-                if ($iR->justificacion_count == 1) {
-                    $justificadas +=1;
-                }
-            }
-            $cfRegla = $justificacion->asistencia->sancion->regla->cantidad_faltas;
-
-            $aux = $inasistenciasRelacionadas->count() - $justificadas;
-            if ($inasistenciasRelacionadas->count() - $justificadas < $cfRegla) {
-                $justificacion->asistencia->sancion->activa=false;
-                $justificacion->asistencia->sancion->save();
+        $sancionesAsociadas = $justificacion->asistencia->sanciones;
+        if ($sancionesAsociadas->isNotEmpty()) {
+            foreach ($sancionesAsociadas as $sA) {
+                $sA->activa = false;
+                $sA->save();
             }
         }
     }
@@ -53,8 +46,13 @@ class JustificacionObserver
      */
     public function deleted(Justificacion $justificacion)
     {
-        $justificacion->asistencia->sancion->activa=true;
-        $justificacion->asistencia->sancion->save();
+        $sancionesAsociadas = $justificacion->asistencia->sanciones;
+        if ($sancionesAsociadas->isNotEmpty()) {
+            foreach ($sancionesAsociadas as $sA) {
+                $sA->activa = true;
+                $sA->save();
+            }
+        }
     }
 
     /**

@@ -47,6 +47,10 @@ class BackpackUser extends User
     {
         return $this->hasMany('App\Models\MenuAsignado');
     }
+    public function sanciones()
+    {
+        return $this->hasMany('App\Models\Sancion');
+    }
     public function ingresosInsumos()
     {
         return $this->hasMany('App\Models\IngresoInsumo');

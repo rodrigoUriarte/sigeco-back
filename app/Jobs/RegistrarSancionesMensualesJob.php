@@ -14,6 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class RegistrarSancionesMensualesJob implements ShouldQueue
 {
@@ -54,7 +55,7 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
                 foreach ($users as $user) {
                     //coleccion de todas las inasistencias que no tienen una sancion asociada, de un determinado usuario de la ultima semana
                     $inasistencias = Asistencia::where('comedor_id', $this->comedor_id)
-                        ->doesntHave('sancion')
+                        ->doesntHave('sanciones')
                         ->doesntHave('justificacion')
                         ->where('asistio', false)
                         ->where('asistencia_fbh', false)
@@ -66,14 +67,23 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
                         })
                         ->get();
 
+                    $inasistencias = $inasistencias
+                        ->sortBy(function ($query) {
+                            return $query->inscripcion->fecha_inscripcion;
+                        });
+
                     if ($inasistencias->count() >= $reglaM->cantidad_faltas) {
                         //no son dias corridos tengo que cambiar desde hasta por una fecha concreta
 
                         $dias_servicio = DiaServicio::where('comedor_id', $this->comedor_id)->get()->pluck('dia');
                         $dia_sancion = Carbon::now()->addDay();
                         for ($i = 0; $i < $reglaM->dias_sancion; $i++) {
-                            $nomdia = $dia_sancion->dayName;
-                            while (!$dias_servicio->contains($dia_sancion->dayName)) {
+                            while (
+                                (!$dias_servicio->contains($dia_sancion->dayName)) or
+                                ($tieneSancionActivaFecha = $user->sanciones->where('fecha', $dia_sancion->toDateString())
+                                    ->where('activa', 1)
+                                    ->isNotEmpty())
+                            ) {
                                 $dia_sancion->addDay();
                             }
 
@@ -86,12 +96,15 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
                                     'regla_id' => $reglaM->id,
                                 ]
                             );
-                            $dia_sancion->addDay();
-
-                            foreach ($inasistencias as $inasistencia) {
-                                $inasistencia->sancion_id = $sancion->id;
-                                $inasistencia->save();
+                            foreach($inasistencias->slice(0,$reglaM->cantidad_faltas) as $inasistencia) {
+                                DB::table('asistencia_sancion')->insert([
+                                    [
+                                        'asistencia_id' => $inasistencia->id,
+                                        'sancion_id' => $sancion->id,
+                                    ]
+                                ]);
                             }
+                            $dia_sancion->addDay();
                         }
                     }
                 }

@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('registrar:inasistencia')
         ->everyMinute();
         $schedule->command('registrar:sancionesMensuales')
-        ->monthlyOn(1, '00:00');
+        ->monthlyOn(1, '00:01');
         $schedule->command('registrar:sancionesSemanales')
         ->weeklyOn(1, '00:00');
         $schedule->command('registrar:menusNoAsignados')
