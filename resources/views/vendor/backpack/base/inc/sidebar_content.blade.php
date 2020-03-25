@@ -52,12 +52,12 @@
 	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
 		GESTION COMEDORES</a>
 	<ul class="nav-dropdown-items">
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('parametro') }}'><i
+					class='nav-icon fas fa-hourglass-half'></i> Parametros</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('diaservicio') }}'><i
 					class='nav-icon fas fa-calendar-week'></i> Dias Servicio</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
 					class='nav-icon fas fa-clock'></i> Bandas Horarias</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('parametro') }}'><i
-					class='nav-icon fas fa-hourglass-half'></i> Parametros</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
 					class='nav-icon fas fa-balance-scale'></i> Reglas</a></li>
 	</ul>

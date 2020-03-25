@@ -125,10 +125,44 @@ class IngresosInsumosSeeder extends Seeder
             'user_id' => 3,
         ]);
 
-        $ingresoInsumo13 = IngresoInsumo::create([
+        // NO HACEMOS INGRESO DE MORRON(ID-11) PARA PROBAR ALGUNAS FUNCIONES DEL SISTEMA
+        $ingresoInsumo14 = IngresoInsumo::create([
             'fecha_vencimiento' => $this->rand_date('2020-06-01','2020-12-31'),
-            'cantidad' => 5000,
-            'insumo_id' => 11,
+            'cantidad' => 10000,
+            'insumo_id' => 12,
+            'comedor_id' => Comedor::all()->first()->id,
+            'user_id' => 3,
+        ]);
+
+        $ingresoInsumo15 = IngresoInsumo::create([
+            'fecha_vencimiento' => $this->rand_date('2020-06-01','2020-12-31'),
+            'cantidad' => 20,
+            'insumo_id' => 13,
+            'comedor_id' => Comedor::all()->first()->id,
+            'user_id' => 3,
+        ]);
+
+        $ingresoInsumo16 = IngresoInsumo::create([
+            'fecha_vencimiento' => $this->rand_date('2020-06-01','2020-12-31'),
+            'cantidad' => 200,
+            'insumo_id' => 14,
+            'comedor_id' => Comedor::all()->first()->id,
+            'user_id' => 3,
+        ]);
+
+        $ingresoInsumo17 = IngresoInsumo::create([
+            'fecha_vencimiento' => $this->rand_date('2020-06-01','2020-12-31'),
+            'cantidad' => 12000,
+            'insumo_id' => 15,
+            'comedor_id' => Comedor::all()->first()->id,
+            'user_id' => 3,
+        ]);
+
+        
+        $ingresoInsumo17 = IngresoInsumo::create([
+            'fecha_vencimiento' => $this->rand_date('2020-06-01','2020-12-31'),
+            'cantidad' => 15000,
+            'insumo_id' => 16,
             'comedor_id' => Comedor::all()->first()->id,
             'user_id' => 3,
         ]);

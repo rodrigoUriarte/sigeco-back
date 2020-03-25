@@ -11,8 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\DiaServicio;
+use App\Models\Lote;
 use App\Models\Menu;
+use App\Models\Plato;
 use Carbon\Carbon;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
 
@@ -30,6 +33,58 @@ class CalculoEstimacionCompra extends Controller
         return view('personalizadas.vistaEstimacionCompra', ['dias' => $dias, 'menus' => $menus]);
     }
 
+    public function calculo(SupportCollection $menusCantidad)
+    {            
+        $mpifc = collect();
+
+        foreach ($menusCantidad as $menu) {
+
+            $cantidad_inscripciones = $menu['cantidad'];
+
+            $menu_id = $menu['menu_id'];
+
+            $platos = Plato::where('comedor_id', backpack_user()->persona->comedor_id)
+                ->where('menu_id', $menu_id)
+                ->get();
+
+            foreach ($platos as $plato) {
+                $insumos_plato = $plato->insumosPlatos;
+                $flag = false;
+
+                foreach ($insumos_plato as $insumo_plato) {
+                    $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
+                        ->where('insumo_id', $insumo_plato->insumo_id)
+                        ->sum('cantidad');
+                    $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
+                    if ($cd_insumo >= $cn_insumo) {
+                        //si flag es true 'c' va a ser cantidad que sobra de ese insumo
+                        $flag = true;
+                        $cs_insumo = $cd_insumo - $cn_insumo;
+                    } else {
+                        //si flag es flase 'c' va a ser cantidad que falta de ese insumo
+                        $flag = false;
+                        $cf_insumo = $cn_insumo - $cd_insumo;
+                    }
+
+                    $aux = collect();
+                    $aux->put('m', $menu_id);
+                    $aux->put('p', $plato->id);
+                    $aux->put('i', $insumo_plato->id);
+                    $aux->put('f', $flag);
+                    if ($flag == false) {
+                        $aux->put('c', $cf_insumo);
+                    }else {
+                        $aux->put('c', $cs_insumo);
+                    }
+                    $mpifc->push($aux->toArray());
+
+                }
+            }
+        }
+        $mpifc = $mpifc->groupBy('m');
+        echo ("hola");
+        return $mpifc;
+    }
     public function reporte(Request $request)
     {
         $dia = $request->filtro_dias;
@@ -95,7 +150,7 @@ class CalculoEstimacionCompra extends Controller
                     ->whereDate('fecha_inscripcion', $fi)
                     ->with('menuAsignado')
                     ->get();
-                
+
                 $cantidadMenuFecha = $cantidadMenuFecha->groupBy('menuAsignado.menu_id')
                     ->map(function ($group) {
                         return [
@@ -116,18 +171,25 @@ class CalculoEstimacionCompra extends Controller
             });
 
             if (($promedio->count() == 0)) {
-                    Alert::info('No se poseen datos para calcular la estadistica, 
+                Alert::info('No se poseen datos para calcular la estadistica, 
                     debera cargarlos manualmente.')->flash();
-                    return Redirect::to('admin/calculoEstimacionCompra');
-                }
+                return Redirect::to('admin/calculoEstimacionCompra');
+            }
+            $this->calculo($promedio);
 
-            echo ('hola');
         } elseif ($flag == true) {
-            # code...
+
+            $manual = collect();
+            foreach ($menus_cantidad as $key => $value) {
+                if ($value != null) {
+                    $aux = collect();
+                    $aux->put('menu_id', $key);
+                    $aux->put('cantidad', $value);
+                    $manual->push($aux->toArray());
+                }
+            }
+            $this->calculo($manual);
         }
-
-
-
 
         // if ($filtro_fecha_vencimiento_desde > $filtro_fecha_vencimiento_hasta) {
         //     Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();

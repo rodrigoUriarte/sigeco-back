@@ -16,39 +16,68 @@ class GestionInsumosPlatosSeeder extends Seeder
      */
     public function run()
     {
+
+        $menu1 = Menu::create([
+            'descripcion' => 'MENU NORMAL',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $menu2 = Menu::create([
+            'descripcion' => 'MENU DIETA',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+        
         $plato1 = Plato::create([
             'descripcion' => 'GUISO DE ARROZ',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato2 = Plato::create([
             'descripcion' => 'GUISO DE FIDEO',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato3 = Plato::create([
             'descripcion' => 'POLLO AL HORNO CON PAPAS',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato4 = Plato::create([
             'descripcion' => 'ESTOFADO DE LENTEJAS',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato5 = Plato::create([
             'descripcion' => 'MILANESA DE POLLO CON PURE DE PAPA',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato6 = Plato::create([
             'descripcion' => 'FIDEOS CON SALSA BOLOGNESA',
-            'menu_id' => Menu::all()->first()->id,
+            'menu_id' => $menu1->id,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $plato7 = Plato::create([
+            'descripcion' => 'TARTA DE VERDURAS',
+            'menu_id' => $menu2->id,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $plato8 = Plato::create([
+            'descripcion' => 'SALPICON DE AVE',
+            'menu_id' => $menu2->id,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $plato9 = Plato::create([
+            'descripcion' => 'ENSALADA DE LENTEJAS MIXTA',
+            'menu_id' => $menu2->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
@@ -114,6 +143,36 @@ class GestionInsumosPlatosSeeder extends Seeder
 
         $insumo11 = Insumo::create([
             'descripcion' => 'MORRON',
+            'unidad_medida' => 'GRAMOS',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumo12 = Insumo::create([
+            'descripcion' => 'ACELGA',
+            'unidad_medida' => 'GRAMOS',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumo13 = Insumo::create([
+            'descripcion' => 'TAPA PASCUALINA',
+            'unidad_medida' => 'UNIDAD',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumo14 = Insumo::create([
+            'descripcion' => 'HUEVOS',
+            'unidad_medida' => 'UNIDAD',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumo15 = Insumo::create([
+            'descripcion' => 'REPOLLO',
+            'unidad_medida' => 'GRAMOS',
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumo16 = Insumo::create([
+            'descripcion' => 'TOMATE',
             'unidad_medida' => 'GRAMOS',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
@@ -272,6 +331,117 @@ class GestionInsumosPlatosSeeder extends Seeder
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
-        
+        $insumoPlato23 = InsumoPlato::create([
+            'plato_id' => $plato7->id,
+            'insumo_id' => $insumo10->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato23 = InsumoPlato::create([
+            'plato_id' => $plato7->id,
+            'insumo_id' => $insumo11->id,
+            'cantidad' => 20,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato23 = InsumoPlato::create([
+            'plato_id' => $plato7->id,
+            'insumo_id' => $insumo12->id,
+            'cantidad' => 100,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato23 = InsumoPlato::create([
+            'plato_id' => $plato7->id,
+            'insumo_id' => $insumo13->id,
+            'cantidad' => 0.25,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato24 = InsumoPlato::create([
+            'plato_id' => $plato7->id,
+            'insumo_id' => $insumo14->id,
+            'cantidad' => 2,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato25 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo1->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato26 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo7->id,
+            'cantidad' => 1,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato27 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo11->id,
+            'cantidad' => 20,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato28 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo14->id,
+            'cantidad' => 1,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato29 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo15->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato30 = InsumoPlato::create([
+            'plato_id' => $plato8->id,
+            'insumo_id' => $insumo16->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato31 = InsumoPlato::create([
+            'plato_id' => $plato9->id,
+            'insumo_id' => $insumo8->id,
+            'cantidad' => 100,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato32 = InsumoPlato::create([
+            'plato_id' => $plato9->id,
+            'insumo_id' => $insumo10->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato33 = InsumoPlato::create([
+            'plato_id' => $plato9->id,
+            'insumo_id' => $insumo11->id,
+            'cantidad' => 20,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato34 = InsumoPlato::create([
+            'plato_id' => $plato9->id,
+            'insumo_id' => $insumo14->id,
+            'cantidad' => 1,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+
+        $insumoPlato35 = InsumoPlato::create([
+            'plato_id' => $plato9->id,
+            'insumo_id' => $insumo16->id,
+            'cantidad' => 50,
+            'comedor_id' => Comedor::all()->first()->id,
+        ]);
+ 
     }
 }
