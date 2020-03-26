@@ -13,10 +13,10 @@
 </head>
 
 <h2>ESTIMACION COMPRA</h2>
+
 <div class="row">
     <div class="card" style="width:100%">
-
-        <div class="card-header">
+        <div class="card-body">
             <form action="{{route('reporteCalculoEstimacionCompra')}}" method="GET" enctype="multipart/form-data">
                 <h5>Calculo estimativo para realizar compras</h5>
                 <hr>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label>Cantidad comensales menu: </label>
-                    <input class="form-control" type="number" name="filtro_menu_cantidad[{{$menu->id}}]"
+                        <input class="form-control" type="number" name="filtro_menu_cantidad[{{$menu->id}}]"
                             id="filtro_menu_cantidad" min="1" placeholder="Cantidad de comensales de este menu"
                             style="width: 100%;">
                     </div>
@@ -70,7 +70,7 @@
                 <hr>
                 @csrf
                 <div align="right">
-                    <button type="submit" class="btn  btn-success  btn-flat btn-sm">Calcular</button>
+                    <button type="submit" class="btn  btn-success  btn-flat btn-sm">Generar Reporte</button>
                 </div>
 
             </form>

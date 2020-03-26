@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Extra;
 
-use App\Charts\UserChart;
-use App\Models\Asistencia;
+
 use App\Models\Inscripcion;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\DiaServicio;
+use App\Models\Insumo;
 use App\Models\Lote;
 use App\Models\Menu;
 use App\Models\Plato;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Redirect;
@@ -33,60 +32,9 @@ class CalculoEstimacionCompra extends Controller
         return view('personalizadas.vistaEstimacionCompra', ['dias' => $dias, 'menus' => $menus]);
     }
 
-    public function calculo(SupportCollection $menusCantidad)
-    {            
-        $mpifc = collect();
-
-        foreach ($menusCantidad as $menu) {
-
-            $cantidad_inscripciones = $menu['cantidad'];
-
-            $menu_id = $menu['menu_id'];
-
-            $platos = Plato::where('comedor_id', backpack_user()->persona->comedor_id)
-                ->where('menu_id', $menu_id)
-                ->get();
-
-            foreach ($platos as $plato) {
-                $insumos_plato = $plato->insumosPlatos;
-                $flag = false;
-
-                foreach ($insumos_plato as $insumo_plato) {
-                    $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
-                        ->where('insumo_id', $insumo_plato->insumo_id)
-                        ->sum('cantidad');
-                    $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
-                    if ($cd_insumo >= $cn_insumo) {
-                        //si flag es true 'c' va a ser cantidad que sobra de ese insumo
-                        $flag = true;
-                        $cs_insumo = $cd_insumo - $cn_insumo;
-                    } else {
-                        //si flag es flase 'c' va a ser cantidad que falta de ese insumo
-                        $flag = false;
-                        $cf_insumo = $cn_insumo - $cd_insumo;
-                    }
-
-                    $aux = collect();
-                    $aux->put('m', $menu_id);
-                    $aux->put('p', $plato->id);
-                    $aux->put('i', $insumo_plato->id);
-                    $aux->put('f', $flag);
-                    if ($flag == false) {
-                        $aux->put('c', $cf_insumo);
-                    }else {
-                        $aux->put('c', $cs_insumo);
-                    }
-                    $mpifc->push($aux->toArray());
-
-                }
-            }
-        }
-        $mpifc = $mpifc->groupBy('m');
-        echo ("hola");
-        return $mpifc;
-    }
     public function reporte(Request $request)
     {
+
         $dia = $request->filtro_dias;
 
         $cantidad_semanas = $request->filtro_cantidad_semanas;
@@ -111,8 +59,11 @@ class CalculoEstimacionCompra extends Controller
             return Redirect::to('admin/calculoEstimacionCompra');
         }
 
+        $manual = collect();
+        $promedio = collect();
+
         if ($cantidad_semanas != null) {
-            //se definio la cantidad de semanas, entonces calculo la estadistica
+            //CALCULO LAS CANTIDADES SEGUN LA ESTADISTICA DE LAS SEMANAS SOLICITADAS POR EL USUARIO
             switch ($dia) {
                 case 'lunes':
                     $day = 'monday';
@@ -175,11 +126,9 @@ class CalculoEstimacionCompra extends Controller
                     debera cargarlos manualmente.')->flash();
                 return Redirect::to('admin/calculoEstimacionCompra');
             }
-            $this->calculo($promedio);
-
         } elseif ($flag == true) {
-
-            $manual = collect();
+            //ACA EL USUARIO YA ME DICE LAS CANTIDADES ENTONCES INSERTO ESAS CANTIDADES
+            //EN UNA COLECCION QUE DESPUES SE USARA PARA EL CALCULO DE LOS INSUMOS A COMPRAR
             foreach ($menus_cantidad as $key => $value) {
                 if ($value != null) {
                     $aux = collect();
@@ -188,64 +137,164 @@ class CalculoEstimacionCompra extends Controller
                     $manual->push($aux->toArray());
                 }
             }
-            $this->calculo($manual);
         }
 
-        // if ($filtro_fecha_vencimiento_desde > $filtro_fecha_vencimiento_hasta) {
-        //     Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
-        //     return Redirect::to('admin/lote');            
-        // }
+        //FUNCION DE CALCULO DE LOS INSUMOS A COMPRAR SEGUN LAS CANTIDADES
+        //QUE PROVIENEN DE LA ESTADISTICA($PROMEDIO) O DE LA CARGA MANUAL($MANUAL)
+        if ($promedio->isNotEmpty()) {
+            $menusCantidad = $promedio;
+        } elseif ($manual->isNotEmpty()) {
+            $menusCantidad = $manual;
+        }
 
-        // if ($request->filtro_insumo != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-        //     foreach ($lotes as $id => $lote) {
-        //         if ($lote->insumo->descripcion != $filtro_insumo) {
-        //             $lotes->pull($id);
-        //         }
-        //     }
-        // }
+        $mpifc = collect();
 
-        // if ($request->filtro_fecha_vencimiento_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-        //     foreach ($lotes as $id => $lote) {
-        //         if ($lote->fecha_vencimiento < $filtro_fecha_vencimiento_desde) {
-        //             $lotes->pull($id);
-        //         }
-        //     }
-        //     //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
-        //     $myDate = Date::createFromFormat('Y-m-d', $filtro_fecha_vencimiento_desde);
-        //     $filtro_fecha_vencimiento_desde = date_format($myDate, 'd-m-Y');
-        // }
+        foreach ($menusCantidad as $menu) {
 
-        // if ($request->filtro_fecha_vencimiento_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-        //     foreach ($lotes as $id => $lote) {
-        //         if ($lote->fecha_vencimiento > $filtro_fecha_vencimiento_hasta) {
-        //             $lotes->pull($id);
-        //         }
-        //     }
-        //     //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
-        //     $myDate2 = Date::createFromFormat('Y-m-d', $filtro_fecha_vencimiento_hasta);
-        //     $filtro_fecha_vencimiento_hasta = date_format($myDate2, 'd-m-Y');
-        // }
+            $cantidad_inscripciones = $menu['cantidad'];
 
-        // if ($request->filtro_lotes_vacios == null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
-        //         foreach ($lotes as $id => $lote) {
-        //             if ($lote->cantidad == 0) {
-        //                 $lotes->pull($id);
-        //             }
-        //         }
+            $menu_id = $menu['menu_id'];
 
-        // }
+            $platos = Plato::where('comedor_id', backpack_user()->persona->comedor_id)
+                ->where('menu_id', $menu_id)
+                ->get();
 
-        // $pdf = PDF::loadView(
-        //     'reportes.reporteLotes',
-        //     compact('lotes', 'filtro_insumo', 'filtro_fecha_vencimiento_desde', 'filtro_fecha_vencimiento_hasta', 'filtro_lotes_vacios')
-        // );
+            foreach ($platos as $plato) {
+                $insumos_plato = $plato->insumosPlatos;
+                $flag = false;
 
-        // $dom_pdf = $pdf->getDomPDF();
-        // $canvas = $dom_pdf->get_canvas();
-        // $y = $canvas->get_height() - 15;
-        // $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+                foreach ($insumos_plato as $insumo_plato) {
+                    $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
+                        ->where('insumo_id', $insumo_plato->insumo_id)
+                        ->sum('cantidad');
+                    $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
+                    if ($cd_insumo >= $cn_insumo) {
+                        //si flag es true 'c' va a ser cantidad que sobra de ese insumo
+                        $flag = true;
+                        $cs_insumo = $cd_insumo - $cn_insumo;
+                    } else {
+                        //si flag es false 'c' va a ser cantidad que falta de ese insumo
+                        $flag = false;
+                        $cf_insumo = $cn_insumo - $cd_insumo;
+                    }
 
-        // $nombre = 'Reporte-Lotes-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
-        // return $pdf->stream($nombre);    
+                    $mid = $menu_id;
+                    $pid = $plato->id;
+                    $iid = $insumo_plato->id;
+                    $aux = collect();
+                    $aux->put('menu', Menu::find($menu_id)->descripcion);
+                    $aux->put('plato', Plato::find($plato->id)->descripcion);
+                    $aux->put('insumo', Insumo::find($insumo_plato->insumo->id)->descripcion);
+                    $aux->put('estado', $flag);
+                    if ($flag == false) {
+                        $aux->put('cantidad', $cf_insumo .' '. Insumo::find($insumo_plato->insumo->id)->unidad_medida);
+                    } else {
+                        $aux->put('cantidad', $cs_insumo .' '. Insumo::find($insumo_plato->insumo->id)->unidad_medida);
+                    }
+                    $mpifc->push($aux);
+                }
+            }
+        }
+
+        $mpifc = $mpifc->groupBy([
+            'menu',
+            function ($item) {
+                return $item['plato'];
+            },    function ($item) {
+                return $item['insumo'];
+            },
+        ], $preserveKeys = true);
+
+        //FUNCION DE IMPRESION DEL PDF
+        $pdf = PDF::loadView(
+            'reportes.reporteEstimacionCompra',
+            compact('mpifc')
+        );
+
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $y = $canvas->get_height() - 15;
+        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        return $pdf->stream($nombre);
     }
+
+    // public function calculo(SupportCollection $menusCantidad)
+    // {
+    //     $mpifc = collect();
+
+    //     foreach ($menusCantidad as $menu) {
+
+    //         $cantidad_inscripciones = $menu['cantidad'];
+
+    //         $menu_id = $menu['menu_id'];
+
+    //         $platos = Plato::where('comedor_id', backpack_user()->persona->comedor_id)
+    //             ->where('menu_id', $menu_id)
+    //             ->get();
+
+    //         foreach ($platos as $plato) {
+    //             $insumos_plato = $plato->insumosPlatos;
+    //             $flag = false;
+
+    //             foreach ($insumos_plato as $insumo_plato) {
+    //                 $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
+    //                     ->where('insumo_id', $insumo_plato->insumo_id)
+    //                     ->sum('cantidad');
+    //                 $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
+    //                 if ($cd_insumo >= $cn_insumo) {
+    //                     //si flag es true 'c' va a ser cantidad que sobra de ese insumo
+    //                     $flag = true;
+    //                     $cs_insumo = $cd_insumo - $cn_insumo;
+    //                 } else {
+    //                     //si flag es flase 'c' va a ser cantidad que falta de ese insumo
+    //                     $flag = false;
+    //                     $cf_insumo = $cn_insumo - $cd_insumo;
+    //                 }
+
+    //                 $mid=$menu_id;
+    //                 $pid=$plato->id;
+    //                 $iid=$insumo_plato->id;
+    //                 $aux = collect();
+    //                 $aux->put('menu', Menu::find($menu_id)->descripcion);
+    //                 $aux->put('plato', Plato::find($plato->id)->descripcion);
+    //                 $aux->put('insumo', Insumo::find($insumo_plato->insumo->id)->descripcion);
+    //                 $aux->put('estado', $flag);
+    //                 if ($flag == false) {
+    //                     $aux->put('cantidad', $cf_insumo);
+    //                 } else {
+    //                     $aux->put('cantidad', $cs_insumo);
+    //                 }
+    //                 $mpifc->push($aux->toArray());
+    //             }
+    //         }
+    //     }
+    //     $mpifc = $mpifc->groupBy([
+    //         'menu',
+    //         function ($item) {
+    //             return $item['plato'];
+    //         },    function ($item) {
+    //             return $item['insumo'];
+    //         },
+    //     ], $preserveKeys = true);
+
+    //     $this->imprimirReporte($mpifc);
+    // }
+
+    // public function imprimirReporte(SupportCollection $mpifc)
+    // {
+
+    //     $pdf = PDF::loadView(
+    //         'reportes.reporteEstimacionCompra'
+    //     );
+
+    //     $dom_pdf = $pdf->getDomPDF();
+    //     $canvas = $dom_pdf->get_canvas();
+    //     $y = $canvas->get_height() - 15;
+    //     $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+    //     $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+    //     return $pdf->stream($nombre);
+    // }
 }

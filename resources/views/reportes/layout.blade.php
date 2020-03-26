@@ -7,7 +7,7 @@
 
     <style type="text/css">
         @page {
-            margin: 0px;
+            margin: 15px;
         }
 
         body {
@@ -33,7 +33,7 @@
         }
 
         .invoice table {
-            margin: 15px;
+            margin: 10px;
         }
 
         .invoice h4 {
@@ -75,8 +75,6 @@
 
 </head>
 
-
-
 <body>
     <div class="information">
         <div style="text-align:center">
@@ -94,27 +92,6 @@
                 <img src="{{asset("storage/logoUNAM.png")}}" alt="Logo" width="120" class="logo" />
             </div>
         </div>
-        {{-- <table width="100%">
-            <tr>
-                <td align="center" colspan="3">
-                    <h2>{{backpack_user()->persona->comedor->unidadAcademica->nombre}}</h2>
-        </td>
-        </tr>
-        <tr>
-            <td align="left" style="width: 40%;">
-                <h3 style="text-align:center">{{backpack_user()->persona->comedor->descripcion}}</h3>
-                <h4 style="text-align:center">{{backpack_user()->persona->comedor->direccion}}</h4>
-            </td>
-
-            <td align="center">
-                <img src="{{asset("storage/logoUNAM.png")}}" alt="Logo" width="120" class="logo" />
-            </td>
-
-            <td align="right" style="width: 40%;">
-                <h4 style="text-align:center">Usuario: {{backpack_user()->name}}</h4>
-            </td>
-        </tr>
-        </table> --}}
     </div>
 
     <section>
@@ -125,18 +102,15 @@
         <h4><strong>Cantidad de registros: </strong> @yield('cantidad')</h4>
     </div>
 
-    <div class="information" style="position: absolute; bottom: 0;">
+    <div style="position: absolute; bottom: 0;">
         <table width="100%">
             <tr>
                 <td align="left" style="width: 50%;">
                     Fecha: {{ \Carbon\Carbon::now()->format('d/m/Y')}}
                 </td>
             </tr>
-
         </table>
     </div>
 </body>
-
-
 
 </html>
