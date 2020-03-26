@@ -27,44 +27,21 @@
         </thead>
         <tbody>
             @if (sizeof($mpifc)>0)
-            @foreach ($mpifc as $menus => $platos)
+            @foreach ($mpifc as $value)
             <tr>
-                <td>
-                    {{$menus}}
-                </td>
+            <td>{{$value['menu']}}</td>
+            <td>{{$value['plato']}}</td>
+            <td>{{$value['insumo']}}</td>
+            <td>@if($value['estado'] == false)
+                FALTANTE
+                @elseif ($value['estado'] == TRUE)
+                REMANENTE
+                @endif
+            </td>
+            <td>{{$value['cantidad']}}</td>
+
             </tr>
 
-            @foreach ($platos as $plato => $insumos)
-            <td>
-                <tr>
-                    <td>
-                        {{$plato}}
-                    </td>
-                </tr>
-            </td>
-
-            @foreach ($insumos as $insumo => $value)
-            <?php xdebug_break(); ?>
-            <td>
-            <td>
-                <tr>
-                    <td>
-                        {{$insumo}}
-                    </td>
-                    <td>
-                        @if ($value->pluck('estado')->first() == true)
-                        REMANENTE:
-                        @endif
-                        @if ($value->pluck('estado')->first() == false)
-                        FALTANTE:
-                        @endif
-                    </td>
-                    <td align="right">{{$value->pluck('cantidad')->first()}}</td>
-                </tr>
-            </td>
-            </td>
-            @endforeach
-            @endforeach
             @endforeach
             @endif
         </tbody>
@@ -74,5 +51,5 @@
 
 
 @section('cantidad')
-{{sizeof($platos)}}
+{{sizeof($mpifc)}}
 @stop
