@@ -191,19 +191,19 @@ class CalculoEstimacionCompra extends Controller
                     } else {
                         $aux->put('cantidad', $cs_insumo .' '. Insumo::find($insumo_plato->insumo->id)->unidad_medida);
                     }
-                    $mpifc->push($aux->toArray());
+                    $mpifc->push($aux);
                 }
             }
         }
 
-        // $mpifc = $mpifc->groupBy([
-        //     'menu',
-        //     function ($item) {
-        //         return $item['plato'];
-        //     },    function ($item) {
-        //         return $item['insumo'];
-        //     },
-        // ], $preserveKeys = true);
+        $mpifc = $mpifc->groupBy([
+            'menu',
+            function ($item) {
+                return $item['plato'];
+            },    function ($item) {
+                return $item['insumo'];
+            },
+        ], $preserveKeys = true);
 
         //FUNCION DE IMPRESION DEL PDF
         $pdf = PDF::loadView(
