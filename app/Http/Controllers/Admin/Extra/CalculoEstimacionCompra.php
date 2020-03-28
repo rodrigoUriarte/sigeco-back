@@ -14,9 +14,11 @@ use App\Models\Menu;
 use App\Models\Plato;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use DOMDocument;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
+use Mpdf\Mpdf;
 
 class CalculoEstimacionCompra extends Controller
 {
@@ -147,7 +149,7 @@ class CalculoEstimacionCompra extends Controller
             $menusCantidad = $manual;
         }
 
-        $mpifc = collect();
+        $menus = collect();
 
         foreach ($menusCantidad as $menu) {
 
@@ -191,110 +193,44 @@ class CalculoEstimacionCompra extends Controller
                     } else {
                         $aux->put('cantidad', $cs_insumo .' '. Insumo::find($insumo_plato->insumo->id)->unidad_medida);
                     }
-                    $mpifc->push($aux);
+                    $menus->push($aux);
                 }
             }
         }
 
-        $mpifc = $mpifc->groupBy([
+        $menus = $menus->groupBy([
             'menu',
             function ($item) {
                 return $item['plato'];
             },    function ($item) {
                 return $item['insumo'];
             },
-        ], $preserveKeys = true);
+        ], $preserveKeys = true)->toArray();
 
         //FUNCION DE IMPRESION DEL PDF
-        $pdf = PDF::loadView(
-            'reportes.reporteEstimacionCompra',
-            compact('mpifc')
-        );
+        $html = view('reportes.reporteEstimacionCompra',['menus' => $menus]);
 
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $y = $canvas->get_height() - 15;
-        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $mpdf = new Mpdf([
+            'shrink_tables_to_fit'=> 1,
+            'mode' => 'utf-8',
+            'tableMinSizePriority' => true
 
-        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
-        return $pdf->stream($nombre);
+        ]);
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+
+        // $pdf = PDF::loadView(
+        //     'reportes.reporteEstimacionCompra',
+        //     compact('menus')
+        // );
+
+        // $dom_pdf = $pdf->getDomPDF();
+        // $canvas = $dom_pdf->get_canvas();
+        // $y = $canvas->get_height() - 15;
+        // $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        // $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        // return $pdf->stream($nombre);
     }
 
-    // public function calculo(SupportCollection $menusCantidad)
-    // {
-    //     $mpifc = collect();
-
-    //     foreach ($menusCantidad as $menu) {
-
-    //         $cantidad_inscripciones = $menu['cantidad'];
-
-    //         $menu_id = $menu['menu_id'];
-
-    //         $platos = Plato::where('comedor_id', backpack_user()->persona->comedor_id)
-    //             ->where('menu_id', $menu_id)
-    //             ->get();
-
-    //         foreach ($platos as $plato) {
-    //             $insumos_plato = $plato->insumosPlatos;
-    //             $flag = false;
-
-    //             foreach ($insumos_plato as $insumo_plato) {
-    //                 $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
-    //                     ->where('insumo_id', $insumo_plato->insumo_id)
-    //                     ->sum('cantidad');
-    //                 $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
-    //                 if ($cd_insumo >= $cn_insumo) {
-    //                     //si flag es true 'c' va a ser cantidad que sobra de ese insumo
-    //                     $flag = true;
-    //                     $cs_insumo = $cd_insumo - $cn_insumo;
-    //                 } else {
-    //                     //si flag es flase 'c' va a ser cantidad que falta de ese insumo
-    //                     $flag = false;
-    //                     $cf_insumo = $cn_insumo - $cd_insumo;
-    //                 }
-
-    //                 $mid=$menu_id;
-    //                 $pid=$plato->id;
-    //                 $iid=$insumo_plato->id;
-    //                 $aux = collect();
-    //                 $aux->put('menu', Menu::find($menu_id)->descripcion);
-    //                 $aux->put('plato', Plato::find($plato->id)->descripcion);
-    //                 $aux->put('insumo', Insumo::find($insumo_plato->insumo->id)->descripcion);
-    //                 $aux->put('estado', $flag);
-    //                 if ($flag == false) {
-    //                     $aux->put('cantidad', $cf_insumo);
-    //                 } else {
-    //                     $aux->put('cantidad', $cs_insumo);
-    //                 }
-    //                 $mpifc->push($aux->toArray());
-    //             }
-    //         }
-    //     }
-    //     $mpifc = $mpifc->groupBy([
-    //         'menu',
-    //         function ($item) {
-    //             return $item['plato'];
-    //         },    function ($item) {
-    //             return $item['insumo'];
-    //         },
-    //     ], $preserveKeys = true);
-
-    //     $this->imprimirReporte($mpifc);
-    // }
-
-    // public function imprimirReporte(SupportCollection $mpifc)
-    // {
-
-    //     $pdf = PDF::loadView(
-    //         'reportes.reporteEstimacionCompra'
-    //     );
-
-    //     $dom_pdf = $pdf->getDomPDF();
-    //     $canvas = $dom_pdf->get_canvas();
-    //     $y = $canvas->get_height() - 15;
-    //     $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
-
-    //     $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
-    //     return $pdf->stream($nombre);
-    // }
 }

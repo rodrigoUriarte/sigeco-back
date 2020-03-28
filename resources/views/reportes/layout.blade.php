@@ -25,6 +25,7 @@
 
         table {
             font-size: x-small;
+            border-collapse: collapse;
         }
 
         tfoot tr td {
@@ -78,15 +79,15 @@
 <body>
     <div class="information">
         <div style="text-align:center">
-            <h3>{{backpack_user()->persona->comedor->unidadAcademica->nombre}}</h2>
+            <h3>{{backpack_user()->persona->comedor->unidadAcademica->nombre}}</h3>
         </div>
         <div id="container">
             <div id="left">
-                <h4 style="text-align:center">{{backpack_user()->persona->comedor->descripcion}}</h3>
-                <h5 style="text-align:center">{{backpack_user()->persona->comedor->direccion}}</h4>
+                <h4 style="text-align:center">{{backpack_user()->persona->comedor->descripcion}}</h4>
+                    <h5 style="text-align:center">{{backpack_user()->persona->comedor->direccion}}</h5>
             </div>
             <div id="right">
-                <h5 style="text-align:center">Usuario: {{backpack_user()->name}}</h4>
+                <h5 style="text-align:center">Usuario: {{backpack_user()->name}}</h5>
             </div>
             <div id="center">
                 <img src="{{asset("storage/logoUNAM.png")}}" alt="Logo" width="120" class="logo" />
