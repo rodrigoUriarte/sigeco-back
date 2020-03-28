@@ -13,11 +13,11 @@
     <hr>
     <table width="100%" border="1">
         <thead>
-            <tr style="line-height: 14px; font-size: 14px; background: lightgrey">
-                <th>Usuario</th>
-                <th>Fecha Inscripcion</th>
-                <th>Banda Horaria</th>
-                <th>Menu Asignado</th>
+            <tr style="line-height: 14px; font-size: 14px; background: #467FD0">
+                <th style="color:white">Usuario</th>
+                <th style="color:white">Fecha Inscripcion</th>
+                <th style="color:white">Banda Horaria</th>
+                <th style="color:white">Menu Asignado</th>
             </tr>
         </thead>
         <tbody>

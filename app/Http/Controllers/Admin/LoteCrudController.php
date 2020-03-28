@@ -192,17 +192,22 @@ class LoteCrudController extends CrudController
             
         }
 
-        $pdf = PDF::loadView(
-            'reportes.reporteLotes',
-            compact('lotes', 'filtro_insumo', 'filtro_fecha_vencimiento_desde', 'filtro_fecha_vencimiento_hasta', 'filtro_lotes_vacios')
-        );
+        $html = view('reportes.reporteLotes',
+        ['lotes'=>$lotes, 'filtro_insumo'=>$filtro_insumo,
+        'filtro_fecha_vencimiento_desde'=>$filtro_fecha_vencimiento_desde,
+        'filtro_fecha_vencimiento_hasta'=>$filtro_fecha_vencimiento_hasta,
+        'filtro_lotes_vacios'=>$filtro_lotes_vacios]);
 
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $y = $canvas->get_height() - 15;
-        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $mpdf = new Mpdf([
+            'margin_left' => '10', 
+            'margin_right' => '10', 
+            'margin_top' => '10', 
+            'margin_bottom' => '10', 
+        ]);
+        $mpdf->setFooter('{PAGENO} / {nb}');
+        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($nombre,"I");
 
-        $nombre = 'Reporte-Lotes-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
-        return $pdf->stream($nombre);
     }
 }

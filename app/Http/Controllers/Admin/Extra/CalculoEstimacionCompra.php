@@ -211,13 +211,15 @@ class CalculoEstimacionCompra extends Controller
         $html = view('reportes.reporteEstimacionCompra',['menus' => $menus]);
 
         $mpdf = new Mpdf([
-            'shrink_tables_to_fit'=> 1,
-            'mode' => 'utf-8',
-            'tableMinSizePriority' => true
-
+            'margin_left' => '10', 
+            'margin_right' => '10', 
+            'margin_top' => '10', 
+            'margin_bottom' => '10', 
         ]);
+        $mpdf->setFooter('{PAGENO} / {nb}');
+        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
         $mpdf->WriteHTML($html);
-        $mpdf->Output();
+        $mpdf->Output($nombre,"I");
 
         // $pdf = PDF::loadView(
         //     'reportes.reporteEstimacionCompra',

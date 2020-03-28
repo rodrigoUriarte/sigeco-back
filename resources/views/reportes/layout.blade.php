@@ -6,14 +6,6 @@
     <title>Reporte SGC</title>
 
     <style type="text/css">
-        @page {
-            margin: 15px;
-        }
-
-        body {
-            margin: 0px;
-        }
-
         * {
             font-family: Verdana, Arial, sans-serif;
         }
@@ -28,11 +20,6 @@
             border-collapse: collapse;
         }
 
-        tfoot tr td {
-            font-weight: bold;
-            font-size: x-small;
-        }
-
         .invoice table {
             margin: 10px;
         }
@@ -41,17 +28,13 @@
             margin-left: 15px;
         }
 
-        .invoice h3 {
-            margin-left: 15px;
-        }
-
         .invoice h2 {
             margin-left: 15px;
         }
 
         .information {
-            background-color: #60A7A6;
-            color: #FFF;
+            background-color: #467FD0;
+            color: white;
         }
 
         #container {
@@ -60,17 +43,17 @@
 
         #left {
             float: left;
-            width: 40%;
+            width: 30%;
         }
 
         #right {
             float: right;
-            width: 40%;
+            width: 30%;
         }
 
         #center {
             margin: 0 auto;
-            width: 15%;
+            width: 20%;
         }
     </style>
 
@@ -84,13 +67,13 @@
         <div id="container">
             <div id="left">
                 <h4 style="text-align:center">{{backpack_user()->persona->comedor->descripcion}}</h4>
-                    <h5 style="text-align:center">{{backpack_user()->persona->comedor->direccion}}</h5>
+                <h5 style="text-align:center">{{backpack_user()->persona->comedor->direccion}}</h5>
             </div>
             <div id="right">
                 <h5 style="text-align:center">Usuario: {{backpack_user()->name}}</h5>
             </div>
             <div id="center">
-                <img src="{{asset("storage/logoUNAM.png")}}" alt="Logo" width="120" class="logo" />
+                <img src="{{asset("storage/unam.jpg")}}" alt="Logo" width="200" class="logo" />
             </div>
         </div>
     </div>
@@ -99,19 +82,24 @@
         @yield('content')
     </section>
 
-    <div class="invoice">
-        <h4><strong>Cantidad de registros: </strong> @yield('cantidad')</h4>
-    </div>
+    <section>
+        <div class="invoice">
+            <h4><strong>Cantidad de registros: </strong> @yield('cantidad')</h4>
+        </div>
+    </section>
 
-    <div style="position: absolute; bottom: 0;">
+    <div style="position: absolute; bottom: 15;">
         <table width="100%">
             <tr>
                 <td align="left" style="width: 50%;">
-                    Fecha: {{ \Carbon\Carbon::now()->format('d/m/Y')}}
+                    Fecha: {{Carbon\Carbon::now()->format('d/m/Y')}}
                 </td>
             </tr>
         </table>
     </div>
+
 </body>
+
+
 
 </html>

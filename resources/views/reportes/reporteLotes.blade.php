@@ -13,11 +13,11 @@
     <hr>
     <table width="100%" border="1">
         <thead>
-            <tr style="line-height: 14px; font-size: 14px; background: lightgrey">
-                <th>Descripcion</th>
-                <th>Fecha Vencimiento</th>
-                <th>Cantidad</th>
-                <th>Usado </th>
+            <tr style="line-height: 14px; font-size: 14px; background: #467FD0">
+                <th style="color:white">Descripcion</th>
+                <th style="color:white">Fecha Vencimiento</th>
+                <th style="color:white">Cantidad</th>
+                <th style="color:white">Usado </th>
             </tr>
         </thead>
         <tbody>

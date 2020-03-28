@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
 use Prologue\Alerts\Facades\Alert;
+use Mpdf\Mpdf;
 
 /**
  * Class InscripcionCrudController
@@ -321,17 +322,21 @@ class InscripcionCrudController extends CrudController
             }
         }
 
-        $pdf = PDF::loadView(
-            'reportes.reporteInscripciones',
-            compact('inscripciones', 'filtro_usuario', 'filtro_fecha_inscripcion_desde', 'filtro_fecha_inscripcion_hasta', 'filtro_menu')
-        );
+        $html = view('reportes.reporteInscripciones',
+        ['inscripciones'=>$inscripciones,'filtro_usuario'=>$filtro_usuario,
+        'filtro_fecha_inscripcion_desde'=>$filtro_fecha_inscripcion_desde,
+         'filtro_fecha_inscripcion_hasta'=>$filtro_fecha_inscripcion_hasta,
+          'filtro_menu'=>$filtro_menu]);
 
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $y = $canvas->get_height() - 15;
-        $pdf->getDomPDF()->get_canvas()->page_text(500, $y, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
-
-        $nombre = 'Reporte-Inscripciones-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
-        return $pdf->stream($nombre);
+        $mpdf = new Mpdf([
+            'margin_left' => '10', 
+            'margin_right' => '10', 
+            'margin_top' => '10', 
+            'margin_bottom' => '10', 
+        ]);
+        $mpdf->setFooter('{PAGENO} / {nb}');
+        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($nombre,"I");
     }
 }
