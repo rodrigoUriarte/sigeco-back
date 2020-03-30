@@ -5,14 +5,21 @@
 <div class="invoice">
     <h2>REPORTE ESTIMACION COMPRA</h2>
     <hr>
-    <h4>Filtros Aplicados</h4>
-    <div style="margin-bottom: 5px; margin-left: 20px">Insumo: {{$filtro_insumo?? 'No aplicado'}}</div>
-    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Desde:
-        {{$filtro_fecha_vencimiento_desde?? 'No aplicado' }}</div>
-    <div style="margin-bottom: 5px; margin-left: 20px">Fecha Vencimiento Hasta:
-        {{$filtro_fecha_vencimiento_hasta?? 'No aplicado' }}</div>
-    <div style="margin-bottom: 5px; margin-left: 20px">Incluir Lotes Vacios: {{$filtro_lotes_vacios?? 'No aplicado' }}
-    </div>
+    <h4>FILTROS APLICADOS</h4>
+    @if ($flagCC == false)
+    <h5>REPORTE CALCULADO MEDIANTE ESTADISTICAS</h5>
+    <div style="margin-bottom: 5px; margin-left: 20px">Se tomaron en cuenta los ultimos {{$filtro_cantidad_semanas}} {{$filtro_dias}} para el calculo del promedio </div>
+    <h5>Cantidad promedio de comensales de cada menu segun estadistica.</h5>
+    @foreach ($cantidades_comensales_estadistica as $menu)
+        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad:'. $menu['cantidad']}}</div>
+    @endforeach
+    @else
+    <h5>REPORTE CALCULADO MEDIANTE CARGA MANUAL</h5>
+    <h5>Cantidad de comensales de cada menu especificados.</h5>
+    @foreach ($cantidades_comensales_manual as $menu)
+        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad:'. $menu['cantidad']}}</div>
+    @endforeach    @endif
+
     <hr>
     @foreach ($menus as $menu => $platos)
         {{$menu}}

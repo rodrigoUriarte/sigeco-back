@@ -13,6 +13,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
+use Mpdf\Mpdf;
 
 /**
  * Class LoteCrudController

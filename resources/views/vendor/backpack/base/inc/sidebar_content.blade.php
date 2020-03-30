@@ -99,6 +99,7 @@
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i
 					class='nav-icon fas fa-fish'></i> Insumo Plato</a></li>
 	</ul>
+
 </li>
 
 <li class="nav-item nav-dropdown">
@@ -112,6 +113,8 @@
 					class='nav-icon fas fa-truck-loading'></i> Ingresos Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
 					class='nav-icon fas fa-calendar-minus'></i> Platos Asignados</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{backpack_url('calculoEstimacionCompra')}}'><i
+					class='nav-icon fas fa-calculator'></i> Estimacion Compra</a></li>
 	</ul>
 </li>
 

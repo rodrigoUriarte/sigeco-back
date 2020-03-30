@@ -15,69 +15,58 @@ class GestionInsumosPlatosSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-
-        $menu1 = Menu::create([
-            'descripcion' => 'MENU NORMAL',
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $menu2 = Menu::create([
-            'descripcion' => 'MENU DIETA',
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-        
+    {        
         $plato1 = Plato::create([
             'descripcion' => 'GUISO DE ARROZ',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato2 = Plato::create([
             'descripcion' => 'GUISO DE FIDEO',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato3 = Plato::create([
             'descripcion' => 'POLLO AL HORNO CON PAPAS',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato4 = Plato::create([
             'descripcion' => 'ESTOFADO DE LENTEJAS',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato5 = Plato::create([
             'descripcion' => 'MILANESA DE POLLO CON PURE DE PAPA',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato6 = Plato::create([
             'descripcion' => 'FIDEOS CON SALSA BOLOGNESA',
-            'menu_id' => $menu1->id,
+            'menu_id' => Menu::where('descripcion','MENU NORMAL')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato7 = Plato::create([
             'descripcion' => 'TARTA DE VERDURAS',
-            'menu_id' => $menu2->id,
+            'menu_id' => Menu::where('descripcion','MENU DIETA')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato8 = Plato::create([
             'descripcion' => 'SALPICON DE AVE',
-            'menu_id' => $menu2->id,
+            'menu_id' => Menu::where('descripcion','MENU DIETA')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $plato9 = Plato::create([
             'descripcion' => 'ENSALADA DE LENTEJAS MIXTA',
-            'menu_id' => $menu2->id,
+            'menu_id' => Menu::where('descripcion','MENU DIETA')->first()->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 

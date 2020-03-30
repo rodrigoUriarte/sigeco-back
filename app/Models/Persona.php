@@ -19,7 +19,7 @@ class Persona extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['dni','nombre','apellido','telefono','email','unidad_academica_id','comedor_id'];
+    protected $fillable = ['dni', 'nombre', 'apellido', 'telefono', 'email', 'unidad_academica_id', 'comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,13 +34,16 @@ class Persona extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user(){
+    public function user()
+    {
         return $this->hasOne('App\Models\BackpackUser');
     }
-    public function unidadAcademica(){
+    public function unidadAcademica()
+    {
         return $this->belongsTo('App\Models\UnidadAcademica');
     }
-    public function comedor(){
+    public function comedor()
+    {
         return $this->belongsTo('App\Models\Comedor');
     }
     /*
@@ -55,7 +58,8 @@ class Persona extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getNombreUsuarioAttribute(){
+    public function getNombreUsuarioAttribute()
+    {
         return "{$this->nombre}{$this->apellido}";
     }
 
