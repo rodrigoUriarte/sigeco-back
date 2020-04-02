@@ -23,7 +23,8 @@
 
 <div class="row">
     <div class="card" style="width:100%">
-        <form action="{{route('reporteCalculoEstimacionCompra')}}" method="GET" enctype="multipart/form-data">
+        <form action="{{route('reporteCalculoEstimacionCompra')}}"
+            target="_blank" method="GET" enctype="multipart/form-data">
             <div class="card-body">
                 <h5>Mediante Estadistica</h5>
                 <hr>

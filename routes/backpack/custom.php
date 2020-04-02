@@ -34,20 +34,22 @@ Route::group([
     Route::crud('diaservicio', 'DiaServicioCrudController');
     Route::crud('diapreferencia', 'DiaPreferenciaCrudController');
 
+    //LLAMADAS AJAX
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
     Route::get('/calculoPreparacionPlatos/{id}', 'Extra\CalculoPreparacionPlatos@index');
-
     Route::get('/calculoInasistenciasFecha', 'Extra\CalculoInasistenciasFecha@index');
     Route::get('/calculoInasistenciasFecha/{id}', 'Extra\CalculoInasistenciasFecha@index');
+    Route::get('/getComensalesComedor', 'Extra\GetComensalesComedor@index');
 
+    //REPORTES
     Route::get('/reporteLotes', 'LoteCrudController@reporteLotes')->name('lotes.reporteLotes');
     Route::get('/reporteInscripciones', 'InscripcionCrudController@reporteInscripciones')->name('inscripciones.reporteInscripciones');
-
-    Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
-
-    Route::get('/calculoEstimacionCompra', 'Extra\CalculoEstimacionCompra@index')->name('calculoEstimacionCompra');
+    Route::get('/reporteMenusAsignados', 'MenuAsignadoCrudController@reporteMenusAsignados')->name('menusAsignados.reporteMenusAsignados');
     Route::get('/calculoEstimacionCompra/reporte', 'Extra\CalculoEstimacionCompra@reporte')->name('reporteCalculoEstimacionCompra');
 
+    //PAGINAS PERSONALIZADAS
+    Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
+    Route::get('/calculoEstimacionCompra', 'Extra\CalculoEstimacionCompra@index')->name('calculoEstimacionCompra');
     Route::get('/ayuda', 'Extra\AyudaController@index')->name('ayuda');
 
 });

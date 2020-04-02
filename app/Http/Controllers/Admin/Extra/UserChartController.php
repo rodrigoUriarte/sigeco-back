@@ -36,7 +36,7 @@ class UserChartController extends Controller
                 return view('personalizadas.estadisticas', ['inscripciones' => $vacio]);
             }
 
-            if ($desde > $hasta) {
+            if (($desde > $hasta) and ($desde!=null and $hasta!=null)) {
                 Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
                 return Redirect::to('admin/estadisticas');
             }

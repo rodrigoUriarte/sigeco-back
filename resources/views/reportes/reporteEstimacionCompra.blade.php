@@ -11,17 +11,18 @@
     <div style="margin-bottom: 5px; margin-left: 20px">Se tomaron en cuenta los ultimos {{$filtro_cantidad_semanas}} {{$filtro_dias}} para el calculo del promedio </div>
     <h5>Cantidad promedio de comensales de cada menu segun estadistica.</h5>
     @foreach ($cantidades_comensales_estadistica as $menu)
-        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad:'. $menu['cantidad']}}</div>
+        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad: '. $menu['cantidad'].' comensales.'}}</div>
     @endforeach
     @else
     <h5>REPORTE CALCULADO MEDIANTE CARGA MANUAL</h5>
     <h5>Cantidad de comensales de cada menu especificados.</h5>
     @foreach ($cantidades_comensales_manual as $menu)
-        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad:'. $menu['cantidad']}}</div>
-    @endforeach    @endif
+        <div style="margin-bottom: 5px; margin-left: 20px"> {{$menu['menu'].', cantidad: '. $menu['cantidad'].' comensales.'}}</div>
+    @endforeach    
+    @endif
 
-    <hr>
     @foreach ($menus as $menu => $platos)
+        <hr>
         {{$menu}}
         <hr>
         <table width="100%" border="1">
@@ -55,28 +56,24 @@
                                     <td>
                                         {{$insumo}}
                                     </td>
-                                    <td>
                                         @if ($value['estado'] == true)
-                                            REMANENTE:
+                                            <td>REMANENTE:</td> 
                                         @endif
                                         @if ($value['estado'] == false)
-                                            FALTANTE:
+                                            <td style="color:red">FALTANTE:</td> 
                                         @endif
-                                    </td>
                                     <td align="right">{{$value['cantidad']}}</td>
                                 @else
                                     <tr>
                                         <td>
                                             {{$insumo}}
                                         </td>
-                                        <td>
                                             @if ($value['estado'] == true)
-                                                REMANENTE:
+                                            <td>REMANENTE:</td> 
                                             @endif
                                             @if ($value['estado'] == false)
-                                                FALTANTE:
+                                            <td style="color:red">FALTANTE:</td> 
                                             @endif
-                                        </td>
                                         <td align="right">{{$value['cantidad']}}</td>
                                     </tr>
                                 @endif

@@ -81,10 +81,10 @@ class CalculoPreparacionPlatos extends Controller
 
         if ($search_term) {
 
-            // $options->filter(function ($item) use ($search_term) {
-            //     // replace stristr with your choice of matching function
-            //     return false !== stristr($item->descripcion, $search_term);
-            // })->paginate(10);
+            $options=$options->filter(function ($item) use ($search_term) {
+                // replace stristr with your choice of matching function
+                return false !== stristr($item->descripcion, $search_term);
+            })->paginate(10);
 
         } else {
             $options = $options->paginate(10);

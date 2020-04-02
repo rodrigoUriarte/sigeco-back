@@ -19,18 +19,21 @@ class InscripcionesSeeder extends Seeder
         $mas = MenuAsignado::doesntHave('inscripciones')->get();
         foreach ($mas as $ma) {
             $finicio = Carbon::createFromDate($ma->fecha_inicio);
-            $diasmes= $finicio->daysInMonth;
+            $diasmes = $finicio->daysInMonth;
             $finscripcion = $finicio;
             for ($i = 0; $i < $diasmes; $i++) {
                 if ($finscripcion->isWeekday()) {
-                    $inscripcion = Inscripcion::create([
-                        'fecha_inscripcion' => $finscripcion,
-                        'retira' => false,
-                        'banda_horaria_id' => BandaHoraria::where('comedor_id', $ma->comedor_id)->inRandomOrder()->first()->id,
-                        'user_id' => $ma->user_id,
-                        'menu_asignado_id' => $ma->id,
-                        'comedor_id' => $ma->comedor_id,
-                    ]);
+                    $rand = rand($min = 1, $max = 10);
+                    if ($rand <= 9) {
+                        $inscripcion = Inscripcion::create([
+                            'fecha_inscripcion' => $finscripcion,
+                            'retira' => false,
+                            'banda_horaria_id' => BandaHoraria::where('comedor_id', $ma->comedor_id)->inRandomOrder()->first()->id,
+                            'user_id' => $ma->user_id,
+                            'menu_asignado_id' => $ma->id,
+                            'comedor_id' => $ma->comedor_id,
+                        ]);
+                    }
                 }
                 $finscripcion->addDay();
             }

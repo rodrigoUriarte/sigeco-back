@@ -13,6 +13,7 @@ use Facade\Ignition\DumpRecorder\Dump;
 class CalculoInasistenciasFecha extends Controller
 {
 
+    //SE USA PARA BUSCAR LOS COMENSALES QUE FALTARON EN UNA DETERMINADA FECHA, PARA JUSTIFICAR SU INASISTENCIA
     public function inasistencias(Request $request)
     {
         $form = collect($request->input('form'))->pluck('value', 'name');
@@ -61,10 +62,10 @@ class CalculoInasistenciasFecha extends Controller
 
         if ($search_term) {
 
-            // $options->filter(function ($item) use ($search_term) {
-            //     // replace stristr with your choice of matching function
-            //     return false !== stristr($item->descripcion, $search_term);
-            // })->paginate(10);
+            $options=$options->filter(function ($item) use ($search_term) {
+                // replace stristr with your choice of matching function
+                return false !== stristr($item->inscripcion->user->name, $search_term);
+            })->paginate(10);
 
         } else {
             $options = $options->paginate(10);

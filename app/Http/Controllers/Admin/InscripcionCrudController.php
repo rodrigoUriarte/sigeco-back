@@ -64,6 +64,9 @@ class InscripcionCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
+            //PASO LOS DATOS PARA EL REPORTE
+            $menus = Menu::where('comedor_id', backpack_user()->persona->comedor_id)->get();
+            $this->data['menus'] = $menus;
             $this->crud->setListView('personalizadas.vistaInscripcion', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
@@ -274,25 +277,27 @@ class InscripcionCrudController extends CrudController
 
         $inscripciones = Inscripcion::all();
 
-        $filtro_usuario = $request->filtro_usuario;
+        $filtro_comensal = $request->filtro_comensal;
         $filtro_fecha_inscripcion_desde = $request->filtro_fecha_inscripcion_desde;
         $filtro_fecha_inscripcion_hasta = $request->filtro_fecha_inscripcion_hasta;
         $filtro_menu = $request->filtro_menu;
 
-        if ($filtro_fecha_inscripcion_desde > $filtro_fecha_inscripcion_hasta) {
+        if (($filtro_fecha_inscripcion_desde > $filtro_fecha_inscripcion_hasta) and
+            ($filtro_fecha_inscripcion_desde != null and $filtro_fecha_inscripcion_hasta != null)
+        ) {
             Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
             return Redirect::to('admin/inscripcion');
         }
 
-        if ($request->filtro_usuario != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+        if ($filtro_comensal != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {
-                if ($inscripcion->user->name != $filtro_usuario) {
+                if ($inscripcion->user->id != $filtro_comensal) {
                     $inscripciones->pull($id);
                 }
             }
         }
 
-        if ($request->filtro_fecha_inscripcion_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+        if ($filtro_fecha_inscripcion_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {
                 if ($inscripcion->fecha_inscripcion < $filtro_fecha_inscripcion_desde) {
                     $inscripciones->pull($id);
@@ -303,7 +308,7 @@ class InscripcionCrudController extends CrudController
             $filtro_fecha_inscripcion_desde = date_format($myDate, 'd-m-Y');
         }
 
-        if ($request->filtro_fecha_inscripcion_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+        if ($filtro_fecha_inscripcion_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {
                 if ($inscripcion->fecha_inscripcion > $filtro_fecha_inscripcion_hasta) {
                     $inscripciones->pull($id);
@@ -314,7 +319,7 @@ class InscripcionCrudController extends CrudController
             $filtro_fecha_inscripcion_hasta = date_format($myDate2, 'd-m-Y');
         }
 
-        if ($request->filtro_menu != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+        if ($filtro_menu != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
             foreach ($inscripciones as $id => $inscripcion) {
                 if ($inscripcion->menuAsignado->menu->descripcion != $filtro_menu) {
                     $inscripciones->pull($id);
@@ -322,21 +327,33 @@ class InscripcionCrudController extends CrudController
             }
         }
 
-        $html = view('reportes.reporteInscripciones',
-        ['inscripciones'=>$inscripciones,'filtro_usuario'=>$filtro_usuario,
-        'filtro_fecha_inscripcion_desde'=>$filtro_fecha_inscripcion_desde,
-         'filtro_fecha_inscripcion_hasta'=>$filtro_fecha_inscripcion_hasta,
-          'filtro_menu'=>$filtro_menu]);
+        $html = view(
+            'reportes.reporteInscripciones',
+            [
+                'inscripciones' => $inscripciones
+                ->sortBy(function ($inscripcion, $key) {
+                    return [
+                        $inscripcion->fecha_inscripcion,
+                        $inscripcion->user->name,
+                    ];
+                })
+                ->groupBy(['menuAsignado.menu_id'], $preserveKeys = true), 
+                'filtro_comensal' => $filtro_comensal,
+                'filtro_fecha_inscripcion_desde' => $filtro_fecha_inscripcion_desde,
+                'filtro_fecha_inscripcion_hasta' => $filtro_fecha_inscripcion_hasta,
+                'filtro_menu' => $filtro_menu
+            ]
+        );
 
         $mpdf = new Mpdf([
-            'margin_left' => '10', 
-            'margin_right' => '10', 
-            'margin_top' => '10', 
-            'margin_bottom' => '10', 
+            'margin_left' => '10',
+            'margin_right' => '10',
+            'margin_top' => '10',
+            'margin_bottom' => '15',
         ]);
         $mpdf->setFooter('{PAGENO} / {nb}');
         $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
         $mpdf->WriteHTML($html);
-        $mpdf->Output($nombre,"I");
+        $mpdf->Output($nombre, "I");
     }
 }

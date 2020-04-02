@@ -10,6 +10,12 @@ trans('backpack::crud.list') => false,
 // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
 $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endphp
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/i18n/es.js"></script>
+</head>
 
 @section('header')
 <div class="container-fluid">
@@ -49,14 +55,21 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 
         <div class="collapse" id="collapseExample">
           <div class="card-body">
-            <form action="{{route('lotes.reporteLotes')}}" method="GET" enctype="multipart/form-data">
+            <form action="{{route('lotes.reporteLotes')}}"
+              target="_blank" method="GET" enctype="multipart/form-data">
               <h5>FILTROS</h5>
               <hr>
               <div class="row">
                 <div class="form-group col-md-3">
-                  <label>Insumo : </label>
-                  <input class="form-control" type="text" name="filtro_insumo" id="filtro_insumo"
-                    placeholder="Ingrese un insumo a filtrar" style="width: 100%;">
+                  <label>Insumo:</span></label>
+                  <select class="form-control" name="filtro_insumo" id="filtro_insumo">
+                    <option></option>
+                    @if($insumos)
+                    @foreach($insumos as $insumo)
+                    <option>{{$insumo->descripcion}}</option>
+                    @endforeach
+                    @endif
+                  </select>
                 </div>
                 <div class="form-group col-md-3">
                   <label>Fecha Vencimiento Desde: </label>
@@ -158,6 +171,17 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 
 </div>
 
+<script type="text/javascript">
+  //$(document).ready(function() {
+  $.fn.select2.defaults.set('language', 'es');
+
+  $('[id="filtro_insumo"]').select2({
+    placeholder: 'Seleccione un insumo',
+    width: '100%',
+    allowClear: true,
+  });
+//});
+</script>
 
 @endsection
 

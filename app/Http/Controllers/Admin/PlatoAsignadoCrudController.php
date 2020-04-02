@@ -122,7 +122,7 @@ class PlatoAsignadoCrudController extends CrudController
                 'todayBtn' => 'linked',
                 'format' => 'dd-mm-yyyy',
                 'language' => 'es',
-                'startDate' => Carbon::now(),
+                //'startDate' => Carbon::now(),
                 'defaultViewDate' => Carbon::now(),
             ],
             'default' => Carbon::now()->toDateString(),

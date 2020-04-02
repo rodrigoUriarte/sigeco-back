@@ -56,6 +56,8 @@ class LoteCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo los lotes del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
+            $insumos = Insumo::where('comedor_id', backpack_user()->persona->comedor_id)->get();
+            $this->data['insumos'] = $insumos;
             $this->crud->setListView('personalizadas.vistaLote', $this->data);
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
@@ -149,7 +151,8 @@ class LoteCrudController extends CrudController
         $filtro_fecha_vencimiento_hasta = $request->filtro_fecha_vencimiento_hasta;
         $filtro_lotes_vacios = $request->filtro_lotes_vacios;
 
-        if ($filtro_fecha_vencimiento_desde > $filtro_fecha_vencimiento_hasta) {
+        if (($filtro_fecha_vencimiento_desde > $filtro_fecha_vencimiento_hasta) and 
+        ($filtro_fecha_vencimiento_desde!=null and $filtro_fecha_vencimiento_hasta!=null)) {
             Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
             return Redirect::to('admin/lote');            
         }
@@ -194,7 +197,14 @@ class LoteCrudController extends CrudController
         }
 
         $html = view('reportes.reporteLotes',
-        ['lotes'=>$lotes, 'filtro_insumo'=>$filtro_insumo,
+        ['lotes'=>$lotes
+        ->sortBy(function ($lote, $key) {
+            return [
+                $lote->insumo->descripcion,
+                $lote->fecha_vencimiento,
+            ];
+        }), 
+        'filtro_insumo'=>$filtro_insumo,
         'filtro_fecha_vencimiento_desde'=>$filtro_fecha_vencimiento_desde,
         'filtro_fecha_vencimiento_hasta'=>$filtro_fecha_vencimiento_hasta,
         'filtro_lotes_vacios'=>$filtro_lotes_vacios]);
@@ -203,7 +213,7 @@ class LoteCrudController extends CrudController
             'margin_left' => '10', 
             'margin_right' => '10', 
             'margin_top' => '10', 
-            'margin_bottom' => '10', 
+            'margin_bottom' => '15',
         ]);
         $mpdf->setFooter('{PAGENO} / {nb}');
         $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';

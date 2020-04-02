@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\DiaServicio;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -37,7 +38,7 @@ class PlatoAsignadoRequest extends FormRequest
             'fecha' => [
                 'required',
                 'date',
-                'before:'.$aux.' minutes',
+                'before:' . $aux . ' minutes',
                 Rule::unique('platos_asignados')
                     ->where(function ($query) {
                         return $query
@@ -46,6 +47,14 @@ class PlatoAsignadoRequest extends FormRequest
                             ->where('menu_id', '=', $this->menu_id);
                     })
                     ->ignore($this->id),
+                function ($attribute, $value, $fail) {
+                    $dias_servicio = DiaServicio::where('comedor_id', $this->comedor_id)->get()->pluck('dia');
+                    $fecha = Carbon::createFromDate($value);
+                    $dia = $fecha->dayName;
+                    if (!$dias_servicio->contains($dia)) {
+                        $fail('Esta fecha no corresponde con un dia de servicio de este comedor');
+                    }
+                },
             ],
         ];
     }
@@ -73,7 +82,7 @@ class PlatoAsignadoRequest extends FormRequest
 
         return [
 
-            'fecha.before' => 'Debe esperar a la hora limite ('.$limins->format('H:i').') de inscripciones para agregar un plato asignado.',
+            'fecha.before' => 'Debe esperar a la hora limite (' . $limins->format('H:i') . ') de inscripciones para agregar un plato asignado.',
             'fecha.unique' => 'Ya existe un plato asignado para dicho menu en la fecha seleccionada.'
 
         ];

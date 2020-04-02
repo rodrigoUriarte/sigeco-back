@@ -82,12 +82,6 @@
         @yield('content')
     </section>
 
-    <section>
-        <div class="invoice">
-            <h4><strong>Cantidad de registros: </strong> @yield('cantidad')</h4>
-        </div>
-    </section>
-
     <div style="position: absolute; bottom: 15;">
         <table width="100%">
             <tr>

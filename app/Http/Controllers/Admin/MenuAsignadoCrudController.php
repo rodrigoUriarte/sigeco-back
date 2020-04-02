@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MenuAsignadoRequest;
+use App\Models\Menu;
 use App\Models\MenuAsignado;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Prologue\Alerts\Facades\Alert;
+use Mpdf\Mpdf;
+use Psy\Readline\HoaConsole;
 
 /**
  * Class MenuAsignadoCrudController
@@ -57,6 +63,10 @@ class MenuAsignadoCrudController extends CrudController
         }
         //SI el usuario es un admin muestra solo los insumos del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
+            //PASO LOS DATOS PARA EL REPORTE
+            $menus = Menu::where('comedor_id', backpack_user()->persona->comedor_id)->get();
+            $this->data['menus'] = $menus;
+            $this->crud->setListView('personalizadas.vistaMenuAsignado');
             $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
         }
     }
@@ -236,5 +246,81 @@ class MenuAsignadoCrudController extends CrudController
     {
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+    }
+
+    public function reporteMenusAsignados(Request $request)
+    {
+
+        $menusAsignados = MenuAsignado::all();
+
+        $filtro_menu = $request->filtro_menu;
+        $filtro_comensal = $request->filtro_comensal;
+        $filtro_fecha_desde = $request->filtro_fecha_desde;
+        $filtro_fecha_hasta = $request->filtro_fecha_hasta;
+
+        if (($filtro_fecha_desde > $filtro_fecha_hasta) and ($filtro_fecha_desde!=null and $filtro_fecha_hasta!=null)) {
+            Alert::info('El dato "fecha desde" no puede ser mayor a "fecha hasta"')->flash();
+            return Redirect::to('admin/menuAsignado');
+        }
+        
+        if ($filtro_menu != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($menusAsignados as $id => $menuAsignado) {
+                if ($menuAsignado->menu->descripcion != $filtro_menu) {
+                    $menusAsignados->pull($id);
+                }
+            }
+        }
+
+        if ($filtro_comensal != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($menusAsignados as $id => $menuAsignado) {
+                if ($menuAsignado->user->id != $filtro_comensal) {
+                    $menusAsignados->pull($id);
+                }
+            }
+        }
+
+        if ($filtro_fecha_desde != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($menusAsignados as $id => $menuAsignado) {
+                if ($menuAsignado->fecha_inicio < $filtro_fecha_desde) {
+                    $menusAsignados->pull($id);
+                }
+            }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate = Date::createFromFormat('Y-m-d', $filtro_fecha_desde);
+            $filtro_fecha_desde = date_format($myDate, 'd-m-Y');
+        }
+
+        if ($filtro_fecha_hasta != null) { //aca pregunto si el filtro que viene en el request esta vacio y sino hago el filtro y asi por cada if
+            foreach ($menusAsignados as $id => $menuAsignado) {
+                if ($menuAsignado->fecha_fin > $filtro_fecha_hasta) {
+                    $menusAsignados->pull($id);
+                }
+            }
+            //DESPUES DE USAR EL FILTRO PARA LAS OPERACIONES, PASO EL FILTRO A LA VISTA CON EL FORMATO CORRECTO
+            $myDate2 = Date::createFromFormat('Y-m-d', $filtro_fecha_hasta);
+            $filtro_fecha_hasta = date_format($myDate2, 'd-m-Y');
+        }
+
+        $html = view(
+            'reportes.reporteMenusAsignados',
+            [
+                'menusAsignados' => $menusAsignados->sortBy('user.name')->groupBy(['menu_id'], $preserveKeys = true),
+                'filtro_menu' => $filtro_menu,
+                'filtro_comensal' => $filtro_comensal,
+                'filtro_fecha_desde' => $filtro_fecha_desde,
+                'filtro_fecha_hasta' => $filtro_fecha_hasta,
+            ]
+        );
+
+        $mpdf = new Mpdf([
+            'margin_left' => '10',
+            'margin_right' => '10',
+            'margin_top' => '10',
+            'margin_bottom' => '15',
+        ]);
+        $mpdf->setFooter('{PAGENO} / {nb}');
+        $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($nombre, "I");
     }
 }

@@ -254,8 +254,8 @@ class CalculoEstimacionCompra extends Controller
                 'margin_left' => '10',
                 'margin_right' => '10',
                 'margin_top' => '10',
-                'margin_bottom' => '10',
-            ]);
+                'margin_bottom' => '15',
+                ]);
             $mpdf->setFooter('{PAGENO} / {nb}');
             $nombre = 'Reporte-Estimacion-Compra-' . Carbon::now()->format('d/m/Y G:i') . '.pdf';
             $mpdf->WriteHTML($html);
