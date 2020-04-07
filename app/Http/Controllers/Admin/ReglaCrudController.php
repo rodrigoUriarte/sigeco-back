@@ -98,14 +98,14 @@ class ReglaCrudController extends CrudController
         $this->crud->addField(
             [
                 'name' => 'cantidad_faltas',
-                'label' => "Cantidad Faltas",
+                'label' => "Cantidad de faltas a las que debe llegar un comensal para aplicar la sancion",
                 'type' => "number",
             ]
         );
         $this->crud->addField(
             [   // select2_from_array
                 'name' => 'tiempo',
-                'label' => "Tiempo",
+                'label' => "Rango de tiempo de las faltas",
                 'type' => 'select2_from_array',
                 'options' => ['semana' => "Semana",'mes' => "Mes"],
                 'allows_null' => false,
@@ -116,7 +116,7 @@ class ReglaCrudController extends CrudController
         $this->crud->addField(
             [
                 'name' => 'dias_sancion',
-                'label' => "Dias Sancion",
+                'label' => "Dias de sancion que se le aplicaran al comensal si llega a la cantidad de faltas",
                 'type' => "number",
             ]
         );

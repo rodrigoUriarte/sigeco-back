@@ -30,8 +30,6 @@ class DiaPreferenciaRequest extends FormRequest
      */
     public function rules()
     {
-        $limins = Carbon::createFromTimeString(backpack_user()->persona->comedor->parametro->limite_inscripcion);
-        $aux = $limins->diffInMinutes(Carbon::tomorrow());
         return [
             'user_id' => ['required', Rule::exists('users', 'id')],
 

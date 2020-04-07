@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class Parametro extends Model
 {
@@ -19,9 +21,10 @@ class Parametro extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['limite_inscripcion','retirar', 'limite_menu_asignado', 'comedor_id'];
+    protected $fillable = ['limite_inscripcion', 'retirar', 'limite_menu_asignado', 'comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
+
 
     /*
     |--------------------------------------------------------------------------
@@ -50,10 +53,19 @@ class Parametro extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    // public function getLimiteInscripcionAttribute($value)
+    // {
+    //     $value = Carbon::createFromTimeString($value);
+    //     return $value;
+    // }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    // public function setLimiteInscripcionAttribute($value)
+    // {
+    //     $this->attributes['limite_inscripcion'] = Carbon::parse($value);
+    // }
 }

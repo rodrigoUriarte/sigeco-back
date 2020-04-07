@@ -56,7 +56,8 @@ class ParametroCrudController extends CrudController
         $this->crud->setColumnDetails('limite_inscripcion', [
             'name' => "limite_inscripcion", // The db column name
             'label' => "Hora inscripciones automaticas", // Table column heading
-            'type' => "text",
+            'type' => "datetime",
+            'format' => 'HH:mm', // use something else than the base.default_datetime_format config value
         ]);
 
         $this->crud->setColumnDetails('limite_menu_asignado', [
@@ -87,7 +88,7 @@ class ParametroCrudController extends CrudController
         $this->crud->addField([
             'name' => 'limite_inscripcion',
             'label' => 'Hora del dia a la que se agregan las inscripciones automaticamente',
-            'type' => 'time'
+            'type' => 'time',
         ]);
 
         $this->crud->addField([
