@@ -22,9 +22,11 @@ class AsistenciaCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \App\Http\Controllers\Admin\Operations\AsistenciaFBHOperation;
+    use \App\Http\Controllers\Admin\Operations\InasistenciaFBHOperation;
 
     public function setup()
     {
@@ -70,6 +72,41 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->addColumn([
+            'name' => 'id',
+            'visibleInTable' => false, // no point, since it's a large text
+            'visibleInModal' => false, // would make the modal too big
+            'visibleInExport' => false, // not important enough
+            'visibleInShow' => false, // sure, why not
+        ]);
+
+        if (backpack_user()->hasRole('operativo')) {
+
+            $this->crud->addColumns(['comensal']);
+
+            $this->crud->setColumnDetails('comensal', [
+                'label' => 'Comensal',
+                'type' => 'select',
+                'name' => 'inscripcion_id', // the db column for the foreign key
+                'entity' => 'inscripcion', // the method that defines the relationship in your Model
+                'attribute' => "nombre", // foreign key attribute that is shown to user
+                'model' => "App\Models\Inscripcion", // foreign key model
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('inscripcion.user', function ($q) use ($column, $searchTerm) {
+                        $q->where('name', 'like', '%' . $searchTerm . '%');
+                    });
+                },
+                'orderable' => true,
+                'orderLogic' => function ($query, $column, $columnDirection) {
+                    return $query
+                        ->leftJoin('inscripciones', 'inscripciones.id', '=', 'asistencias.inscripcion_id')
+                        ->leftJoin('users', 'users.id', '=', 'inscripciones.user_id')
+                        ->orderBy('users.name', $columnDirection)
+                        ->select('asistencias.*');
+                }
+            ]);
+        }
+
         $this->crud->addColumns(['fecha_inscripcion', 'fecha_asistencia', 'asistio', 'asistencia_fbh']);
 
         $this->crud->setColumnDetails('fecha_inscripcion', [
@@ -84,11 +121,12 @@ class AsistenciaCrudController extends CrudController
             //     $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
             //         $q->where('fecha_inscripcion', 'like', '%'.$searchTerm.'%');
             //     });
-            // }
+            // },
             'orderable' => true,
             'orderLogic' => function ($query, $column, $columnDirection) {
                 return $query->leftJoin('inscripciones', 'inscripciones.id', '=', 'asistencias.inscripcion_id')
-                    ->orderBy('inscripciones.fecha_inscripcion', $columnDirection)->select('asistencias.*');
+                    ->orderBy('inscripciones.fecha_inscripcion', $columnDirection)
+                    ->select('asistencias.*');
             }
         ]);
 
@@ -115,25 +153,6 @@ class AsistenciaCrudController extends CrudController
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
-
-        if (backpack_user()->hasRole('operativo')) {
-
-            $this->crud->addColumns(['comensal']);
-
-            $this->crud->setColumnDetails('comensal', [
-                'label' => 'Comensal',
-                'type' => 'select',
-                'name' => 'inscripcion_id', // the db column for the foreign key
-                'entity' => 'inscripcion', // the method that defines the relationship in your Model
-                'attribute' => "nombre", // foreign key attribute that is shown to user
-                'model' => "App\Models\Inscripcion", // foreign key model
-                'searchLogic' => function ($query, $column, $searchTerm) {
-                    $query->orWhereHas('inscripcion.user', function ($q) use ($column, $searchTerm) {
-                        $q->where('name', 'like', '%' . $searchTerm . '%');
-                    });
-                },
-            ]);
-        }
 
         // daterange filter
         $this->crud->addFilter(
@@ -234,8 +253,6 @@ class AsistenciaCrudController extends CrudController
             'type'  => 'hidden',
             'value' => 1,
         ]);
-
-
     }
 
     public function edit($id)
@@ -248,13 +265,13 @@ class AsistenciaCrudController extends CrudController
         $fi = $asis->inscripcion->fecha_inscripcion;
         $fi = Carbon::parse($fi);
 
-        if ($asis->asistio==true) {
+        if ($asis->asistio == true) {
             Alert::info('No se puede editar una asistencia de un comensal que haya asistido normalmente')->flash();
             return Redirect::to('admin/asistencia');
         } elseif ($hoy->toDateString() > $fi->toDateString()) {
             Alert::info('No se puede editar una asistencia anterior a la fecha de hoy')->flash();
-            return Redirect::to('admin/asistencia');        } 
-        else {
+            return Redirect::to('admin/asistencia');
+        } else {
             $this->crud->applyConfigurationFromSettings('update');
             $this->crud->hasAccessOrFail('update');
 

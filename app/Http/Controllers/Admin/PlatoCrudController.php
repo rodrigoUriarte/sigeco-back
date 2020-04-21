@@ -106,22 +106,6 @@ class PlatoCrudController extends CrudController
 
             ]
         );
-        // $this->crud->addField(
-        //     [    // Select2Multiple = n-n relationship (with pivot table)
-        //         'label'     => "Insumos",
-        //         'type'      => 'select2_multiple',
-        //         'name'      => 'insumos', // the method that defines the relationship in your Model
-        //         'entity'    => 'insumos', // the method that defines the relationship in your Model
-        //         'attribute' => 'descripcion', // foreign key attribute that is shown to user
-        //         'model'     => "App\Models\Insumo", // foreign key model
-        //         'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
-        //         // 'select_all' => true, // show Select All and Clear buttons?
-
-        //         // optional
-        //         // 'options'   => (function ($query) {
-        //         //     return $query->orderBy('name', 'ASC')->where('depth', 1)->get();
-        //         // }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        //    ]);
 
     }
 

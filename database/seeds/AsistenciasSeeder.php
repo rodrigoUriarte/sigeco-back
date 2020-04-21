@@ -19,7 +19,7 @@ class AsistenciasSeeder extends Seeder
         $inscripciones = Inscripcion::doesntHave('asistencia')->get();
         foreach ($inscripciones as $inscripcion) {
             //creo asistencias solo para fechas menor al dia de hoy
-            if (Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateString() < Carbon::now()->toDateString()) {
+            if (Carbon::createFromDate($inscripcion->fecha_inscripcion)->toDateString() <= Carbon::now()->toDateString()) {
                 $rand = rand($min = 1, $max = 10);
                 if ($rand <= 8) {
                     $asistencia = Asistencia::create([
