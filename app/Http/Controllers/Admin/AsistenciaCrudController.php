@@ -24,7 +24,7 @@ class AsistenciaCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \App\Http\Controllers\Admin\Operations\AsistenciaFBHOperation;
     use \App\Http\Controllers\Admin\Operations\InasistenciaFBHOperation;
 
@@ -72,6 +72,8 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->setPageLengthMenu([ [10, 25, 50, 500, 1000], [10, 25, 50, 500, 1000] ]);
+
         $this->crud->addColumn([
             'name' => 'id',
             'visibleInTable' => false, // no point, since it's a large text
@@ -257,49 +259,12 @@ class AsistenciaCrudController extends CrudController
 
     public function edit($id)
     {
-        $this->crud->hasAccessOrFail('update');
-
-        $asis = Asistencia::find($id);
-
-        $hoy = Carbon::now();
-        $fi = $asis->inscripcion->fecha_inscripcion;
-        $fi = Carbon::parse($fi);
-
-        if ($asis->asistio == true) {
-            Alert::info('No se puede editar una asistencia de un comensal que haya asistido normalmente')->flash();
-            return Redirect::to('admin/asistencia');
-        } elseif ($hoy->toDateString() > $fi->toDateString()) {
-            Alert::info('No se puede editar una asistencia anterior a la fecha de hoy')->flash();
-            return Redirect::to('admin/asistencia');
-        } else {
-            $this->crud->applyConfigurationFromSettings('update');
-            $this->crud->hasAccessOrFail('update');
-
-            // get entry ID from Request (makes sure its the last ID for nested resources)
-            $id = $this->crud->getCurrentEntryId() ?? $id;
-            $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
-
-            // get the info for that entry
-            $this->data['entry'] = $this->crud->getEntry($id);
-            $this->data['crud'] = $this->crud;
-            $this->data['saveAction'] = $this->crud->getSaveAction();
-            $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit') . ' ' . $this->crud->entity_name;
-
-            $this->data['id'] = $id;
-            // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-            return view($this->crud->getEditView(), $this->data);
-        }
+        //
     }
 
     protected function setupUpdateOperation()
     {
-        $this->crud->setValidation(UpdateAsistenciaRequest::class);
-
-        $this->crud->addField([
-            'name' => 'asistencia_fbh',
-            'label' => 'Asistencia fuera de banda horaria',
-            'type' => 'checkbox'
-        ]);
+        //
     }
 
 

@@ -139,7 +139,7 @@ class InscripcionCrudController extends CrudController
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
 
-        // daterange filter
+        //daterange filter
         $this->crud->addFilter(
             [
                 'type'  => 'es_date_range',

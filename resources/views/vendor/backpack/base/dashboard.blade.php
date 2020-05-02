@@ -10,7 +10,7 @@ $widgets['before_content'][] =
 'close_button' => false, // show close button or not
 ];
 
-$widgets['after_content'][] =
+$widgets['before_content'][] =
 [
 'type' => 'jumbotron',
 'heading' => 'BIENVENIDO!',
@@ -18,7 +18,27 @@ $widgets['after_content'][] =
 'button_link' => backpack_url('logout'),
 'button_text' => trans('backpack::base.logout'),
 ];
+
 @endphp
+@if (backpack_user()->hasRole('operativo'))
+@php
+$pa =\App\Models\PlatoAsignado::where('comedor_id', backpack_user()->persona->comedor_id)
+    ->where('fecha', Carbon\Carbon::now()->toDateString())
+    ->get(); 
+@endphp
+@if (count($pa) > 0)
+    @php
+        $widgets['before_content'][] =
+        [
+        'type'        => 'view',
+        'view'        => 'personalizadas.widgetPlatosAsignadosLotes',
+        'pa'    => $pa,
+        ];
+    @endphp
+@endif
+@endif
+
+
 
 @section('content')
 @endsection

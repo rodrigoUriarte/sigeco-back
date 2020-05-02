@@ -23,6 +23,7 @@ class Asistencia extends Model
     protected $fillable = ['fecha_asistencia','asistio','asistencia_fbh','inscripcion_id','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
+    
     protected $appends = ['comensal'];
 
     /*

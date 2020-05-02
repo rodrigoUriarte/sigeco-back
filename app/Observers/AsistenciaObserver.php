@@ -26,16 +26,7 @@ class AsistenciaObserver
      */
     public function updating(Asistencia $asistencia)
     {
-        // if ($asistencia->asistio == false) {
-        //     if ($asistencia->asistencia_fbh == true) {
-        //         $fecha = $asistencia->inscripcion->fecha_inscripcion;
-        //         $hora = $asistencia->inscripcion->bandaHoraria->hora_inicio;
-        //         $combinedDT = date('Y-m-d H:i:s', strtotime("$fecha $hora"));
-        //         $asistencia->fecha_asistencia = $combinedDT;
-        //     } else {
-        //         $asistencia->fecha_asistencia = null;
-        //     }
-        // }
+
     }
 
     /**

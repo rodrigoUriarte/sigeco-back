@@ -72,97 +72,97 @@ class GestionInsumosPlatosSeeder extends Seeder
 
         $insumo1 = Insumo::create([
             'descripcion' => 'ARROZ',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo2 = Insumo::create([
             'descripcion' => 'PAPA',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo3 = Insumo::create([
             'descripcion' => 'ZAPALLO',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo4 = Insumo::create([
             'descripcion' => 'CARNE MOLIDA',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo5 = Insumo::create([
             'descripcion' => 'SALSA DE TOMATE',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo6 = Insumo::create([
             'descripcion' => 'FIDEOS SECOS',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo7 = Insumo::create([
             'descripcion' => 'PATA MUSLO DE POLLO',
-            'unidad_medida' => 'UNIDAD',
+            'unidad_medida' => 'UNIDAD/ES',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo8 = Insumo::create([
             'descripcion' => 'LENTEJAS SECAS',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo9 = Insumo::create([
             'descripcion' => 'MILANESAS DE POLLO',
-            'unidad_medida' => 'UNIDAD',
+            'unidad_medida' => 'UNIDAD/ES',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo10 = Insumo::create([
             'descripcion' => 'CEBOLLA',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo11 = Insumo::create([
             'descripcion' => 'MORRON',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo12 = Insumo::create([
             'descripcion' => 'ACELGA',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo13 = Insumo::create([
             'descripcion' => 'TAPA PASCUALINA',
-            'unidad_medida' => 'UNIDAD',
+            'unidad_medida' => 'UNIDAD/ES',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo14 = Insumo::create([
             'descripcion' => 'HUEVOS',
-            'unidad_medida' => 'UNIDAD',
+            'unidad_medida' => 'UNIDAD/ES',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo15 = Insumo::create([
             'descripcion' => 'REPOLLO',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
         $insumo16 = Insumo::create([
             'descripcion' => 'TOMATE',
-            'unidad_medida' => 'GRAMOS',
+            'unidad_medida' => 'GRAMO/S',
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 

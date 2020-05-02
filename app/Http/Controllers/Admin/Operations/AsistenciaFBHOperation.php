@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin\Operations;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use Prologue\Alerts\Facades\Alert;
 
 trait AsistenciaFBHOperation
 {

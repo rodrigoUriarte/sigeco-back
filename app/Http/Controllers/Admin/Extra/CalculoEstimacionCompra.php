@@ -189,10 +189,12 @@ class CalculoEstimacionCompra extends Controller
                             //si flag es true 'c' va a ser cantidad que sobra de ese insumo
                             $flag = true;
                             $cs_insumo = $cd_insumo - $cn_insumo;
+                            $cs_insumo = number_format ( (float) $cs_insumo , 2 , "," , "." );
                         } else {
                             //si flag es false 'c' va a ser cantidad que falta de ese insumo
                             $flag = false;
                             $cf_insumo = $cn_insumo - $cd_insumo;
+                            $cf_insumo = number_format ( (float) $cf_insumo , 2 , "," , "." );
                         }
 
                         $aux = collect();
@@ -245,8 +247,11 @@ class CalculoEstimacionCompra extends Controller
 
             //FUNCION DE IMPRESION DEL PDF
             $html = view('reportes.reporteEstimacionCompra', [
-                'menus' => $menus,'flagCC' => $flagCC,
-                'filtro_dias' => $filtro_dia, 'filtro_cantidad_semanas' => $filtro_cantidad_semanas, 'cantidades_comensales_estadistica' => $cantidades_comensales_estadistica->toArray(), 
+                'menus' => $menus,
+                'flagCC' => $flagCC,
+                'filtro_dias' => $filtro_dia, 
+                'filtro_cantidad_semanas' => $filtro_cantidad_semanas, 
+                'cantidades_comensales_estadistica' => $cantidades_comensales_estadistica->toArray(), 
                 'cantidades_comensales_manual' => $cantidades_comensales_manual->toArray(), 
             ]);
 
