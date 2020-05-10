@@ -74,14 +74,6 @@ class AsistenciaCrudController extends CrudController
     {
         $this->crud->setPageLengthMenu([ [10, 25, 50, 500, 1000], [10, 25, 50, 500, 1000] ]);
 
-        $this->crud->addColumn([
-            'name' => 'id',
-            'visibleInTable' => false, // no point, since it's a large text
-            'visibleInModal' => false, // would make the modal too big
-            'visibleInExport' => false, // not important enough
-            'visibleInShow' => false, // sure, why not
-        ]);
-
         if (backpack_user()->hasRole('operativo')) {
 
             $this->crud->addColumns(['comensal']);
