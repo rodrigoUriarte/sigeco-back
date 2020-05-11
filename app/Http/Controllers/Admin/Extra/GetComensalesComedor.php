@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Extra;
 
 use App\Http\Controllers\Controller;
-use App\Models\BackpackUser;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
@@ -19,7 +19,7 @@ class GetComensalesComedor extends Controller
 
             $offset = ($page - 1) * $resultCount;
 
-            $comensales = BackpackUser::whereHas('persona', function ($query) {
+            $comensales = User::whereHas('persona', function ($query) {
                 $query->where('comedor_id', backpack_user()->persona->comedor_id);
                 })
                 ->whereHas('roles', function ($query) {
@@ -31,7 +31,7 @@ class GetComensalesComedor extends Controller
                 ->take($resultCount)
                 ->get(['id', DB::raw('name as text')]);
 
-            $count = BackpackUser::whereHas('persona', function ($query) use ($request, $offset, $resultCount) {
+            $count = User::whereHas('persona', function ($query) use ($request, $offset, $resultCount) {
                 $query->where('comedor_id', backpack_user()->persona->comedor_id);
                 })
                 ->whereHas('roles', function ($query) {

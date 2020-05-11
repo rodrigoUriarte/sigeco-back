@@ -22,6 +22,7 @@ class Plato extends Model
     protected $fillable = ['menu_id','descripcion','comedor_id'];
     // protected $hidden = [];
     // protected $dates = [];
+    public $appends = ['descripcion_menu'];
 
     /*
     |--------------------------------------------------------------------------

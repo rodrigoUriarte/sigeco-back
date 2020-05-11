@@ -38,7 +38,7 @@ class Auditoria extends Model implements Auditable
     |--------------------------------------------------------------------------
     */
     public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\User');
     }
 
     /*

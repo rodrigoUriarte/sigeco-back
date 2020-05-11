@@ -241,7 +241,7 @@ class CalculoEstimacionCompra extends Controller
             foreach ($promedio as $key => $value) {
                 $aux = collect();
                 $aux->put('menu', Menu::find($value['menu_id'])->descripcion);
-                $aux->put('cantidad', $value['cantidad']);
+                $aux->put('cantidad', number_format ( (float) $value['cantidad'] , 1 , "," , "." ));
                 $cantidades_comensales_estadistica->push($aux)->toArray();
             }
 

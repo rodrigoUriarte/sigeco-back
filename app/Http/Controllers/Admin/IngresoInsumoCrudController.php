@@ -62,7 +62,7 @@ class IngresoInsumoCrudController extends CrudController
             'name' => 'user_id', // the db column for the foreign key
             'entity' => 'user', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\BackpackUser", // foreign key model
+            'model' => "App\User", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
                     $q->where('name', 'like', '%' . $searchTerm . '%');
@@ -122,7 +122,7 @@ class IngresoInsumoCrudController extends CrudController
         // daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'es_date_range',
+                'type'  => 'date_range',
                 'name'  => 'fecha_vencimiento',
                 'label' => 'Fecha Vencimiento'
             ],
@@ -137,7 +137,7 @@ class IngresoInsumoCrudController extends CrudController
         // daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'es_date_range',
+                'type'  => 'date_range',
                 'name'  => 'fecha_ingreso',
                 'label' => 'Fecha Ingreso'
             ],

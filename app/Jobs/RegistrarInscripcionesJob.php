@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\DiaPreferencia;
 use App\Models\DiaServicio;
 use App\Models\Inscripcion;
@@ -39,7 +39,7 @@ class RegistrarInscripcionesJob implements ShouldQueue
      */
     public function handle()
     {
-        $users = BackpackUser::whereHas('persona', function ($query) {
+        $users = User::whereHas('persona', function ($query) {
             $query->where('comedor_id', $this->comedor_id);
         })->get();
 

@@ -7,7 +7,7 @@
 </head>
 
 @if(backpack_user()->hasRole('comensal'))
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
@@ -34,7 +34,7 @@
 
 {{-- OPERATIVO --}}
 @if(backpack_user()->hasRole('operativo'))
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
@@ -126,7 +126,7 @@
 
 {{-- SUPERADMIN --}}
 @if(backpack_user()->hasRole('superAdmin'))
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
@@ -137,10 +137,10 @@
 				<span>Users</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
 					class='nav-icon fas fa-male'></i> Personas</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon fa fa-group"></i>
+		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i>
 				<span>Roles</span></a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i
-					class="nav-icon fa fa-key"></i> <span>Permissions</span></a>
+					class="nav-icon la la-key"></i> <span>Permissions</span></a>
 		</li>
 	</ul>
 </li>
@@ -151,9 +151,9 @@
 		UA/COMEDORES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('unidadAcademica') }}"><i
-					class='nav-icon fa fa-university'></i> Unidades Academicas</a></li>
+					class='nav-icon la la-university'></i> Unidades Academicas</a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('comedor') }}"><i
-					class='nav-icon fa fa-building'></i> Comedores</a></li>
+					class='nav-icon la la-building'></i> Comedores</a></li>
 
 	</ul>
 </li>
@@ -161,7 +161,7 @@
 
 {{-- AUDITOR --}}
 @if(backpack_user()->hasRole('auditor'))
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
@@ -177,7 +177,7 @@
 
 {{-- SECRETARIO --}}
 @if(backpack_user()->hasRole('secretario'))
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="fa fa-dashboard nav-icon"></i>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-dashboard nav-icon"></i>
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
@@ -206,74 +206,75 @@
 
 {{-- TODO POR LAS DUDAS --}}
 {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i
-	class="fa fa-dashboard nav-icon"></i>
+	class="la la-dashboard nav-icon"></i>
 {{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> AUTENTICACION</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> AUTENTICACION</a>
 	<ul class="nav-dropdown-items">
-		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon fa fa-user"></i>
+		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
 				<span>Users</span></a></li>
-		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon fa fa-group"></i>
+		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i>
 				<span>Roles</span></a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i
-					class="nav-icon fa fa-key"></i> <span>Permissions</span></a></li>
+					class="nav-icon la la-key"></i> <span>Permissions</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
-					class='nav-icon fa fa-user'></i> Personas</a></li>
+					class='nav-icon la la-user'></i> Personas</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> COMEDORES</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> COMEDORES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('unidadAcademica') }}"><i
-					class='nav-icon fa fa-university'></i> Unidades Academicas</a></li>
+					class='nav-icon la la-university'></i> Unidades Academicas</a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('comedor') }}"><i
-					class='nav-icon fa fa-building'></i> Comedores</a></li>
+					class='nav-icon la la-building'></i> Comedores</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
-					class='nav-icon fa fa-question'></i> Bandas Horarias</a></li>
+					class='nav-icon la la-question'></i> Bandas Horarias</a></li>
 	</ul>
 </li>
 
 
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> INSCRIPCIONES</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> INSCRIPCIONES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menuAsignado') }}'><i
-					class='nav-icon fa fa-question'></i> Menus Asignados</a></li>
+					class='nav-icon la la-question'></i> Menus Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('inscripcion') }}'><i
-					class='nav-icon fa fa-question'></i> Inscripciones</a></li>
+					class='nav-icon la la-question'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
-					class='nav-icon fa fa-question'></i> Asistencias</a></li>
+					class='nav-icon la la-question'></i> Asistencias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
-					class='nav-icon fa fa-question'></i> Reglas</a></li>
+					class='nav-icon la la-question'></i> Reglas</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
-					class='nav-icon fa fa-question'></i> Sanciones</a></li>
+					class='nav-icon la la-question'></i> Sanciones</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> ALIMENTOS</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> ALIMENTOS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu') }}'><i
-					class='nav-icon fa fa-question'></i> Menus</a></li>
+					class='nav-icon la la-question'></i> Menus</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plato') }}'><i
-					class='nav-icon fa fa-question'></i> Platos</a></li>
+					class='nav-icon la la-question'></i> Platos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumo') }}'><i
-					class='nav-icon fa fa-question'></i> Insumos</a></li>
+					class='nav-icon la la-question'></i> Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i
-					class='nav-icon fa fa-question'></i> Insumo Plato</a></li>
+					class='nav-icon la la-question'></i> Insumo Plato</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-group"></i> INSUMOS</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> INSUMOS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i
-					class='nav-icon fa fa-question'></i> Lotes</a></li>
+					class='nav-icon la la-question'></i> Lotes</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingresoInsumo') }}'><i
-					class='nav-icon fa fa-question'></i> Ingresos Insumos</a></li>
+					class='nav-icon la la-question'></i> Ingresos Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
-					class='nav-icon fa fa-question'></i> Platos Asignados</a></li>
+					class='nav-icon la la-question'></i> Platos Asignados</a></li>
 	</ul>
 </li> --}}
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('elfinder') }}"><i class="nav-icon la la-files-o"></i> <span>{{ trans('backpack::crud.file_manager') }}</span></a></li>

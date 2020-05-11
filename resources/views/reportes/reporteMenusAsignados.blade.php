@@ -7,7 +7,7 @@
     <hr>
     <h4>Filtros Aplicados</h4>
     @if ($filtro_comensal)
-    <div style="margin-bottom: 5px; margin-left: 20px">Comensal: {{App\Models\BackpackUser::find($filtro_comensal)->name}}</div>
+    <div style="margin-bottom: 5px; margin-left: 20px">Comensal: {{App\User::find($filtro_comensal)->name}}</div>
     @else
     <div style="margin-bottom: 5px; margin-left: 20px">Comensal: {{$filtro_comensal?? 'No aplicado'}}</div>
     @endif

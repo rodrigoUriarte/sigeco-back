@@ -45,7 +45,7 @@ trait AsistenciaFBHOperation
     {
         $this->crud->hasAccessOrFail('update');
 
-        $entries = $this->request->input('entries');
+        $entries = $this->crud->getRequest()->input('entries');
 
         $hoy = Carbon::now();
         $data = collect();

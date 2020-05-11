@@ -113,7 +113,7 @@ class LoteCrudController extends CrudController
         // daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'es_date_range',
+                'type'  => 'date_range',
                 'name'  => 'from_to',
                 'label' => 'Fecha Vencimiento'
             ],

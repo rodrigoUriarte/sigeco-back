@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Asistencia;
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\DiaServicio;
 use App\Models\Regla;
 use App\Models\Sancion;
@@ -46,7 +46,7 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
 
         if (!$reglasM->isEmpty()) {
 
-            $users = BackpackUser::whereHas('persona', function ($query) {
+            $users = User::whereHas('persona', function ($query) {
                 $query
                     ->where('comedor_id', $this->comedor_id);
             })->get();

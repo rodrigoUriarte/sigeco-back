@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\InscripcionRequest;
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\Inscripcion;
 use App\Models\Menu;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -76,7 +76,7 @@ class InscripcionCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        //Si el usuario tiene rol de admin mostrar a que usuario corresponde cada inscripcion
+        // //Si el usuario tiene rol de admin mostrar a que usuario corresponde cada inscripcion
         if (backpack_user()->hasRole('operativo')) {
 
             $this->crud->addColumns(['usuario']);
@@ -87,7 +87,7 @@ class InscripcionCrudController extends CrudController
                 'name' => 'user_id', // the db column for the foreign key
                 'entity' => 'user', // the method that defines the relationship in your Model
                 'attribute' => 'name', // foreign key attribute that is shown to user
-                'model' => "App\Models\BackpackUser", // foreign key model
+                'model' => "App\User", // foreign key model
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
                         $q->where('name', 'like', '%' . $searchTerm . '%');
@@ -136,7 +136,7 @@ class InscripcionCrudController extends CrudController
             'type' => 'select',
             'name' => 'menu_asignado_id', // the db column for the foreign key
             'entity' => 'menuAsignado', // the method that defines the relationship in your Model
-            'attribute' => 'descripcionMenu', // foreign key attribute that is shown to user
+            'attribute' => "descripcion_menu", // foreign key attribute that is shown to user
             'model' => "App\Models\MenuAsignado", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('menuAsignado.menu', function ($q) use ($column, $searchTerm) {
@@ -163,7 +163,7 @@ class InscripcionCrudController extends CrudController
         //daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'es_date_range',
+                'type'  => 'date_range',
                 'name'  => 'fecha_inscripcion',
                 'label' => 'Fecha Inscripcion'
             ],

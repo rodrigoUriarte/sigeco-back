@@ -1,6 +1,6 @@
 @if ($crud->hasAccess('asistenciaFBH') && $crud->get('list.bulkActions'))
 <a href="javascript:void(0)" onclick="asistenciaFBH(this)" class="btn btn-sm btn-secondary bulk-button"><i
-    class="fa fa-check"></i>Asistio (FBH)</a>
+    class="la la-check"></i>Asistio (FBH)</a>
 @endif
 @foreach (Alert::getMessages() as $type => $messages)
 @foreach ($messages as $message)

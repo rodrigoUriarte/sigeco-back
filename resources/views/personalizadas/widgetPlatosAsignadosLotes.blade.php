@@ -1,6 +1,6 @@
 @foreach ($pa as $platoAsignado)
 <div class="card">
-    <div class="card-header"><i class="fa fa-align-justify"></i>Menu: {{$platoAsignado->menu->descripcion}} - 
+    <div class="card-header"><i class="la la-align-justify"></i>Menu: {{$platoAsignado->menu->descripcion}} - 
         Plato: {{$platoAsignado->plato->descripcion}}</div>
     <div class="card-body">
         <table class="table table-responsive-sm table-sm">

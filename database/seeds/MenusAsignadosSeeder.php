@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\Menu;
 use App\Models\MenuAsignado;
 use Carbon\Carbon;
@@ -15,7 +15,7 @@ class MenusAsignadosSeeder extends Seeder
      */
     public function run()
     {
-        $users = BackpackUser::all();
+        $users = User::all();
         foreach ($users as $user) {
             if ($user->hasRole('comensal')) {
                 $ma = MenuAsignado::create([

@@ -52,7 +52,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<b><font color="white">SGC</font></b>',
+    'project_logo'   => '<b><font color="white">SiGeCo</font></b>',
 
     // Horizontal navbar classes. Helps make the admin panel look similar to your project's design.
     'header_class' => 'app-header navbar navbar-color bg-primary border-0',
@@ -170,14 +170,14 @@ return [
     */
 
     // Fully qualified namespace of the User model
-    'user_model_fqn' => App\Models\BackpackUser::class,
+    'user_model_fqn' => App\User::class,
 
     // The classes for the middleware to check if the visitor is an admin
     // Can be a single class or an array of clases
     'middleware_class' => [
         App\Http\Middleware\CheckIfAdmin::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
+        //\Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
 
     // Alias for that middleware
@@ -193,6 +193,7 @@ return [
     // The guard that protects the Backpack admin panel.
     // If null, the config.auth.defaults.guard value will be used.
     'guard' => 'backpack',
+    //'guard' => null,
 
     // The password reset configuration for Backpack.
     // If null, the config.auth.defaults.passwords value will be used.

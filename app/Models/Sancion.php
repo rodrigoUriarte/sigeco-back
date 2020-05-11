@@ -41,7 +41,7 @@ class Sancion extends Model
         return $this->belongsTo('App\Models\Regla');
     }
     public function user(){
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\User');
     }
     public function asistencias(){
         return $this->belongsToMany('App\Models\Asistencia');

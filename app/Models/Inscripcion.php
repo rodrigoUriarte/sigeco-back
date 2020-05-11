@@ -25,6 +25,9 @@ class Inscripcion extends Model
 
     // protected $hidden = [];
 
+    public $appends = ['fecha_inscripcion_formato','nombre'];
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +42,7 @@ class Inscripcion extends Model
     */
     public function user()
     {
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\User');
     }
     public function bandaHoraria()
     {

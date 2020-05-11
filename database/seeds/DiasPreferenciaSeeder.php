@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\BandaHoraria;
 use App\Models\DiaPreferencia;
 use App\Models\DiaServicio;
@@ -15,7 +15,7 @@ class DiasPreferenciaSeeder extends Seeder
      */
     public function run()
     {
-        $users = BackpackUser::all();
+        $users = User::all();
         foreach ($users as $user) {
             if ($user->hasRole('comensal')) {
                 $dias_servicio = DiaServicio::where('comedor_id', $user->persona->comedor_id)

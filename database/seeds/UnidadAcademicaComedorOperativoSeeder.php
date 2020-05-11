@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\BandaHoraria;
 use App\Models\Comedor;
 use App\Models\DiaServicio;
@@ -123,7 +123,7 @@ class UnidadAcademicaComedorOperativoSeeder extends Seeder
         ]);
         Persona::setEventDispatcher($dispatcher);
 
-        $user = BackpackUser::create([
+        $user = User::create([
             'name' => $operativo->nombre . $operativo->apellido,
             'email' => $operativo->email,
             'password' => bcrypt($operativo->dni),
@@ -133,7 +133,7 @@ class UnidadAcademicaComedorOperativoSeeder extends Seeder
         DB::table('model_has_roles')->insert([
             [
                 'role_id' => '3',
-                'model_type' => 'App\Models\BackpackUser',
+                'model_type' => 'App\User',
                 'model_id' => $user->id,
             ]
         ]);

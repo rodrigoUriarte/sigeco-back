@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\Persona;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class PersonaObserver
      */
     public function created(Persona $persona)
     {
-        $user = BackpackUser::create([
+        $user = User::create([
             'name' => $persona->nombre_usuario,
             'email' => $persona->email,
             'password' => bcrypt($persona->dni),
@@ -30,7 +30,7 @@ class PersonaObserver
             DB::table('model_has_roles')->insert([
                 [
                     'role_id' => '4',
-                    'model_type' => 'App\Models\BackpackUser',
+                    'model_type' => 'App\User',
                     'model_id' => $user->id,
                 ]
             ]);

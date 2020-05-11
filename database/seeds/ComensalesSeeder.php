@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\BackpackUser;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,7 @@ class ComensalesSeeder extends Seeder
     {
         $personas = $this->factoryWithoutObservers(App\Models\Persona::class, 25)->create();
         foreach ($personas as $persona) {
-            $user = new BackpackUser;
+            $user = new User;
             $user->fill([
                 'name' => $persona->nombre_usuario,
                 'email' => $persona->email,
@@ -34,7 +34,7 @@ class ComensalesSeeder extends Seeder
             DB::table('model_has_roles')->insert([
                 [
                     'role_id' => '4',
-                    'model_type' => 'App\Models\BackpackUser',
+                    'model_type' => 'App\User',
                     'model_id' => $user->id,
                 ]
             ]);

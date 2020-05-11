@@ -96,7 +96,7 @@ class PlatoAsignadoCrudController extends CrudController
         // daterange filter
         $this->crud->addFilter(
             [
-                'type'  => 'es_date_range',
+                'type'  => 'date_range',
                 'name'  => 'fecha',
                 'label' => 'Fecha'
             ],

@@ -8,10 +8,10 @@
 		<div class="form-group backpack-filter mb-0">
 			<div class="input-group date">
 		        <div class="input-group-prepend">
-		          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+		          <span class="input-group-text"><i class="la la-calendar"></i></span>
 		        </div>
 		        <input class="form-control pull-right"
-		        		id="daterangepicker-{{ str_slug($filter->name) }}"
+		        		id="daterangepicker-{{ Str::slug($filter->name) }}"
 		        		type="text"
 		        		@if ($filter->currentValue)
 							@php
@@ -26,8 +26,8 @@
 					        placeholder="{{ $date_range }}"
 						@endif
 		        		>
-		        <div class="input-group-append daterangepicker-{{ str_slug($filter->name) }}-clear-button">
-		          <a class="input-group-text" href=""><i class="fa fa-times"></i></a>
+		        <div class="input-group-append daterangepicker-{{ Str::slug($filter->name) }}-clear-button">
+		          <a class="input-group-text" href=""><i class="la la-times"></i></a>
 		        </div>
 		    </div>
 		</div>
@@ -99,7 +99,7 @@
   		}
 
 		jQuery(document).ready(function($) {
-			var dateRangeInput = $('#daterangepicker-{{ str_slug($filter->name) }}').daterangepicker({
+			var dateRangeInput = $('#daterangepicker-{{ Str::slug($filter->name) }}').daterangepicker({
 				timePicker: false,
 		        ranges: {
 		            'Hoy': [moment().startOf('day'), moment().endOf('day')],
@@ -133,7 +133,7 @@
 			});
 
 			// datepicker clear button
-			$(".daterangepicker-{{ str_slug($filter->name) }}-clear-button").click(function(e) {
+			$(".daterangepicker-{{ Str::slug($filter->name) }}-clear-button").click(function(e) {
 				e.preventDefault();
 				applyDateRangeFilter{{camel_case($filter->name)}}(null, null);
 			})

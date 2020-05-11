@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Models\Comedor;
 use App\Models\Menu;
 use App\Models\MenuAsignado;
@@ -47,7 +47,7 @@ class RegistrarMenusNoAsignadosJob implements ShouldQueue
         $diaLimite = Carbon::now()->startOfMonth()->addDays($lma);
         $pdm = Carbon::now()->startOfMonth();
 
-        $users = BackpackUser::whereHas('persona', function ($query) {
+        $users = User::whereHas('persona', function ($query) {
             $query->where('comedor_id', $this->comedor_id);
         })
         ->whereDoesntHave('menusAsignados', function ($query) use ($diaLimite,$pdm) {

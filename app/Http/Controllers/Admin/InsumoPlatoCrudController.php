@@ -59,7 +59,7 @@ class InsumoPlatoCrudController extends CrudController
             'type' => 'select',
             'name' => 'plato_id', // the db column for the foreign key
             'entity' => 'plato', // the method that defines the relationship in your Model
-            'attribute' => 'descripcionMenu', // foreign key attribute that is shown to user
+            'attribute' => 'descripcion_menu', // foreign key attribute that is shown to user
             'model' => "App\Models\Plato", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('plato.menu', function ($q) use ($column, $searchTerm) {

@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
         DB::table('model_has_roles')->insert([
             [
                 'role_id' => '1',
-                'model_type' => 'App\Models\BackpackUser',
+                'model_type' => 'App\User',
                 'model_id' => '1',
             ]
         ]);
@@ -42,7 +42,7 @@ class UsersTableSeeder extends Seeder
         DB::table('model_has_roles')->insert([
             [
                 'role_id' => '5',
-                'model_type' => 'App\Models\BackpackUser',
+                'model_type' => 'App\User',
                 'model_id' => '2',
             ]
         ]);

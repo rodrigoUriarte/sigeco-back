@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reporte SGC</title>
+    <title>Reporte SiGeCo</title>
 
     <style type="text/css">
         * {

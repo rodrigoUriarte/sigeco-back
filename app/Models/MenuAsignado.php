@@ -24,6 +24,8 @@ class MenuAsignado extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    public $appends = ['rango_fechas','descripcion_menu'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -37,7 +39,7 @@ class MenuAsignado extends Model
     */
     public function user()
     {
-        return $this->belongsTo('App\Models\BackpackUser');
+        return $this->belongsTo('App\User');
     }
     public function menu()
     {

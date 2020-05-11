@@ -36,7 +36,7 @@ class Persona extends Model
     */
     public function user()
     {
-        return $this->hasOne('App\Models\BackpackUser');
+        return $this->hasOne('App\User');
     }
     public function unidadAcademica()
     {
