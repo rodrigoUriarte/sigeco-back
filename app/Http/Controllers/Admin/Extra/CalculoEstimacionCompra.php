@@ -12,7 +12,6 @@ use App\Models\Insumo;
 use App\Models\Lote;
 use App\Models\Menu;
 use App\Models\Plato;
-use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use DOMDocument;
 use Illuminate\Support\Collection as SupportCollection;

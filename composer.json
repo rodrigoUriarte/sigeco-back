@@ -12,7 +12,6 @@
         "backpack/crud": "4.1.*",
         "backpack/filemanager": "^1.1",
         "backpack/permissionmanager": "^6.0.0",
-        "barryvdh/laravel-dompdf": "^0.8.5",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "caouecs/laravel-lang": "~4.0",
         "consoletvs/charts": "^6.5",
@@ -24,7 +23,6 @@
     },
     "require-dev": {
         "backpack/generators": "^3.0",
-        "barryvdh/laravel-debugbar": "^3.3",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laracasts/generators": "^1.0",

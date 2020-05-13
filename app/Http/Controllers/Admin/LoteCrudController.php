@@ -9,7 +9,6 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
