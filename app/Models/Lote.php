@@ -20,7 +20,7 @@ class Lote extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     // protected $guarded = ['id'];
-    protected $fillable = ['fecha_vencimiento','cantidad','usado','comedor_id','insumo_id','ingreso_insumo_id'];
+    protected $fillable = ['fecha_vencimiento','cantidad','usado','comedor_id','insumo_id','insumo_remito_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -38,6 +38,9 @@ class Lote extends Model
 
     public function ingresoInsumo(){
         return $this->belongsTo('App\Models\IngresoInsumo');
+    }
+    public function insumoRemito(){
+        return $this->belongsTo('App\Models\InsumoRemito');
     }
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');

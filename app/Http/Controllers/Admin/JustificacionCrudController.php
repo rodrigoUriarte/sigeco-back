@@ -126,6 +126,7 @@ class JustificacionCrudController extends CrudController
                 'placeholder' => 'Seleccione un comensal', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
                 'dependencies' => ['fecha_busqueda'],
+                'include_all_form_fields' => true,
                 //SE RESETEA SOLO SI EL MENU CAMBIA NO CUANDO CAMBIA LA FECHA, A CORREGIR
             ]
         );

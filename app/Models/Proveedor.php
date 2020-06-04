@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Insumo extends Model
+class Proveedor extends Model
 {
     use CrudTrait;
 
@@ -15,11 +16,11 @@ class Insumo extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'insumos';
+    protected $table = 'proveedores';
     protected $primaryKey = 'id';
     public $timestamps = true;
-    // protected $guarded = ['id'];
-    protected $fillable = ['comedor_id', 'descripcion', 'unidad_medida'];
+    //protected $guarded = ['id'];
+    protected $fillable = ['nombre', 'telefono', 'email', 'direccion'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,29 +35,14 @@ class Insumo extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function comedor()
+    public function comedores()
     {
-        return $this->belongsTo('App\Models\Comedor');
-    }
-
-    public function insumosPlatos()
-    {
-        return $this->hasMany('App\Models\InsumoPlato');
-    }
-    public function ingresosInsumos()
-    {
-        return $this->hasMany('App\Models\IngresoInsumo');
-    }
-    public function lotes()
-    {
-        return $this->hasMany('App\Models\Lote');
+        return $this->belongsToMany('App\Models\Comedor', 'comedor_proveedor', 'proveedor_id', 'comedor_id');
     }
     public function remitos()
     {
-        return $this->belongsToMany('App\Models\Remito')->using('App\Models\InsumoRemito')->withPivot(['id','cantidad','fecha_vencimiento'])->withTimestamps();
+        return $this->hasMany('App\Models\Remito');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -69,22 +55,10 @@ class Insumo extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getDescripcionUMAttribute()
-    {
-        return "{$this->descripcion}  ({$this->unidad_medida})";
-    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function setDescripcionAttribute($value)
-    {
-        $this->attributes['descripcion'] = strtoupper($value);
-    }
-    public function setUnidadMedidaAttribute($value)
-    {
-        $this->attributes['unidad_medida'] = strtoupper($value);
-    }
 }

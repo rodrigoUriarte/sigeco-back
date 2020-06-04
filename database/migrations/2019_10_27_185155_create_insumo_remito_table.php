@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLotesTable extends Migration
+class CreateInsumoRemitoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,14 @@ class CreateLotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lotes', function (Blueprint $table) {
+        Schema::create('insumo_remito', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('fecha_vencimiento');
             $table->float('cantidad');
-            $table->boolean('usado');
-            $table->unsignedBigInteger('insumo_remito_id');
-            $table->foreign('insumo_remito_id')->references('id')->on('insumo_remito');
-            $table->unsignedBigInteger('comedor_id');
-            $table->foreign('comedor_id')->references('id')->on('comedores');
+            $table->date('fecha_vencimiento');
             $table->unsignedBigInteger('insumo_id');
             $table->foreign('insumo_id')->references('id')->on('insumos');
+            $table->unsignedBigInteger('remito_id');
+            $table->foreign('remito_id')->references('id')->on('remitos');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ class CreateLotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lotes');
+        Schema::dropIfExists('ingresos_insumos');
     }
 }

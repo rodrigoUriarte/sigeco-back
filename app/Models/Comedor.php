@@ -79,6 +79,12 @@ class Comedor extends Model
     public function diasServicio(){
         return $this->hasMany('App\Models\DiasServicio');
     }
+    public function proveedores(){
+        return $this->belongsToMany('App\Models\Proveedor','comedor_proveedor','comedor_id','proveedor_id');
+    }
+    public function remitos(){
+        return $this->hasMany('App\Models\Remito');
+    }
 
     /*
     |--------------------------------------------------------------------------

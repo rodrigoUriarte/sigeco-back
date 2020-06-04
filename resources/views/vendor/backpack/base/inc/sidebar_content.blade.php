@@ -11,25 +11,25 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION ASISTENCIAS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menuAsignado') }}'><i
-					class='nav-icon fas fa-calendar-alt'></i> Menus Asignados</a></li>
+					class='nav-icon la la-calendar-alt'></i> Menus Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('diapreferencia') }}'><i
-					class='nav-icon fas fa-calendar-day'></i> Dias Preferencia</a></li>
+					class='nav-icon la la-calendar-day'></i> Dias Preferencia</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('inscripcion') }}'><i
-					class='nav-icon fas fa-calendar-plus'></i> Inscripciones</a></li>
+					class='nav-icon la la-calendar-plus'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
-					class="nav-icon fas fa-calendar-check"></i> Asistencias</a></li>
+					class="nav-icon la la-calendar-check"></i> Asistencias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
-					class='nav-icon fas fa-ban'></i> Sanciones</a></li>
+					class='nav-icon la la-ban'></i> Sanciones</a></li>
 
 	</ul>
 </li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
-			class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
+			class='nav-icon la la-question-circle'></i> AYUDA</a></li>
 @endif
 
 {{-- OPERATIVO --}}
@@ -39,87 +39,91 @@
 
 <li class="nav-item nav-dropdown">
 	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i
-			class="nav-icon fas fa-layer-group"></i>GESTION USUARIOS</a>
+			class="nav-icon la la-layer-group"></i>GESTION USUARIOS</a>
 	<ul class="nav-dropdown-items">
-		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon fas fa-user"></i>
+		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
 				<span>Users</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
-					class='nav-icon fas fa-male'></i> Personas</a></li>
+					class='nav-icon la la-male'></i> Personas</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION COMEDORES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('parametro') }}'><i
-					class='nav-icon fas fa-hourglass-half'></i> Parametros</a></li>
+					class='nav-icon la la-hourglass-half'></i> Parametros</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('diaservicio') }}'><i
-					class='nav-icon fas fa-calendar-week'></i> Dias Servicio</a></li>
+					class='nav-icon la la-calendar-week'></i> Dias Servicio</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
-					class='nav-icon fas fa-clock'></i> Bandas Horarias</a></li>
+					class='nav-icon la la-clock'></i> Bandas Horarias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
-					class='nav-icon fas fa-balance-scale'></i> Reglas</a></li>
+					class='nav-icon la la-balance-scale'></i> Reglas</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION ASISTENCIAS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menuAsignado') }}'><i
-					class='nav-icon fas fa-calendar-alt'></i> Menus Asignados</a></li>
+					class='nav-icon la la-calendar-alt'></i> Menus Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('diapreferencia') }}'><i
-					class='nav-icon fas fa-calendar-day'></i> Dias Preferencia</a></li>
+					class='nav-icon la la-calendar-day'></i> Dias Preferencia</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('inscripcion') }}'><i
-					class='nav-icon fas fa-calendar-plus'></i> Inscripciones</a></li>
+					class='nav-icon la la-calendar-plus'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
-					class="nav-icon fas fa-calendar-check"></i> Asistencias</a></li>
+					class="nav-icon la la-calendar-check"></i> Asistencias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
-					class='nav-icon fas fa-ban'></i> Sanciones</a></li>
+					class='nav-icon la la-ban'></i> Sanciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('justificacion') }}'><i
-					class='nav-icon fas fa-balance-scale-right'></i> Justificaciones</a></li>
+					class='nav-icon la la-balance-scale-right'></i> Justificaciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
-					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
+					class='nav-icon la la-chart-bar'></i> Estadisticas</a></li>
 
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION
 		INSUMOS/PLATOS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu') }}'><i
-					class='nav-icon fas fa-utensils'></i> Menus</a></li>
+					class='nav-icon la la-utensils'></i> Menus</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plato') }}'><i
-					class='nav-icon fas fa-drumstick-bite'></i> Platos</a></li>
+					class='nav-icon la la-drumstick-bite'></i> Platos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumo') }}'><i
-					class='nav-icon fas fa-carrot'></i> Insumos</a></li>
+					class='nav-icon la la-carrot'></i> Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i
-					class='nav-icon fas fa-fish'></i> Insumo Plato</a></li>
+					class='nav-icon la la-fish'></i> Insumo Plato</a></li>
 	</ul>
 
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION
 		INGRESOS/EGRESOS</a>
 	<ul class="nav-dropdown-items">
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon fas fa-boxes'></i>
-				Lotes</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('proveedor') }}'><i
+					class='nav-icon la la-people-carry'></i> Proveedores</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('remito') }}'><i
+					class='nav-icon la la-file-invoice-dollar'></i></i> Remitos</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i 
+					class='nav-icon la la-boxes'></i> Lotes</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingresoInsumo') }}'><i
-					class='nav-icon fas fa-truck-loading'></i> Ingresos Insumos</a></li>
+					class='nav-icon la la-truck-loading'></i> Ingresos Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
-					class='nav-icon fas fa-calendar-minus'></i> Platos Asignados</a></li>
+					class='nav-icon la la-calendar-minus'></i> Platos Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('calculoEstimacionCompra')}}'><i
-					class='nav-icon fas fa-calculator'></i> Estimacion Compra</a></li>
+					class='nav-icon la la-calculator'></i> Estimacion Compra</a></li>
 	</ul>
 </li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
-			class='nav-icon fas fa-question-circle'></i> AYUDA</a></li>
+			class='nav-icon la la-question-circle'></i> AYUDA</a></li>
 
 @endif
 
@@ -130,13 +134,13 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION USUARIOS</a>
 	<ul class="nav-dropdown-items">
-		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon fas fa-user"></i>
+		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
 				<span>Users</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
-					class='nav-icon fas fa-male'></i> Personas</a></li>
+					class='nav-icon la la-male'></i> Personas</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i>
 				<span>Roles</span></a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i
@@ -146,7 +150,7 @@
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		GESTION
 		UA/COMEDORES</a>
 	<ul class="nav-dropdown-items">
@@ -165,11 +169,11 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		AUDITORIA</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('auditoria') }}'><i
-					class='nav-icon fas fa-search'></i> Registros Auditorias</a></li>
+					class='nav-icon la la-search'></i> Registros Auditorias</a></li>
 	</ul>
 </li>
 
@@ -181,21 +185,21 @@
 		{{ trans('backpack::base.dashboard') }}</a></li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		ESTADISTICAS</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
-					class='nav-icon fas fa-chart-bar'></i> Estadisticas</a></li>
+					class='nav-icon la la-chart-bar'></i> Estadisticas</a></li>
 	</ul>
 </li>
 
 <li class="nav-item nav-dropdown">
-	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fas fa-layer-group"></i>
+	<a style="font-size:10px" class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-layer-group"></i>
 		REPORTES</a>
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('inscripcion') }}'><i
-					class='nav-icon fas fa-calendar-plus'></i> Inscripciones</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon fas fa-boxes'></i>
+					class='nav-icon la la-calendar-plus'></i> Inscripciones</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon la la-boxes'></i>
 				Lotes</a></li>
 	</ul>
 </li>

@@ -44,8 +44,6 @@ class CalculoInasistenciasFecha extends Controller
 
         $search_term = $request->input('q');
 
-        // $page = $request->input('page');
-
         $form = collect($request->input('form'))->pluck('value', 'name');
 
         $options = collect();

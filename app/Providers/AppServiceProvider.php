@@ -16,6 +16,7 @@ use App\Models\MenuAsignado;
 use App\Models\Parametro;
 use App\Models\Persona;
 use App\Models\PlatoAsignado;
+use App\Models\Remito;
 use App\Observers\AsistenciaObserver;
 use App\Observers\BandaHorariaObserver;
 use App\Observers\IngresoInsumoObserver;
@@ -28,6 +29,7 @@ use App\Observers\MenuAsignadoObserver;
 use App\Observers\ParametroObserver;
 use App\Observers\PersonaObserver;
 use App\Observers\PlatoAsignadoObserver;
+use App\Observers\RemitoObserver;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -51,6 +53,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         IngresoInsumo::observe(IngresoInsumoObserver::class);
+
+        Remito::observe(RemitoObserver::class);
         PlatoAsignado::observe(PlatoAsignadoObserver::class);
         Persona::observe(PersonaObserver::class);
         Asistencia::observe(AsistenciaObserver::class);

@@ -152,7 +152,9 @@ class PlatoAsignadoCrudController extends CrudController
                 'data_source' => url("admin/calculoPreparacionPlatos"), // url to controller search function (with /{id} should return model)
                 'placeholder' => 'Seleccione un plato', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
+                'include_all_form_fields' => true,
                 'dependencies' => ['fecha', 'menu_id'],
+                //'method' => 'get',
                 //SE RESETEA SOLO SI EL MENU CAMBIA NO CUANDO CAMBIA LA FECHA, A CORREGIR
             ]
         );

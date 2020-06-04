@@ -33,6 +33,8 @@ Route::group([
     Route::crud('justificacion', 'JustificacionCrudController');
     Route::crud('diaservicio', 'DiaServicioCrudController');
     Route::crud('diapreferencia', 'DiaPreferenciaCrudController');
+    Route::crud('proveedor', 'ProveedorCrudController');
+    Route::crud('remito', 'RemitoCrudController');
 
     //LLAMADAS AJAX
     Route::get('/calculoPreparacionPlatos', 'Extra\CalculoPreparacionPlatos@index');
@@ -51,5 +53,8 @@ Route::group([
     Route::get('/estadisticas', 'Extra\UserChartController@index')->name('estadisticas');
     Route::get('/calculoEstimacionCompra', 'Extra\CalculoEstimacionCompra@index')->name('calculoEstimacionCompra');
     Route::get('/ayuda', 'Extra\AyudaController@index')->name('ayuda');
+
+    //Route::get('/remito/create', 'Extra\RemitoController@create')->name('createRemito');
+    //Route::post('/remito/store', 'Extra\RemitoController@store')->name('storeRemito');
 
 });

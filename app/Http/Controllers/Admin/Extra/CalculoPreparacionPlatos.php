@@ -60,10 +60,7 @@ class CalculoPreparacionPlatos extends Controller
 
     public function index(Request $request)
     {
-
         $search_term = $request->input('q');
-
-        // $page = $request->input('page');
 
         $form = collect($request->input('form'))->pluck('value', 'name');
 
@@ -80,7 +77,6 @@ class CalculoPreparacionPlatos extends Controller
         }
 
         if ($search_term) {
-
             $options=$options->filter(function ($item) use ($search_term) {
                 // replace stristr with your choice of matching function
                 return false !== stristr($item->descripcion, $search_term);
