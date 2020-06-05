@@ -107,31 +107,31 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'createIngresoInsumo',
+                'name' => 'createIngresoInsumo-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'updateIngresoInsumo',
+                'name' => 'updateIngresoInsumo-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'deleteIngresoInsumo',
+                'name' => 'deleteIngresoInsumo-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'listIngresoInsumo',
+                'name' => 'listIngresoInsumo-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'showIngresoInsumo',
+                'name' => 'showIngresoInsumo-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')

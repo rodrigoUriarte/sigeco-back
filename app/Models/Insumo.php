@@ -44,10 +44,6 @@ class Insumo extends Model
     {
         return $this->hasMany('App\Models\InsumoPlato');
     }
-    public function ingresosInsumos()
-    {
-        return $this->hasMany('App\Models\IngresoInsumo');
-    }
     public function lotes()
     {
         return $this->hasMany('App\Models\Lote');

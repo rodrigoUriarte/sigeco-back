@@ -61,9 +61,6 @@ class Comedor extends Model
     public function menusAsignados(){
         return $this->hasMany('App\Models\MenuAsignado');
     }
-    public function ingresosInsumos(){
-        return $this->hasMany('App\Models\IngresoInsumo');
-    }
     public function platosAsignados(){
         return $this->hasMany('App\Models\PlatoAsignado');
     }

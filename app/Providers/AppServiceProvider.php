@@ -6,7 +6,6 @@ use App\Models\Asistencia;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\BandaHoraria;
-use App\Models\IngresoInsumo;
 use App\Models\Inscripcion;
 use App\Models\Menu;
 use App\Models\Plato;
@@ -19,7 +18,6 @@ use App\Models\PlatoAsignado;
 use App\Models\Remito;
 use App\Observers\AsistenciaObserver;
 use App\Observers\BandaHorariaObserver;
-use App\Observers\IngresoInsumoObserver;
 use App\Observers\InscripcionObserver;
 use App\Observers\MenuObserver;
 use App\Observers\PlatoObserver;
@@ -52,9 +50,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        IngresoInsumo::observe(IngresoInsumoObserver::class);
-
-        Remito::observe(RemitoObserver::class);
         PlatoAsignado::observe(PlatoAsignadoObserver::class);
         Persona::observe(PersonaObserver::class);
         Asistencia::observe(AsistenciaObserver::class);

@@ -40,7 +40,7 @@ class CustomUserCrudController extends CrudController
             $this->crud->allowAccess('show');
         }
         
-        //SI el usuario es un admin muestra solo los ingresos de insumos del comedor del cual es responsable
+        //SI el usuario es un admin muestra solo los usuarios del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
             $this->crud->addClause('whereHas', 'persona', function ($query) {
                 $query->where('comedor_id', backpack_user()->persona->comedor_id);

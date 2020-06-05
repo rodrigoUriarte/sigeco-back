@@ -113,8 +113,6 @@
 					class='nav-icon la la-file-invoice-dollar'></i></i> Remitos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i 
 					class='nav-icon la la-boxes'></i> Lotes</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingresoInsumo') }}'><i
-					class='nav-icon la la-truck-loading'></i> Ingresos Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
 					class='nav-icon la la-calendar-minus'></i> Platos Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('calculoEstimacionCompra')}}'><i
@@ -275,8 +273,6 @@
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i
 					class='nav-icon la la-question'></i> Lotes</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ingresoInsumo') }}'><i
-					class='nav-icon la la-question'></i> Ingresos Insumos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
 					class='nav-icon la la-question'></i> Platos Asignados</a></li>
 	</ul>

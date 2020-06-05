@@ -31,6 +31,6 @@ class CreateInsumoRemitoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ingresos_insumos');
+        Schema::dropIfExists('insumo_remito');
     }
 }

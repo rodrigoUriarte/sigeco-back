@@ -58,10 +58,6 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Sancion');
     }
-    public function ingresosInsumos()
-    {
-        return $this->hasMany('App\Models\IngresoInsumo');
-    }
     public function diasPreferencia(){
         return $this->hasMany('App\Models\DiaPreferencia');
     }

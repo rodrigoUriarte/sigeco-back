@@ -22,7 +22,7 @@ class DatosPruebaSeeder extends Seeder
         $this->call(InscripcionesSeeder::class);
         $this->call(AsistenciasSeeder::class);
         $this->call(GestionInsumosPlatosSeeder::class);
-        //$this->call(IngresosInsumosSeeder::class);
+        $this->call(ProveedorRemitoSeeder::class);
 
     }
 }

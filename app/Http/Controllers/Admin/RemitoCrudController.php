@@ -338,10 +338,10 @@ class RemitoCrudController extends CrudController
         return $this->crud->performSaveAction($remito->getKey());
     }
 
-    // protected function setupUpdateOperation()
-    // {
-    //     $this->setupCreateOperation();
-    // }
+    protected function setupUpdateOperation()
+    {
+        //
+    }
 
     protected function setupShowOperation()
     {

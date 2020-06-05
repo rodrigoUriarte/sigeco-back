@@ -98,7 +98,7 @@ class PlatoAsignadoObserver
         foreach ($lotes as $lote) {
             $cdl = $lote->pivot->cantidad;
             $lote->cantidad += $cdl;
-            if ($lote->ingresoInsumo->cantidad = $cdl) {
+            if ($lote->insumoRemito->cantidad = $cdl) {
                 $lote->usado = false;
             }
             $lote->save();

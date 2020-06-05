@@ -36,9 +36,6 @@ class Lote extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function ingresoInsumo(){
-        return $this->belongsTo('App\Models\IngresoInsumo');
-    }
     public function insumoRemito(){
         return $this->belongsTo('App\Models\InsumoRemito');
     }
