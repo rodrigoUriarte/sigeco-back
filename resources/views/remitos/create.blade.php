@@ -46,24 +46,30 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 				</div>
 
 				<div class="card-body">
-					{{-- <input type="hidden" name="id" value="{{ $id ?? '' }}"> --}}
 					<input type="hidden" name="fecha" value="{{$fecha}}">
 					<input type="hidden" name="comedor_id" value="{{$comedor}}">
-					<div class="form-group">
+					<div class="form-group {{ $errors->has('numero') ? 'text-danger' : false }}">
 						<label for="numero">Numero de remito <span style="color: red">*</span></label>
-						<input type="number" class="form-control" id="numero" name="numero"
-							placeholder="Ingrese el numero del remito" required>
+						<input type="number" class="form-control  {{ $errors->has('numero') ? 'is-invalid' : false }}"
+							id="numero" name="numero" placeholder="Ingrese el numero del remito" required
+							value="{{old('numero')}}">
+						{!! $errors->first('numero', ' <div class="invalid-feedback">:message</div>') !!}
+
 					</div>
-					<div class="form-group">
+					<div class="form-group {{ $errors->has('proveedor_id') ? 'text-danger' : false }}">
 						<label for="proveedor">Proveedor <span style="color: red">*</span></label>
-						<select class="form-control" name="proveedor_id" id="proveedor" required>
+						<select class="form-control {{ $errors->has('proveedor_id') ? 'is-invalid' : false }}" 
+							name="proveedor_id" id="proveedor" required>
 							<option></option>
 							@if($proveedores)
 							@foreach($proveedores as $proveedor)
-							<option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
+							<option value="{{$proveedor->id}}"
+								{{ $proveedor->id == old('proveedor_id') ? 'selected' : '' }}>
+								{{$proveedor->nombre}}</option>
 							@endforeach
 							@endif
 						</select>
+						{!! $errors->first('proveedor_id', ' <div class="invalid-feedback">:message</div>') !!}
 					</div>
 
 				</div>
@@ -86,7 +92,36 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 								</tr>
 							</thead>
 							<tbody>
-								{{-- SE COMPLETA MEDIANTE JQUERY --}}
+								{{-- AL MOMENTO DE CREAR SI LAS VALIDACIONES FALLAN SE VUELVEN A CARGAR LOS CAMPOS CON 
+								LOS DATOS INGRESADOS POR EL USUARIO --}}
+								@if (old('insumo'))
+								@for( $i=0; $i < count(old('insumo')); $i++) <tr>
+									<td>
+										<select class="select2 form-control" name="insumo[]" required>
+											<option></option>
+											@if($insumos)
+											@foreach($insumos as $insumo)
+											<option value="{{$insumo->id}}"
+												{{ $insumo->id == old('insumo.'.$i) ? 'selected' : '' }}>
+												{{$insumo->descripcionUM}}</option>
+											@endforeach
+											@endif
+										</select>
+									</td>
+									<td>
+										<input type="number" step="0.01" name="cantidad[]" class="form-control" required
+											placeholder="Ingrese la cantidad" value="{{old('cantidad.'.$i)}}">
+
+									</td>
+									<td>
+										<input type="date" name="fecha_vencimiento[]" class="form-control" required
+											value="{{old('fecha_vencimiento.'.$i)}}">
+									</td>
+									<td><button class="delete_row pull-right btn btn-danger"><i
+												class="la la-remove"></i></button></td>
+									</tr>
+									@endfor
+									@endif
 							</tbody>
 						</table>
 					</div>
@@ -114,7 +149,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/i18n/es.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+	$(document).ready(function() {
 
     $.fn.select2.defaults.set('language', 'es');
 
@@ -147,10 +182,10 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     </select>\
                 </td>\
                 <td>\
-                    <input type="number" step="0.1" name="cantidad[]" class="form-control" required placeholder="Ingrese la cantidad" />\
+                    <input type="number" step="0.01" name="cantidad[]" class="form-control" required placeholder="Ingrese la cantidad">\
                 </td>\
                 <td>\
-                    <input type="date" name="fecha_vencimiento[]" class="form-control" required />\
+                    <input type="date" name="fecha_vencimiento[]" class="form-control" required>\
                 </td>\
                 <td><button class="delete_row pull-right btn btn-danger"><i class="la la-remove"></i></button></td>\
             </tr>'

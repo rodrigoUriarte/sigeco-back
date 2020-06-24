@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RemitoRequest extends FormRequest
 {
@@ -25,8 +26,18 @@ class RemitoRequest extends FormRequest
      */
     public function rules()
     {
+        $id=$this->id;
+        $fecha=$this->fecha_vencimiento;
+        $asd=null;
         return [
-            // 'name' => 'required|min:5|max:255'
+            'numero' => ['required', 'integer', 'digits:12'],
+            'proveedor_id' => ['required', Rule::exists('proveedores', 'id')],
+            'insumo' => ['required'],
+            'cantidad' => ['required'],
+            'fecha_vencimiento' => ['required'],
+            'insumo.*' => ['required', Rule::exists('insumos', 'id')],
+            'cantidad.*' =>  ['required', 'numeric', 'min:0.01', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'fecha_vencimiento.*' =>  ['required', 'date'],
         ];
     }
 

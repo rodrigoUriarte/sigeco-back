@@ -26,8 +26,7 @@ class LoteRequest extends FormRequest
     public function rules()
     {
         return [
-            //NO SE REALIZA VALIDACION YA QUE LOS DATOS SON CARGADOS AUTOMATICAMENTE EN CADA REMITO
-            // Y DESCONTADOS POR CADA PLATO ASIGNADO
+            //LOTE NO TIENE CRUD POR LO TANTO NO VALIDA DATOS
         ];
     }
 

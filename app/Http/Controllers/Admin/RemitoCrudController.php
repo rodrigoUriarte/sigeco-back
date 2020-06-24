@@ -12,6 +12,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -28,7 +29,9 @@ class RemitoCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
         update as traitUpdate;
     }
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation {
+        destroy as traitDestroy;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
@@ -131,12 +134,34 @@ class RemitoCrudController extends CrudController
         // execute the FormRequest authorization and validation, if one is required
         $request = $this->crud->validateRequest();
 
-        // creo el remito
-        $remito = Remito::create($request->all());
-
         $insumos = $request->input('insumo', []);
         $cantidad = $request->input('cantidad', []);
         $fecha_vencimiento = $request->input('fecha_vencimiento', []);
+
+        //valido que no se carguen dos insumos con misma fecha de vencimiento
+        $insumosCol = collect();
+        for ($i = 0; $i < count($insumos); $i++) {
+            $aux = collect();
+            $aux->put('insumo_id', $insumos[$i]);
+            $aux->put('cantidad', $cantidad[$i]);
+            $aux->put('fecha_vencimiento', $fecha_vencimiento[$i]);
+            $insumosCol->push($aux);
+        }
+        $insumosGroups = $insumosCol->groupBy(['insumo_id'], $preserveKeys = true);
+        $duplicados = collect();
+        foreach ($insumosGroups as $key => $value) {
+            $duplicados->push($value->duplicates('fecha_vencimiento'));
+        }
+        foreach ($duplicados as $key => $value) {
+            if ($value->isNotEmpty()) {
+                throw ValidationException::withMessages(['insumos[]' =>
+                'No se puede cargar el mismo insumo con fecha de vencimiento identica.']);
+                return false;
+            }
+        }
+
+        // creo el remito
+        $remito = Remito::create($request->all());
 
         //adjunto los insumos a ese remito
         for ($i = 0; $i < count($insumos); $i++) {
@@ -225,6 +250,20 @@ class RemitoCrudController extends CrudController
             $aux->put('cantidad', $cantidadReq->get($i));
             $aux->put('fecha_vencimiento', $fecha_vencimientoReq->get($i));
             $insumosN->push($aux);
+        }
+
+        //valido que no se carguen dos insumos con misma fecha de vencimiento
+        $insumosGroups = $insumosN->groupBy(['insumo_id'], $preserveKeys = true);
+        $duplicados = collect();
+        foreach ($insumosGroups as $key => $value) {
+            $duplicados->push($value->duplicates('fecha_vencimiento'));
+        }
+        foreach ($duplicados as $key => $value) {
+            if ($value->isNotEmpty()) {
+                throw ValidationException::withMessages(['insumos[]' =>
+                'No se puede cargar el mismo insumo con fecha de vencimiento identica.']);
+                return Redirect::back()->withInput($request->input());
+            }
         }
 
         //busco el remito antes de su modificacion
@@ -326,7 +365,6 @@ class RemitoCrudController extends CrudController
                 'proveedor_id' => $request->proveedor_id
             ]);
 
-        //TRATAR DE CAMBIAR EL BORRAR Y CREAR DE NUEVO LOS LOTES POR UN UPDATE
         $this->data['entry'] = $this->crud->entry = $remito;
 
         //show a success message
@@ -340,7 +378,41 @@ class RemitoCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        //
+        $this->crud->setValidation(RemitoRequest::class);
+    }
+
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        //busco el remito
+        $remito = Remito::findOrFail($id);
+
+        //recupero los insumos que tiene el remito
+        $insumos = $remito->insumos;
+        $flag = false;
+        foreach ($insumos as $insumo) {
+            //CONTROLO SI EL LOTE FUE USADO QUE NO SE ELIMINE SUS DATOS
+            if ($insumo->pivot->lote->usado == true) {
+                $flag = true;
+            }
+        }
+
+        if ($flag == true) {
+            \Alert::error('Uno de los lotes asociados a los insumos de este remito ya fue usado');
+            return \Alert::getMessages();
+        } else {
+            //SI NINGUNO DE LOS LOTES ASOCIADOS A CADA UNO DE LOS INSUMOS FUE USADO
+            //ELIMINO TODOS LOS LOTES Y DESPUES ELIMINO EL REMITO
+            foreach ($insumos as $insumo) {
+                $insumo->pivot->lote->delete();
+            }
+            $remito->insumos()->detach();
+            return $this->crud->delete($id);
+        }
     }
 
     protected function setupShowOperation()

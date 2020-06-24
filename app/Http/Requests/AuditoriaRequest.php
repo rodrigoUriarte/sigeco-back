@@ -26,7 +26,7 @@ class AuditoriaRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            //LA AUDITORIA NO TIENE CRUD POR LO TANTO NO VALIDA DATOS
         ];
     }
 

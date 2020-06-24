@@ -26,7 +26,7 @@ class SancionRequest extends FormRequest
     public function rules()
     {
         return [
-            //NO SE REALIZA VALIDACION YA QUE LOS DATOS SON CARGADOS AUTOMATICAMENTE MENSUAL O SEMANALMENTE
+            //LAS SANCIONES SE GENERAN AUTOMATICAMENTE MEDIANTE UNA TAREA PROGRAMADA
         ];
     }
 

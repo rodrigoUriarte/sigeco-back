@@ -27,6 +27,11 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endsection
 
 @section('content')
+<style>
+	.has-error {
+		border: 2px solid #e74c3c;
+	}
+</style>
 <div class="row">
 	<div class="{{ $crud->getEditContentClass() }}">
 		<!-- Default box -->
@@ -70,14 +75,17 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 					<input type="hidden" name="id" value="{{$id}}">
 					<input type="hidden" name="fecha" value="{{$entry->fecha}}">
 					<input type="hidden" name="comedor_id" value="{{$entry->comedor_id}}">
-					<div class="form-group">
+					<div class="form-group {{ $errors->has('numero') ? 'text-danger' : false }}">
 						<label for="numero">Numero de remito <span style="color: red">*</span></label>
-						<input type="number" class="form-control" id="numero" name="numero"
-							placeholder="Ingrese el numero del remito" required value="{{$entry->numero}}">
+						<input type="number" class="form-control {{ $errors->has('numero') ? 'is-invalid' : false }}"
+							id="numero" name="numero" placeholder="Ingrese el numero del remito" required
+							value="{{$entry->numero}}">
+						{!! $errors->first('numero', ' <div class="invalid-feedback">:message</div>') !!}
 					</div>
-					<div class="form-group">
+					<div class="form-group {{ $errors->has('proveedor_id') ? 'text-danger' : false }}">
 						<label for="proveedor">Proveedor <span style="color: red">*</span></label>
-						<select class="form-control" name="proveedor_id" id="proveedor" required>
+						<select class="form-control {{ $errors->has('proveedor_id') ? 'is-invalid' : false }}"
+							name="proveedor_id" id="proveedor" required>
 							<option></option>
 							@if($proveedores)
 							@foreach($proveedores as $proveedor)
@@ -88,6 +96,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 							@endforeach
 							@endif
 						</select>
+						{!! $errors->first('proveedor_id', ' <div class="invalid-feedback">:message</div>') !!}
 					</div>
 
 				</div>
@@ -110,7 +119,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($insumosAsociados as $iA)
+								@foreach ($insumosAsociados as $i => $iA)
 								<tr @if ($iA->pivot->lote->usado == true)
 									style="background-color: lightcoral"
 									@endif>
@@ -128,19 +137,19 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 										</select>
 									</td>
 									<td>
-										<input type="number" step="0.1" name="cantidad[]" class="form-control"
-											value="{{$iA->pivot->cantidad}}" required
-											placeholder="Ingrese la cantidad" />
+										<input type="number" step="0.01" name="cantidad[]" class="form-control"
+											value="{{$iA->pivot->cantidad}}" placeholder="Ingrese la cantidad"
+											required>
 									</td>
 									<td>
 										<input type="date" name="fecha_vencimiento[]" class="form-control"
-											value="{{$iA->pivot->fecha_vencimiento}}" required />
+											value="{{$iA->pivot->fecha_vencimiento}}" required>
 									</td>
 									@if ($iA->pivot->lote->usado == false)
 									<td><button class="delete_row pull-right btn btn-danger"><i
 												class="la la-remove"></i></button></td>
 									@else
-									<td style="color: black">USADO</td>
+									<td>USADO</td>
 									@endif
 								</tr>
 								@endforeach
@@ -162,6 +171,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 	</div>
 </div>
 @endsection
+
 @section('after_scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
@@ -190,7 +200,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
         e.preventDefault();
         //new row
         $("#insumos_table").append(
-            '<tr>\
+			'<tr>\
                 <td>\
                     <select class="select2 form-control" name="insumo[]" required>\
                         <option></option>\
@@ -202,7 +212,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
                     </select>\
                 </td>\
                 <td>\
-                    <input type="number" step="0.1" name="cantidad[]" class="form-control" required placeholder="Ingrese la cantidad" />\
+                    <input type="number" step="0.01" name="cantidad[]" class="form-control" required placeholder="Ingrese la cantidad" />\
                 </td>\
                 <td>\
                     <input type="date" name="fecha_vencimiento[]" class="form-control" required />\
