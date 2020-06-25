@@ -47,7 +47,7 @@ class ProveedorRemitoSeeder extends Seeder
 
         $remito1 = Remito::create([
             'fecha' => Carbon::now()->toDateString(),
-            'numero' => 123456789,
+            'numero' => 123456789012,
             'proveedor_id' => $proveedor->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RemitoRequest;
 use App\Models\Insumo;
+use App\Models\InsumoRemito;
 use App\Models\Lote;
 use App\Models\Proveedor;
 use App\Models\Remito;
@@ -274,69 +275,107 @@ class RemitoCrudController extends CrudController
         foreach ($insumosV as $insumoV) {
             //CONTROLO SI EL LOTE FUE USADO QUE NO SE ELIMINE NI SE MODIFIQUEN SUS DATOS
             if ($insumoV->pivot->lote->usado == true) {
-                if (!$insumosReq->contains($insumoV->id)) {
+                //ACA VALIDO QUE NO SE ELIMINE UN INSUMO CUYO LOTE YA FUE USADO
+                if (!$insumosN->contains(function ($value, $key) use ($insumoV) {
+                    return (($value->get('insumo_id') == $insumoV->pivot->insumo_id) and
+                        ($value->get('fecha_vencimiento') == $insumoV->pivot->fecha_vencimiento));
+                })) {
                     throw ValidationException::withMessages(['insumos[]' => 'El lote asociado a este insumo ya fue usado, no se puede eliminar.']);
                     return false;
                 } elseif (
+                    //ACA VALIDO QUE NO SE EDITE LA FECHA DE VENCIMIENTO DE UN INSUMO CUYO LOTE YA FUE USADO
+                    //ESTA VALIDACION NUNCA SALTARIA YA QUE SALTARIA LA ANTERIOR PORQUE SI MODIFICAMOS EL INSUMO
+                    //O LA FECHA DE VENCIMIENTO ES COMO QUE ESTUVIERAMOS ELIMINANDO ESE INSUMO DEL REMITO
                     $insumoV->pivot->fecha_vencimiento !=
-                    $insumosN->where('insumo_id', $insumoV->id)->first()->get('fecha_vencimiento')
+                    $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                    ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                    ->first()
+                    ->get('fecha_vencimiento')
                 ) {
                     throw ValidationException::withMessages(['insumos[]' => 'El lote asociado a este insumo ya fue usado, no se puede editar la fecha.']);
                     return false;
                 } elseif (
+                    //ACA VALIDO QUE NO SE EDITE LA CANTIDAD DE UN INSUMO CUYO LOTE YA FUE USADO
                     $insumoV->pivot->cantidad !=
-                    $insumosN->where('insumo_id', $insumoV->id)->first()->get('cantidad')
+                    $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                    ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                    ->first()
+                    ->get('cantidad')
                 ) {
                     throw ValidationException::withMessages(['insumos[]' => 'El lote asociado a este insumo ya fue usado, no se puede editar la cantidad.']);
                     return false;
                 }
                 //SI EL LOTE NO FUE USADO VEO QUE SE HACER CON EL INSUMO, PUEDO ELIMINAR O EDITAR
                 //SI EL INSUMO NO ESTA EN EL REQUEST SIGNIFICA QUE SE ELIMINO DEL REMITO
-                //SI EL INSUMO ESTA EN EL REQUEST HAY QUE VER SI SE MODIFICO ALGUN DATO Y SI SE MODIFICO HAY QUE EDITARLO  
+                //SI EL INSUMO ESTA EN EL REQUEST HAY QUE VER SI SE MODIFICO ALGUN DATO Y SI SE MODIFICO HAY QUE CAMBIARLO  
             } else {
                 //EDITO
-                if ($insumosReq->contains($insumoV->id)) {
+                if ($insumosN->contains(function ($value, $key) use ($insumoV) {
+                    return (($value->get('insumo_id') == $insumoV->pivot->insumo_id) and
+                        ($value->get('fecha_vencimiento') == $insumoV->pivot->fecha_vencimiento));
+                })) {
                     if (
                         $insumoV->pivot->fecha_vencimiento !=
-                        $insumosN->where('insumo_id', $insumoV->id)->first()->get('fecha_vencimiento')
+                        $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                        ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                        ->first()
+                        ->get('fecha_vencimiento')
                     ) {
                         $lote = $insumoV->pivot->lote;
-                        $lote->fecha_vencimiento = $insumosN->where('insumo_id', $insumoV->id)->first()->get('fecha_vencimiento');
+                        $lote->fecha_vencimiento = $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                            ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                            ->first()
+                            ->get('fecha_vencimiento');
                         $lote->save();
                         $remito->insumos()->updateExistingPivot(
-                            $insumoV->id,
-                            ['fecha_vencimiento' => $insumosN->where('insumo_id', $insumoV->id)->first()->get('fecha_vencimiento')]
+                            $insumoV->pivot->insumo_id,
+                            ['fecha_vencimiento' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                                ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                                ->first()
+                                ->get('fecha_vencimiento')]
                         );
                     }
                     if (
                         $insumoV->pivot->cantidad !=
-                        $insumosN->where('insumo_id', $insumoV->id)->first()->get('cantidad')
+                        $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                        ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                        ->first()
+                        ->get('cantidad')
                     ) {
                         $lote = $insumoV->pivot->lote;
-                        $lote->cantidad = $insumosN->where('insumo_id', $insumoV->id)->first()->get('cantidad');
+                        $lote->cantidad = $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                            ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                            ->first()
+                            ->get('cantidad');
                         $lote->save();
                         $remito->insumos()->updateExistingPivot(
-                            $insumoV->id,
-                            ['cantidad' => $insumosN->where('insumo_id', $insumoV->id)->first()->get('cantidad')]
+                            $insumoV->pivot->insumo_id,
+                            ['cantidad' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                                ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                                ->first()
+                                ->get('cantidad')]
                         );
                     }
                     //ELIMINO
                 } else {
                     $insumoV->pivot->lote->delete();
-                    $remito->insumos()->detach($insumoV->id);
+                    InsumoRemito::findOrFail($insumoV->pivot->id)->delete();
                 }
             }
         }
 
         //AGREGO LOS NUEVOS INSUMOS QUE VENGAN DEL insumoReq
-        $insumosVid = $insumosV->pluck('id');
-        foreach ($insumosN as $insumo) {
-            if (!$insumosVid->contains($insumo->get('insumo_id'))) {
+        //TENGO EN CUENTA QUE PUEDE VENIR UN INSUMO QUE YA HABIA PERO AHORA SE AGREGO OTRO CON DISTINTA FECHA DE VENC.
+        foreach ($insumosN as $insumoN) {
+            if (!$insumosV->contains(function ($value, $key) use ($insumoN) {
+                return (($value->id == $insumoN->get('insumo_id')) and
+                    ($value->pivot->fecha_vencimiento == $insumoN->get('fecha_vencimiento')));
+            })) {
                 $remito->insumos()->attach(
-                    $insumo->get('insumo_id'),
+                    $insumoN->get('insumo_id'),
                     [
-                        'fecha_vencimiento' => $insumo->get('fecha_vencimiento'),
-                        'cantidad' => $insumo->get('cantidad')
+                        'fecha_vencimiento' => $insumoN->get('fecha_vencimiento'),
+                        'cantidad' => $insumoN->get('cantidad')
                     ]
                 );
             }
