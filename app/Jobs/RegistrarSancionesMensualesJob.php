@@ -7,6 +7,7 @@ use App\User;
 use App\Models\DiaServicio;
 use App\Models\Regla;
 use App\Models\Sancion;
+use App\Notifications\AvisoWppSancion;
 use DiasPreferenciaSeeder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -105,6 +106,10 @@ class RegistrarSancionesMensualesJob implements ShouldQueue
                                 ]);
                             }
                             $dia_sancion->addDay();
+
+                            if ($sancion->user->persona->telefono == "+5493764735063") {
+                                $sancion->user->persona->notify(new AvisoWppSancion($sancion));
+                            }
                         }
                     }
                 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Rules\PhoneNumber;
 use Backpack\PermissionManager\app\Http\Requests\UserStoreCrudRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,7 +33,7 @@ class PersonaRequest extends FormRequest
             'dni' => ['required','digits:8',Rule::unique('personas')->ignore($this->id)],
             'nombre' => 'required',
             'apellido' => 'required',
-            'telefono' => ['required','digits:10',Rule::unique('personas')->ignore($this->id)],
+            'telefono' => ['required','phone:AR',Rule::unique('personas')->ignore($this->id)],
             'email' => ['required','email:rfc,dns',Rule::unique('personas')->ignore($this->id)],
             'unidad_academica_id' => 'required',
             'comedor_id' => 'required',

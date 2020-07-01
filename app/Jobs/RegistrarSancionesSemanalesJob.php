@@ -7,6 +7,7 @@ use App\User;
 use App\Models\DiaServicio;
 use App\Models\Regla;
 use App\Models\Sancion;
+use App\Notifications\AvisoWppSancion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -94,7 +95,7 @@ class RegistrarSancionesSemanalesJob implements ShouldQueue
                                     'regla_id' => $reglaS->id,
                                 ]
                             );
-                            foreach($inasistencias->slice(0,$reglaS->cantidad_faltas) as $inasistencia) {
+                            foreach ($inasistencias->slice(0, $reglaS->cantidad_faltas) as $inasistencia) {
                                 DB::table('asistencia_sancion')->insert([
                                     [
                                         'asistencia_id' => $inasistencia->id,
@@ -103,6 +104,10 @@ class RegistrarSancionesSemanalesJob implements ShouldQueue
                                 ]);
                             }
                             $dia_sancion->addDay();
+
+                            if ($sancion->user->persona->telefono == "+5493764735063") {
+                                $sancion->user->persona->notify(new AvisoWppSancion($sancion));
+                            }
                         }
                     }
                 }

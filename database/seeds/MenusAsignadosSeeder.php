@@ -45,6 +45,42 @@ class MenusAsignadosSeeder extends Seeder
                     'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
                     'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
                 ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-04-01',
+                    'fecha_fin' => '2020-04-30',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-05-01',
+                    'fecha_fin' => '2020-05-31',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-06-01',
+                    'fecha_fin' => '2020-06-30',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-07-01',
+                    'fecha_fin' => '2020-07-31',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                    'updated_at' => Carbon::createFromDate(2020,02,$user->persona->comedor->parametro->limite_menu_asignado),
+                ]);
             }
         }
     }

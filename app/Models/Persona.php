@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Notifications\Notifiable;
 
 class Persona extends Model
 {
     use CrudTrait;
+    use Notifiable;
 
     /*
     |--------------------------------------------------------------------------
@@ -61,6 +63,10 @@ class Persona extends Model
     public function getNombreUsuarioAttribute()
     {
         return "{$this->nombre}{$this->apellido}";
+    }
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->telefono;
     }
 
     /*

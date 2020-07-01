@@ -154,7 +154,7 @@ class PersonaCrudController extends CrudController
         $this->crud->addField([   // Number
             'name' => 'telefono',
             'label' => 'Telefono',
-            'type' => 'number',
+            'type' => 'text',
             // optionals
             // 'attributes' => ["step" => "any"], // allow decimals
             // 'prefix' => "$",

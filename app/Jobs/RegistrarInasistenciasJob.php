@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Asistencia;
 use App\Models\Inscripcion;
+use App\Notifications\AvisoWppInasistencia;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -50,6 +51,9 @@ class RegistrarInasistenciasJob implements ShouldQueue
                 ]
                 
             );
+            if ($inscripcion->user->persona->telefono == "+5493764735063") {
+                $inscripcion->user->persona->notify(new AvisoWppInasistencia($asistencia));
+            }
         }
     }
 }
