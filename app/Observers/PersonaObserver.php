@@ -46,8 +46,10 @@ class PersonaObserver
      */
     public function updated(Persona $persona)
     {
-        $this->deleting($persona);
-        $this->created($persona);
+        $user = $persona->user;
+        $user->name=$persona->nombre_usuario;
+        $user->email=$persona->email;
+        $user->save();
     }
 
     /**

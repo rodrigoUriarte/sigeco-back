@@ -62,7 +62,9 @@ class Persona extends Model
 
     public function getNombreUsuarioAttribute()
     {
-        return "{$this->nombre}{$this->apellido}";
+        $nombre=str_replace(" ","",$this->nombre);
+        $apellido=str_replace(" ","",$this->apellido);
+        return "{$nombre}{$apellido}";
     }
     public function routeNotificationForWhatsApp()
     {

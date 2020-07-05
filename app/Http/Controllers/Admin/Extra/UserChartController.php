@@ -41,9 +41,20 @@ class UserChartController extends Controller
                 return Redirect::to('admin/estadisticas');
             }
 
-            $inscripciones = new UserChart;
+            $grafico = new UserChart;
 
-            $ins = Inscripcion::where('comedor_id', backpack_user()->persona->comedor_id)
+            $etiquetasInscripciones = Inscripcion::where('comedor_id', backpack_user()->persona->comedor_id)
+            ->when($desde, function ($query, $desde) {
+                return $query->where('fecha_inscripcion', '>=', $desde);
+            })
+            ->when($hasta, function ($query, $hasta) {
+                return $query->where('fecha_inscripcion', '<=', $hasta);
+            })
+            ->get()
+            ->sortBy('fecha_inscripcion')
+            ->groupBy('fecha_inscripcion_formato');
+
+            $inscripciones = Inscripcion::where('comedor_id', backpack_user()->persona->comedor_id)
                 ->when($desde, function ($query, $desde) {
                     return $query->where('fecha_inscripcion', '>=', $desde);
                 })
@@ -52,13 +63,13 @@ class UserChartController extends Controller
                 })
                 ->get()
                 ->sortBy('fecha_inscripcion')
-                ->groupBy('fecha_inscripcion_formato')
+                ->groupBy('fecha_inscripcion')
                 ->map(function ($item) {
                     // Return the number of persons with that age
                     return count($item);
                 });
 
-            $as = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
+            $asistencias = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
                 ->where(function ($query) {
                     $query->where('asistio', true)
                         ->orWhere('asistencia_fbh', true);
@@ -74,14 +85,23 @@ class UserChartController extends Controller
                     });
                 })
                 ->get()
-                ->sortBy('inscripcion.fecha_inscripcion')
                 ->groupBy('inscripcion.fecha_inscripcion')
                 ->map(function ($item) {
                     // Return the number of persons with that age
                     return count($item);
                 });
 
-            $inas = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
+                //SE AGREGO ESTO PARA CORREGIR SI NO HAY ASISTENCIAS O INASISTENCIAS
+                //CON ESTO AGREGO LOS DIAS QUE NO HUBO ASISTENCIAS Y NO SON TOMADOS EN EL GROUPBY DE ARRIBA
+                $difas=$inscripciones->diffKeys($asistencias);
+
+                $difas->transform(function ($item, $key) {
+                    return $item=0;
+                });
+
+                $asistencias=$asistencias->merge($difas)->sortKeys();
+
+            $inasistencias = Asistencia::where('comedor_id', backpack_user()->persona->comedor_id)
                 ->where(function ($query) {
                     $query->where('asistio', false)
                         ->where('asistencia_fbh', false);
@@ -97,18 +117,25 @@ class UserChartController extends Controller
                     });
                 })
                 ->get()
-                ->sortBy('inscripcion.fecha_inscripcion')
                 ->groupBy('inscripcion.fecha_inscripcion')
                 ->map(function ($item) {
-                    // Return the number of persons with that age
                     return count($item);
                 });
+                //SE AGREGO ESTO PARA CORREGIR SI NO HAY ASISTENCIAS O INASISTENCIAS
+                //CON ESTO AGREGO LOS DIAS QUE NO HUBO INASISTENCIAS Y NO SON TOMADOS EN EL GROUPBY DE ARRIBA
+                $difinas=$inscripciones->diffKeys($inasistencias);
 
-            $inscripciones->labels($ins->keys());
-            $inscripciones->dataset('Inscripciones por dia', 'line', $ins->values())->color('blue');
-            $inscripciones->dataset('Asistencias por dia', 'line', $as->values())->color('green');
-            $inscripciones->dataset('Insistencias por dia', 'line', $inas->values())->color('red');
-            return view('personalizadas.estadisticas', ['inscripciones' => $inscripciones]);
+                $difinas->transform(function ($item, $key) {
+                    return $item=0;
+                });
+
+                $inasistencias=$inasistencias->merge($difinas)->sortKeys();
+
+            $grafico->labels($etiquetasInscripciones->keys());
+            $grafico->dataset('Inscripciones por dia', 'line', $inscripciones->values())->color('blue');
+            $grafico->dataset('Asistencias por dia', 'line', $asistencias->values())->color('green');
+            $grafico->dataset('Insistencias por dia', 'line', $inasistencias->values())->color('red');
+            return view('personalizadas.estadisticas', ['inscripciones' => $grafico]);
         } else {
             return abort(403, 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');
         }

@@ -80,6 +80,23 @@ class DiaPreferenciaCrudController extends CrudController
                     });
                 },
             ]);
+
+            $this->crud->addFilter([
+                'name'  => 'filtro_usuario',
+                'type'  => 'select2',
+                'label' => 'Usuario'
+            ], function () {
+                return User::whereHas('persona', function ($query) {
+                    $query->where('comedor_id', backpack_user()->persona->comedor_id);
+                })
+                    ->whereHas('roles', function ($query) {
+                        $query->where('name', 'comensal');
+                    })
+                    ->get()
+                    ->pluck('name', 'id')->toArray();
+            }, function ($value) { // if the filter is active
+                $this->crud->addClause('where', 'user_id', $value);
+            });
         }
 
         $this->crud->addColumns(['dia_servicio', 'banda_horaria']);
@@ -123,23 +140,6 @@ class DiaPreferenciaCrudController extends CrudController
                 'options' => [0 => 'NO', 1 => 'SI']
             ]);
         }
-
-        $this->crud->addFilter([
-            'name'  => 'filtro_usuario',
-            'type'  => 'select2',
-            'label' => 'Usuario'
-        ], function () {
-            return User::whereHas('persona', function ($query) {
-                $query->where('comedor_id', backpack_user()->persona->comedor_id);
-            })
-                ->whereHas('roles', function ($query) {
-                    $query->where('name', 'comensal');
-                })
-                ->get()
-                ->pluck('name', 'id')->toArray();
-        }, function ($value) { // if the filter is active
-            $this->crud->addClause('where', 'user_id', $value);
-        });
 
         $this->crud->addFilter([
             'name'  => 'filtro_dia_servicio',
