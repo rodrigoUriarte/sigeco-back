@@ -15,14 +15,15 @@ class InscripcionesSeeder extends Seeder
      */
     public function run()
     {
-        //$mas = MenuAsignado::all();
         $mas = MenuAsignado::doesntHave('inscripciones')->get();
         foreach ($mas as $ma) {
             $finicio = Carbon::createFromDate($ma->fecha_inicio);
             $diasmes = $finicio->daysInMonth;
             $finscripcion = $finicio;
+            $dias_pref = $ma->user->diasPreferencia()->with('diaServicio')
+            ->get()->pluck('diaServicio.dia');
             for ($i = 0; $i < $diasmes; $i++) {
-                if ($finscripcion->isWeekday()) {
+                if ($dias_pref->contains($finscripcion->dayName)) {
                     $rand = rand($min = 1, $max = 10);
                     if ($rand <= 9) {
                         $inscripcion = Inscripcion::create([

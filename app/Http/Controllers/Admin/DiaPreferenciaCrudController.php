@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DiaPreferenciaRequest;
+use App\Models\BandaHoraria;
+use App\Models\DiaPreferencia;
+use App\Models\DiaServicio;
+use App\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -119,6 +123,47 @@ class DiaPreferenciaCrudController extends CrudController
                 'options' => [0 => 'NO', 1 => 'SI']
             ]);
         }
+
+        $this->crud->addFilter([
+            'name'  => 'filtro_usuario',
+            'type'  => 'select2',
+            'label' => 'Usuario'
+        ], function () {
+            return User::whereHas('persona', function ($query) {
+                $query->where('comedor_id', backpack_user()->persona->comedor_id);
+            })
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'comensal');
+                })
+                ->get()
+                ->pluck('name', 'id')->toArray();
+        }, function ($value) { // if the filter is active
+            $this->crud->addClause('where', 'user_id', $value);
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'filtro_dia_servicio',
+            'type'  => 'select2_multiple',
+            'label' => 'Dia Servicio'
+        ], function () {
+            return DiaServicio::where('comedor_id', backpack_user()->persona->comedor_id)->pluck('dia', 'id')->toArray();
+        }, function ($values) { // if the filter is active
+            foreach (json_decode($values) as $key => $value) {
+                $this->crud->addClause('where', 'dia_servicio_id', $value);
+            }
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'filtro_banda_horaria',
+            'type'  => 'select2_multiple',
+            'label' => 'Banda Horaria'
+        ], function () {
+            return BandaHoraria::where('comedor_id', backpack_user()->persona->comedor_id)->pluck('descripcion', 'id')->toArray();
+        }, function ($values) { // if the filter is active
+            foreach (json_decode($values) as $key => $value) {
+                $this->crud->addClause('where', 'banda_horaria_id', $value);
+            }
+        });
     }
 
     protected function setupCreateOperation()
