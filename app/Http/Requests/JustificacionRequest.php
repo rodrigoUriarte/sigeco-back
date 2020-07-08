@@ -28,7 +28,7 @@ class JustificacionRequest extends FormRequest
     {
         return [
             'descripcion' => ['required','max:30'],
-            'documento' => ['required'],
+            //'documento' => ['required'],
             'asistencia_id' => ['required',
             Rule::unique('justificaciones')
                 ->ignore($this->id)]

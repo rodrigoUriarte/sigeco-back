@@ -51,7 +51,7 @@ class ParametroCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['limite_inscripcion', 'limite_menu_asignado', 'retirar']);
+        $this->crud->addColumns(['limite_inscripcion', 'limite_menu_asignado', 'retirar', 'logo']);
 
         $this->crud->setColumnDetails('limite_inscripcion', [
             'name' => "limite_inscripcion", // The db column name
@@ -72,6 +72,18 @@ class ParametroCrudController extends CrudController
             'type' => 'boolean',
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
+        ]);
+
+        $this->crud->setColumnDetails('logo', [
+            'name' => 'logo', // The db column name
+            'label' => "Logo Reportes", // Table column heading
+            'type' => 'image',
+            //'prefix' => 'documentos/justificaciones/',
+            // image from a different disk (like s3 bucket)
+            'disk' => 'public', 
+            // optional width/height if 25px is not ok with you
+            // 'height' => '30px',
+            // 'width' => '30px',
         ]);
     }
 
@@ -101,6 +113,16 @@ class ParametroCrudController extends CrudController
             'name' => 'retirar',
             'label' => 'Permitir Retirar',
             'type' => 'checkbox'
+        ]);
+
+        $this->crud->addField([   // Upload
+            'name'      => 'logo',
+            'label'     => 'Logo Reportes',
+            'type'      => 'upload',
+            'upload'    => true,
+            //'disk'      => 'local', // if you store files in the /public folder, please ommit this; if you store them in /storage or S3, please specify it;
+            // optional:
+            //'temporary' => 10 // if using a service, such as S3, that requires you to make temporary URL's this will make a URL that is valid for the number of minutes specified
         ]);
     }
 

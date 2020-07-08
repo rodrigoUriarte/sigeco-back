@@ -15,7 +15,7 @@ class CreateJustificacionesTable extends Migration
         Schema::create('justificaciones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('descripcion');
-            $table->string('documento')->nullable();
+            $table->string('documento');
             $table->unsignedBigInteger('asistencia_id');
             $table->foreign('asistencia_id')->references('id')->on('asistencias');
             $table->timestamps();

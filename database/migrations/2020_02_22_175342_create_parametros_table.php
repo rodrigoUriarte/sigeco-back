@@ -18,6 +18,7 @@ class CreateParametrosTable extends Migration
             $table->time('limite_inscripcion');
             $table->integer('limite_menu_asignado');
             $table->boolean('retirar');
+            $table->string('logo')->nullable();
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');
             $table->timestamps();

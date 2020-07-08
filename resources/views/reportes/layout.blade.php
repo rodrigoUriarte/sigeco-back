@@ -73,7 +73,7 @@
                 <h5 style="text-align:center">Usuario: {{backpack_user()->name}}</h5>
             </div>
             <div id="center">
-                <img src="{{asset("storage/unam.jpg")}}" alt="Logo" width="200" class="logo" />
+                <img src="{{asset("storage/documentos/logos/logo.jpg")}}" alt="Logo" width="100" class="logo" />
             </div>
         </div>
     </div>

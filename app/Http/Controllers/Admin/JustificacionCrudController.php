@@ -52,7 +52,7 @@ class JustificacionCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['comensal','fecha', 'descripcion', 'documento']);
+        $this->crud->addColumns(['comensal', 'fecha', 'descripcion', 'documento']);
 
         $this->crud->setColumnDetails('comensal', [
             'label' => 'Comensal',
@@ -88,19 +88,19 @@ class JustificacionCrudController extends CrudController
             // 'prefix' => "Name: ",
             // 'suffix' => "(user)",
             // 'limit' => 120, // character limit; default is 50;
-         ]);
+        ]);
 
         $this->crud->setColumnDetails('documento', [
             'name' => 'documento', // The db column name
             'label' => "Documento Justificativo", // Table column heading
             'type' => 'image',
-             // 'prefix' => 'folder/subfolder/',
-             // image from a different disk (like s3 bucket)
-             // 'disk' => 'disk-name', 
-             // optional width/height if 25px is not ok with you
-             // 'height' => '30px',
-             // 'width' => '30px',
-         ]);
+            //'prefix' => 'documentos/justificaciones/',
+            // image from a different disk (like s3 bucket)
+            'disk' => 'public', 
+            // optional width/height if 25px is not ok with you
+            // 'height' => '30px',
+            // 'width' => '30px',
+        ]);
     }
 
     protected function setupCreateOperation()
@@ -126,25 +126,26 @@ class JustificacionCrudController extends CrudController
                 'placeholder' => 'Seleccione un comensal', // placeholder for the select
                 'minimum_input_length' => 0, // minimum characters to type before querying results
                 'dependencies' => ['fecha_busqueda'],
-                'include_all_form_fields' => true,
+                'include_all_form_fields' => 'fecha_busqueda',
                 //SE RESETEA SOLO SI EL MENU CAMBIA NO CUANDO CAMBIA LA FECHA, A CORREGIR
             ]
         );
         $this->crud->addField(
-            [ // Date
+            [
                 'name' => 'descripcion',
                 'label' => 'Descripcion Justificacion',
                 'type' => 'text'
             ]
         );
-        $this->crud->addField(
-            [   // Browse
-                'name' => 'documento',
-                'label' => 'Documento Justificativo',
-                'type' => 'browse'
-            ]
-        );
-
+        $this->crud->addField([   // Upload
+            'name'      => 'documento',
+            'label'     => 'Documento',
+            'type'      => 'upload',
+            'upload'    => true,
+            //'disk'      => 'local', // if you store files in the /public folder, please ommit this; if you store them in /storage or S3, please specify it;
+            // optional:
+            //'temporary' => 10 // if using a service, such as S3, that requires you to make temporary URL's this will make a URL that is valid for the number of minutes specified
+        ]);
     }
 
     protected function setupUpdateOperation()

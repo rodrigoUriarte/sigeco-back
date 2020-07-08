@@ -28,6 +28,13 @@ class Justificacion extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($obj) {
+            \Storage::disk('public')->delete($obj->documento);
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -55,4 +62,12 @@ class Justificacion extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setDocumentoAttribute($value)
+    {
+        $attribute_name = "documento";
+        $disk = "public";
+        $destination_path = "documentos/justificaciones";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+    }
 }
