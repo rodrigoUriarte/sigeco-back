@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         Asistencia::observe(AsistenciaObserver::class);
         Justificacion::observe(JustificacionObserver::class);
         Parametro::observe(ParametroObserver::class);
+        BandaHoraria::observe(BandaHorariaObserver::class);
 
         MenuAsignado::observe(MenuAsignadoObserver::class);
         Inscripcion::observe(InscripcionObserver::class);

@@ -92,8 +92,8 @@ class BandaHorariaCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'descripcion',
-            'type' => 'text',
-            'label' => 'Descripcion'
+            'type' => 'hidden',
+            'value' => 'descripcion',
         ]);
 
         $this->crud->addField([
