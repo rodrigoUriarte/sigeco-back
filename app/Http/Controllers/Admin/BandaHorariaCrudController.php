@@ -56,6 +56,7 @@ class BandaHorariaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['descripcion', 'hora_inicio', 'hora_fin', 'limite_comensales']);
 
         $this->crud->setColumnDetails('descripcion', [
@@ -82,6 +83,7 @@ class BandaHorariaCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(BandaHorariaRequest::class);
 
         $this->crud->addField([
@@ -117,11 +119,13 @@ class BandaHorariaCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

@@ -19,7 +19,7 @@
     </style>
 </head>
 
-<h2>ESTIMACION COMPRA</h2>
+<h2>Estimacion de Compra</h2>
 
 <div class="row">
     <div class="card" style="width:100%">

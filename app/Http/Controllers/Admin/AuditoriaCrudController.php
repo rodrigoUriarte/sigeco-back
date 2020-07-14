@@ -26,12 +26,12 @@ class AuditoriaCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/auditoria');
         $this->crud->setEntityNameStrings('auditoria', 'auditorias');
 
-        $this->crud->enableDetailsRow(); 
-        $this->crud->allowAccess('details_row'); 
+        $this->crud->enableDetailsRow();
+        $this->crud->allowAccess('details_row');
         $this->crud->setDetailsRowView('details_row.detalle_auditoria');
 
 
-        $this->crud->denyAccess(['create', 'update','delete','list','show']);
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
 
         if (backpack_user()->hasPermissionTo('createAuditoria')) {
             $this->crud->allowAccess('create');
@@ -52,7 +52,9 @@ class AuditoriaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['user','event','modelo','valor_previo','valor_nuevo']);
+        $this->crud->hasAccessOrFail('list');
+
+        $this->crud->addColumns(['user', 'event', 'modelo', 'valor_previo', 'valor_nuevo']);
 
         $this->crud->setColumnDetails('user', [
             'label' => 'Usuario',
@@ -91,32 +93,34 @@ class AuditoriaCrudController extends CrudController
             'label' => "Valor Nuevo", // Table column heading
             'type' => "text",
         ]);
-
     }
 
-    public function showDetailsRow($id){
 
+    public function showDetailsRow($id)
+    {
         $this->crud->hasAccessOrFail('details_row');
 
-        $auditoria=Auditoria::find($id);
+        $auditoria = Auditoria::find($id);
 
         return view('details_row.detalle_auditoria')->with(['auditoria' => $auditoria]);
-
     }
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         //$this->crud->setValidation(AuditoriaRequest::class);
 
     }
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         //$this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

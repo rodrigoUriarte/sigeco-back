@@ -64,6 +64,7 @@ class LoteCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['insumo', 'fecha_vencimiento', 'cantidad', 'unidad_medida', 'usado']);
 
         $this->crud->setColumnDetails('insumo', [
@@ -126,17 +127,20 @@ class LoteCrudController extends CrudController
     }
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         //$this->crud->setValidation(LoteRequest::class);
 
     }
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         //$this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

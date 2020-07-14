@@ -34,10 +34,11 @@ class ProveedorRemitoSeeder extends Seeder
     public function run()
     {
         $proveedor = Proveedor::create([
-            'nombre' => 'Pepito Sanchez',
+            'nombre' => 'California SA',
+            'cuit' => '30539523410',
             'telefono' => '3764124578',
-            'email' => 'pepitosanchez@proveedor.com',
-            'direccion' => 'Av. Uruguay 4321 Posadas Misiones'
+            'email' => 'californiasa@proveedor.com',
+            'direccion' => 'Av. Lavalle 5495 3300 Posadas Misiones'
         ]);
 
         DB::table('comedor_proveedor')->insert([
@@ -47,7 +48,7 @@ class ProveedorRemitoSeeder extends Seeder
 
         $remito1 = Remito::create([
             'fecha' => Carbon::now()->toDateString(),
-            'numero' => 123456789012,
+            'numero' => '0000100002546',
             'proveedor_id' => $proveedor->id,
             'comedor_id' => Comedor::all()->first()->id,
         ]);

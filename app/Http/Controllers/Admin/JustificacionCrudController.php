@@ -52,6 +52,7 @@ class JustificacionCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['comensal', 'fecha', 'descripcion', 'documento']);
 
         $this->crud->setColumnDetails('comensal', [
@@ -105,6 +106,7 @@ class JustificacionCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(JustificacionRequest::class);
 
         $this->crud->addField(
@@ -150,11 +152,13 @@ class JustificacionCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

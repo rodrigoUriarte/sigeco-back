@@ -52,6 +52,7 @@ class PersonaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['dni', 'nombre', 'apellido', 'telefono', 'email', 'unidad_academica', 'comedor']);
 
         $this->crud->setColumnDetails('dni', [
@@ -130,6 +131,7 @@ class PersonaCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(PersonaRequest::class);
 
         $this->crud->addField([   // Number
@@ -230,11 +232,13 @@ class PersonaCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

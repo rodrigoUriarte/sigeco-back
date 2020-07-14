@@ -22,8 +22,8 @@
 					class='nav-icon la la-calendar-plus'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
 					class="nav-icon la la-calendar-check"></i> Asistencias</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
-					class='nav-icon la la-ban'></i> Sanciones</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i class='nav-icon la la-ban'></i>
+				Sanciones</a></li>
 
 	</ul>
 </li>
@@ -75,8 +75,8 @@
 					class='nav-icon la la-calendar-plus'></i> Inscripciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('asistencia') }}'><i
 					class="nav-icon la la-calendar-check"></i> Asistencias</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i
-					class='nav-icon la la-ban'></i> Sanciones</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sancion') }}'><i class='nav-icon la la-ban'></i>
+				Sanciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('justificacion') }}'><i
 					class='nav-icon la la-balance-scale-right'></i> Justificaciones</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('estadisticas')}}'><i
@@ -111,8 +111,8 @@
 					class='nav-icon la la-people-carry'></i> Proveedores</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('remito') }}'><i
 					class='nav-icon la la-file-invoice-dollar'></i></i> Remitos</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i 
-					class='nav-icon la la-boxes'></i> Lotes</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('lote') }}'><i class='nav-icon la la-boxes'></i>
+				Lotes</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('platoAsignado') }}'><i
 					class='nav-icon la la-calendar-minus'></i> Platos Asignados</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{backpack_url('calculoEstimacionCompra')}}'><i
@@ -156,6 +156,8 @@
 					class='nav-icon la la-university'></i> Unidades Academicas</a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('comedor') }}"><i
 					class='nav-icon la la-building'></i> Comedores</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('proveedor') }}'><i
+					class='nav-icon la la-people-carry'></i> Proveedores</a></li>
 
 	</ul>
 </li>

@@ -61,9 +61,6 @@ class AsistenciaCrudController extends CrudController
 
         //SI el usuario es un admin muestra solo las asistencias del comedor del cual es responsable
         if (backpack_user()->hasRole('operativo')) {
-            //se uso el whereHas en este caso porque si no no se puede ordenar por la columna fecha inscripcion xq
-            //asisitencias y inscripciones tienen el atributo comedor_id y el query arroja un error de ambiguos.
-            // $this->crud->addClause('where', 'comedor_id', '=', backpack_user()->persona->comedor_id);
             $this->crud->addClause('whereHas', 'inscripcion', function ($query) {
                 $query->where('comedor_id', backpack_user()->persona->comedor_id);
             });
@@ -72,7 +69,9 @@ class AsistenciaCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->setPageLengthMenu([ [10, 25, 50, 500, 1000], [10, 25, 50, 500, 1000] ]);
+        $this->crud->hasAccessOrFail('list');
+
+        $this->crud->setPageLengthMenu([[10, 25, 50, 500, 1000], [10, 25, 50, 500, 1000]]);
 
         if (backpack_user()->hasRole('operativo')) {
 
@@ -113,7 +112,7 @@ class AsistenciaCrudController extends CrudController
             'model' => "App\Models\Inscripcion", // foreign key model
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('inscripcion', function ($q) use ($column, $searchTerm) {
-                    $q->where('fecha_inscripcion', 'like', '%'.$searchTerm.'%');
+                    $q->where('fecha_inscripcion', 'like', '%' . $searchTerm . '%');
                 });
             },
             'orderable' => true,
@@ -187,13 +186,15 @@ class AsistenciaCrudController extends CrudController
             ],
             false, // the simple filter has no values, just the "Draft" label specified above
             function () { // if the filter is active (the GET parameter "draft" exits)
-                $this->crud->addClause('where', 'asistio', '0'); 
+                $this->crud->addClause('where', 'asistio', '0');
             }
         );
     }
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
+
         $this->crud->setValidation(AsistenciaRequest::class);
 
         $this->crud->addField(
@@ -239,19 +240,16 @@ class AsistenciaCrudController extends CrudController
         ]);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         //
     }
 
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

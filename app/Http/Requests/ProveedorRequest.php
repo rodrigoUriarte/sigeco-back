@@ -20,6 +20,18 @@ class ProveedorRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cuit' => str_replace("-", "", $this->cuit),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -27,9 +39,10 @@ class ProveedorRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required','email:rfc,dns',Rule::unique('proveedores')->ignore($this->id)],
-            'nombre' => ['required',Rule::unique('proveedores')->ignore($this->id)],
-            'telefono' => ['required','digits:10',Rule::unique('proveedores')->ignore($this->id)],
+            'cuit' => ['required', 'digits:11', Rule::unique('proveedores')->ignore($this->id)],
+            'email' => ['required', 'email:rfc,dns', Rule::unique('proveedores')->ignore($this->id)],
+            'nombre' => ['required', Rule::unique('proveedores')->ignore($this->id)],
+            'telefono' => ['required', 'digits:10', Rule::unique('proveedores')->ignore($this->id)],
             'direccion' => ['required'],
         ];
     }

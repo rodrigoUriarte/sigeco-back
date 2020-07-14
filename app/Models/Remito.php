@@ -58,10 +58,24 @@ class Remito extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getNumeroMaskedAttribute()
+    {
+        $cuit=$this->numero;
+        $masked = sprintf(
+            "%s-%s",
+            substr($cuit, 0, 5),
+            substr($cuit, 5, 8)
+        );
+        return $masked;
+    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setNumeroAttribute($value)
+    {
+        $this->attributes['numero'] = str_replace("-", "", $value);
+    }
 }

@@ -51,6 +51,7 @@ class ReglaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['descripcion', 'cantidad_faltas', 'tiempo', 'dias_sancion']);
 
         $this->crud->setColumnDetails('descripcion', [
@@ -80,6 +81,7 @@ class ReglaCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(ReglaRequest::class);
 
         $this->crud->addField([
@@ -124,11 +126,13 @@ class ReglaCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

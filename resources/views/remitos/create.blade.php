@@ -50,7 +50,7 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 					<input type="hidden" name="comedor_id" value="{{$comedor}}">
 					<div class="form-group {{ $errors->has('numero') ? 'text-danger' : false }}">
 						<label for="numero">Numero de remito <span style="color: red">*</span></label>
-						<input type="number" class="form-control  {{ $errors->has('numero') ? 'is-invalid' : false }}"
+						<input type="text" class="form-control  {{ $errors->has('numero') ? 'is-invalid' : false }}"
 							id="numero" name="numero" placeholder="Ingrese el numero del remito" required
 							value="{{old('numero')}}">
 						{!! $errors->first('numero', ' <div class="invalid-feedback">:message</div>') !!}
@@ -147,9 +147,12 @@ $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/i18n/es.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/4.x/dist/jquery.inputmask.bundle.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
+	$(numero).inputmask("99999-99999999");  //static mask
 
     $.fn.select2.defaults.set('language', 'es');
 

@@ -43,6 +43,8 @@ class RemitoCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/remito');
         $this->crud->setEntityNameStrings('remito', 'remitos');
 
+        $this->crud->denyAccess(['create', 'update', 'delete', 'list', 'show']);
+
         if (backpack_user()->hasPermissionTo('createRemito')) {
             $this->crud->allowAccess('create');
         }
@@ -69,10 +71,11 @@ class RemitoCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['numero', 'fecha', 'proveedor']);
 
-        $this->crud->setColumnDetails('nombre', [
-            'name' => "numero", // The db column name
+        $this->crud->setColumnDetails('numero', [
+            'name' => "numero_masked", // The db column name
             'label' => "Numero", // Table column heading
             'type' => "text",
         ]);
@@ -100,6 +103,7 @@ class RemitoCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(RemitoRequest::class);
     }
 
@@ -417,6 +421,7 @@ class RemitoCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->crud->setValidation(RemitoRequest::class);
     }
 
@@ -456,6 +461,7 @@ class RemitoCrudController extends CrudController
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

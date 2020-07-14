@@ -15,6 +15,7 @@ use App\Models\MenuAsignado;
 use App\Models\Parametro;
 use App\Models\Persona;
 use App\Models\PlatoAsignado;
+use App\Models\Proveedor;
 use App\Models\Remito;
 use App\Observers\AsistenciaObserver;
 use App\Observers\BandaHorariaObserver;
@@ -27,6 +28,7 @@ use App\Observers\MenuAsignadoObserver;
 use App\Observers\ParametroObserver;
 use App\Observers\PersonaObserver;
 use App\Observers\PlatoAsignadoObserver;
+use App\Observers\ProveedorObserver;
 use App\Observers\RemitoObserver;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -56,9 +58,10 @@ class AppServiceProvider extends ServiceProvider
         Justificacion::observe(JustificacionObserver::class);
         Parametro::observe(ParametroObserver::class);
         BandaHoraria::observe(BandaHorariaObserver::class);
-
+        BandaHoraria::observe(BandaHorariaObserver::class);
+        Proveedor::observe(ProveedorObserver::class);
+        
         MenuAsignado::observe(MenuAsignadoObserver::class);
-        Inscripcion::observe(InscripcionObserver::class);
 
 
         /**

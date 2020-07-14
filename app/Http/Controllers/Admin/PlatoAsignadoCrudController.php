@@ -56,6 +56,7 @@ class PlatoAsignadoCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['menu_id', 'plato_id', 'fecha']);
 
         $this->crud->setColumnDetails('menu_id', [
@@ -111,6 +112,7 @@ class PlatoAsignadoCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(PlatoAsignadoRequest::class);
 
         $this->crud->addField([   // date_picker
@@ -167,11 +169,13 @@ class PlatoAsignadoCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

@@ -14,7 +14,7 @@ class CreateRemitosTable extends Migration
     {
         Schema::create('remitos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('numero');
+            $table->string('numero');
             $table->date('fecha');
             $table->unsignedBigInteger('comedor_id');
             $table->foreign('comedor_id')->references('id')->on('comedores');

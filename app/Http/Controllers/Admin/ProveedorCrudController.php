@@ -53,8 +53,14 @@ class ProveedorCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addColumns(['nombre', 'telefono', 'email', 'direccion']);
+        $this->crud->hasAccessOrFail('list');
+        $this->crud->addColumns(['cuit','nombre', 'telefono', 'email', 'direccion']);
 
+        $this->crud->setColumnDetails('cuit', [
+            'name' => "cuit_masked", // The db column name
+            'label' => "CUIT/CUIL", // Table column heading
+            'type' => "text",
+        ]);
         $this->crud->setColumnDetails('nombre', [
             'name' => "nombre", // The db column name
             'label' => "Nombre", // Table column heading
@@ -82,7 +88,16 @@ class ProveedorCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(ProveedorRequest::class);
+
+        $this->crud->addField(
+            [
+                'label' => "CUIT/CUIL",
+                'type' => 'cuit',
+                'name' => 'cuit',
+            ]
+        );
 
         $this->crud->addField(
             [
@@ -125,24 +140,26 @@ class ProveedorCrudController extends CrudController
                 'attribute' => 'descripcion', // foreign key attribute that is shown to user
            
                 'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
-                // 'select_all' => true, // show Select All and Clear buttons?
+                'select_all' => true, // show Select All and Clear buttons?
            
                 // optional
                 'model'     => "App\Models\Comedor", // foreign key model
-                'options'   => (function ($query) {
-                    return $query->where('id', backpack_user()->persona->comedor_id)->get();
-                }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+                // 'options'   => (function ($query) {
+                //     return $query->where('id', backpack_user()->persona->comedor_id)->get();
+                // }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
            ]
         );
     }
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

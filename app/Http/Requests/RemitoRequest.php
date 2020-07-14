@@ -20,17 +20,26 @@ class RemitoRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'numero' => str_replace("-", "", $this->numero),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        $id=$this->id;
-        $fecha=$this->fecha_vencimiento;
-        $asd=null;
         return [
-            'numero' => ['required', 'integer', 'digits:12'],
+            'numero' => ['required', 'digits:13'],
             'proveedor_id' => ['required', Rule::exists('proveedores', 'id')],
             'insumo' => ['required'],
             'cantidad' => ['required'],

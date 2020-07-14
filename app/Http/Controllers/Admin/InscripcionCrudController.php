@@ -75,6 +75,7 @@ class InscripcionCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         // //Si el usuario tiene rol de admin mostrar a que usuario corresponde cada inscripcion
         if (backpack_user()->hasRole('operativo')) {
 
@@ -177,16 +178,19 @@ class InscripcionCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
     
     }
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         // $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }

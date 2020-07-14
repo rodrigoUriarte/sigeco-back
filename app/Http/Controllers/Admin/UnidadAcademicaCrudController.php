@@ -46,6 +46,7 @@ class UnidadAcademicaCrudController extends CrudController
 
     protected function setupListOperation()
     {
+        $this->crud->hasAccessOrFail('list');
         $this->crud->addColumns(['nombre']);
 
         $this->crud->setColumnDetails('nombre', [
@@ -57,6 +58,7 @@ class UnidadAcademicaCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $this->crud->hasAccessOrFail('create');
         $this->crud->setValidation(UnidadAcademicaRequest::class);
 
         $this->crud->addField([
@@ -68,11 +70,13 @@ class UnidadAcademicaCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->hasAccessOrFail('update');
         $this->setupCreateOperation();
     }
 
     protected function setupShowOperation()
     {
+        $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
     }
