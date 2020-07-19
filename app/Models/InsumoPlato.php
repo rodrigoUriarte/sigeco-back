@@ -5,10 +5,12 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class InsumoPlato extends Model
+class InsumoPlato extends Model implements Auditable
 {
     use CrudTrait;
+    use \OwenIt\Auditing\Auditable;
 
     /*
     |--------------------------------------------------------------------------

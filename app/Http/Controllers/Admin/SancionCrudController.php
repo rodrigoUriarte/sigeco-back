@@ -77,7 +77,7 @@ class SancionCrudController extends CrudController
             ]);
         }
 
-        $this->crud->addColumns(['fecha', 'regla', 'activa','inasistencias']);
+        $this->crud->addColumns(['fecha', 'regla', 'activa']);
 
         $this->crud->setColumnDetails('fecha', [
             'name' => "fecha", // The db column name
@@ -108,16 +108,6 @@ class SancionCrudController extends CrudController
             // optionally override the Yes/No texts
             'options' => [0 => 'NO', 1 => 'SI']
         ]);
-
-        $this->crud->setColumnDetails('inasistencias', [
-            // n-n relationship (with pivot table)
-            'label' => "Inasistencias Asociadas", // Table column heading
-            'type' => "select_multiple",
-            'name' => 'asistencias', // the method that defines the relationship in your Model
-            'entity' => 'asistencias', // the method that defines the relationship in your Model
-            'attribute' => "fecha_inscripcion_formato", // foreign key attribute that is shown to user
-            'model' => "App\Models\Asistencia", // foreign key model
-         ]);
 
         // daterange filter
         $this->crud->addFilter(
@@ -153,5 +143,18 @@ class SancionCrudController extends CrudController
         $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+
+        $this->crud->addColumns(['inasistencias']);
+
+        $this->crud->setColumnDetails('inasistencias', [
+            // n-n relationship (with pivot table)
+            'label' => "Inasistencias Asociadas", // Table column heading
+            'type' => "select_multiple_rowStyle",
+            'name' => 'asistencias', // the method that defines the relationship in your Model
+            'entity' => 'asistencias', // the method that defines the relationship in your Model
+            'attribute' => "fecha_inscripcion_formato", // foreign key attribute that is shown to user
+            'model' => "App\Models\Asistencia", // foreign key model
+         ]);
     }
+
 }

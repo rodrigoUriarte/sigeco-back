@@ -70,6 +70,11 @@ class Insumo extends Model
         return "{$this->descripcion}  ({$this->unidad_medida})";
     }
 
+    public function getDescripcionCantidadVencimientoAttribute()
+    {
+        return "{$this->descripcion}  ({$this->pivot->cantidad} {$this->unidad_medida}) - F.Venc: {$this->pivot->fecha_vencimiento} \n";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

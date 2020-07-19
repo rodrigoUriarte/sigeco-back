@@ -47,24 +47,22 @@ class PlatoAsignadoObserver
                         DB::table('lote_plato_asignado')->insert([
                             'plato_asignado_id' => $platoAsignado->id,
                             'lote_id' => $lote->id,
-                            'comedor_id' =>backpack_user()->persona->comedor_id,
+                            'comedor_id' => backpack_user()->persona->comedor_id,
                             'cantidad' => $lote->cantidad,
                         ]);
                         $aux -= $lote->cantidad;
-                        //$lote->cantidad = 0;
                         $lote->cantidad -= $lote->cantidad;
                         $lote->usado = true;
                     } else {
                         DB::table('lote_plato_asignado')->insert([
                             'plato_asignado_id' => $platoAsignado->id,
                             'lote_id' => $lote->id,
-                            'comedor_id' =>backpack_user()->persona->comedor_id,
+                            'comedor_id' => backpack_user()->persona->comedor_id,
                             'cantidad' => $aux,
                         ]);
                         $lote->cantidad -= $aux;
                         $lote->usado = true;
                         $aux -= $aux;
-
                     }
                 }
                 $lote->save();
@@ -105,7 +103,6 @@ class PlatoAsignadoObserver
         }
 
         $lpa = DB::table('lote_plato_asignado')->where('plato_asignado_id', '=', $platoAsignado->id)->delete();
-
     }
 
     /**

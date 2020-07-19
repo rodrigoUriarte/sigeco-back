@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use App\Support\FormatDate\FormatsDates;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Inscripcion extends Model
+class Inscripcion extends Model implements Auditable
 {
     use CrudTrait;
+    use \OwenIt\Auditing\Auditable;
+
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES

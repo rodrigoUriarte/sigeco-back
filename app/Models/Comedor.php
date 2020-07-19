@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Comedor extends Model
+class Comedor extends Model implements Auditable
 {
     use CrudTrait;
+    use \OwenIt\Auditing\Auditable;
 
     /*
     |--------------------------------------------------------------------------

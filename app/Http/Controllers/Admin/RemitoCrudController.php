@@ -464,5 +464,17 @@ class RemitoCrudController extends CrudController
         $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+
+        $this->crud->addColumns(['insumos']);
+
+        $this->crud->setColumnDetails('insumos', [
+            // n-n relationship (with pivot table)
+            'label'     => 'Insumos', // Table column heading
+            'type'      => 'select_multiple_rowStyle',
+            'name'      => 'insumos', // the method that defines the relationship in your Model
+            'entity'    => 'insumos', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion_cantidad_vencimiento', // foreign key attribute that is shown to user
+            'model'     => 'App\Models\Insumo', // foreign key model
+         ]);
     }
 }

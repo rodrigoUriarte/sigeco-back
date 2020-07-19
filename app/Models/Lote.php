@@ -5,10 +5,12 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Lote extends Model
+class Lote extends Model implements Auditable
 {
     use CrudTrait;
+    use \OwenIt\Auditing\Auditable;
 
     /*
     |--------------------------------------------------------------------------
