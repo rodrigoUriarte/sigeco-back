@@ -20,7 +20,6 @@ Route::group([
     Route::crud('inscripcion', 'InscripcionCrudController');
     Route::crud('plato', 'PlatoCrudController');
     Route::crud('insumo', 'InsumoCrudController');
-    Route::crud('insumoPlato', 'InsumoPlatoCrudController');
     Route::crud('lote', 'LoteCrudController');
     Route::crud('platoAsignado', 'PlatoAsignadoCrudController');
     Route::crud('asistencia', 'AsistenciaCrudController');

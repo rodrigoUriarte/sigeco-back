@@ -197,31 +197,31 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'createInsumoPlato',
+                'name' => 'createInsumoPlato-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'updateInsumoPlato',
+                'name' => 'updateInsumoPlato-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'deleteInsumoPlato',
+                'name' => 'deleteInsumoPlato-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'listInsumoPlato',
+                'name' => 'listInsumoPlato-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'showInsumoPlato',
+                'name' => 'showInsumoPlato-sinUsar-',
                 'guard_name' => 'web',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')

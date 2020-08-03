@@ -54,9 +54,6 @@ class Comedor extends Model implements Auditable
     public function bandasHorarias(){
         return $this->hasMany('App\Models\BandaHoraria');
     }
-    public function insumosPlatos(){
-        return $this->hasMany('App\Models\InsumoPlato');
-    }
     public function insripciones(){
         return $this->hasMany('App\Models\Inscripcion');
     }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class RemitoCrudController
@@ -446,8 +447,8 @@ class RemitoCrudController extends CrudController
         }
 
         if ($flag == true) {
-            \Alert::error('Uno de los lotes asociados a los insumos de este remito ya fue usado');
-            return \Alert::getMessages();
+            Alert::error('Uno de los lotes asociados a los insumos de este remito ya fue usado');
+            return Alert::getMessages();
         } else {
             //SI NINGUNO DE LOS LOTES ASOCIADOS A CADA UNO DE LOS INSUMOS FUE USADO
             //ELIMINO TODOS LOS LOTES Y DESPUES ELIMINO EL REMITO

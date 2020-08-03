@@ -39,11 +39,6 @@ class Insumo extends Model
     {
         return $this->belongsTo('App\Models\Comedor');
     }
-
-    public function insumosPlatos()
-    {
-        return $this->hasMany('App\Models\InsumoPlato');
-    }
     public function lotes()
     {
         return $this->hasMany('App\Models\Lote');
@@ -51,6 +46,9 @@ class Insumo extends Model
     public function remitos()
     {
         return $this->belongsToMany('App\Models\Remito')->using('App\Models\InsumoRemito')->withPivot(['id','cantidad','fecha_vencimiento'])->withTimestamps();
+    }
+    public function platos(){
+        return $this->belongsToMany('App\Models\Plato')->withPivot(['cantidad']);
     }
 
 
@@ -72,7 +70,12 @@ class Insumo extends Model
 
     public function getDescripcionCantidadVencimientoAttribute()
     {
-        return "{$this->descripcion}  ({$this->pivot->cantidad} {$this->unidad_medida}) - F.Venc: {$this->pivot->fecha_vencimiento} \n";
+        return "{$this->descripcion}  ({$this->pivot->cantidad} {$this->unidad_medida}) - F.Venc: {$this->pivot->fecha_vencimiento}";
+    }
+
+    public function getDescripcionCantidadAttribute()
+    {
+        return "{$this->descripcion}  ({$this->pivot->cantidad} {$this->unidad_medida})";
     }
 
     /*

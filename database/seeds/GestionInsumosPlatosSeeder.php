@@ -2,7 +2,6 @@
 
 use App\Models\Comedor;
 use App\Models\Insumo;
-use App\Models\InsumoPlato;
 use App\Models\Menu;
 use App\Models\Plato;
 use Illuminate\Database\Seeder;
@@ -166,271 +165,44 @@ class GestionInsumosPlatosSeeder extends Seeder
             'comedor_id' => Comedor::all()->first()->id,
         ]);
 
-        $insumoPlato1 = InsumoPlato::create([
-            'plato_id' => $plato1->id,
-            'insumo_id' => $insumo1->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato2 = InsumoPlato::create([
-            'plato_id' => $plato1->id,
-            'insumo_id' => $insumo2->id,
-            'cantidad' => 100,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato3 = InsumoPlato::create([
-            'plato_id' => $plato1->id,
-            'insumo_id' => $insumo3->id,
-            'cantidad' => 80,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato4 = InsumoPlato::create([
-            'plato_id' => $plato1->id,
-            'insumo_id' => $insumo5->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato5 = InsumoPlato::create([
-            'plato_id' => $plato1->id,
-            'insumo_id' => $insumo7->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato6 = InsumoPlato::create([
-            'plato_id' => $plato2->id,
-            'insumo_id' => $insumo6->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato7 = InsumoPlato::create([
-            'plato_id' => $plato2->id,
-            'insumo_id' => $insumo2->id,
-            'cantidad' => 100,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato8 = InsumoPlato::create([
-            'plato_id' => $plato2->id,
-            'insumo_id' => $insumo3->id,
-            'cantidad' => 80,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato9 = InsumoPlato::create([
-            'plato_id' => $plato2->id,
-            'insumo_id' => $insumo5->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato10 = InsumoPlato::create([
-            'plato_id' => $plato2->id,
-            'insumo_id' => $insumo7->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato11 = InsumoPlato::create([
-            'plato_id' => $plato3->id,
-            'insumo_id' => $insumo7->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato12 = InsumoPlato::create([
-            'plato_id' => $plato3->id,
-            'insumo_id' => $insumo2->id,
-            'cantidad' => 200,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato13 = InsumoPlato::create([
-            'plato_id' => $plato4->id,
-            'insumo_id' => $insumo8->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato14 = InsumoPlato::create([
-            'plato_id' => $plato4->id,
-            'insumo_id' => $insumo2->id,
-            'cantidad' => 100,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato15 = InsumoPlato::create([
-            'plato_id' => $plato4->id,
-            'insumo_id' => $insumo3->id,
-            'cantidad' => 80,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato16 = InsumoPlato::create([
-            'plato_id' => $plato4->id,
-            'insumo_id' => $insumo5->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato17 = InsumoPlato::create([
-            'plato_id' => $plato4->id,
-            'insumo_id' => $insumo4->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato18 = InsumoPlato::create([
-            'plato_id' => $plato5->id,
-            'insumo_id' => $insumo9->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato19 = InsumoPlato::create([
-            'plato_id' => $plato5->id,
-            'insumo_id' => $insumo2->id,
-            'cantidad' => 200,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato20 = InsumoPlato::create([
-            'plato_id' => $plato6->id,
-            'insumo_id' => $insumo6->id,
-            'cantidad' => 75,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-        
-        $insumoPlato21 = InsumoPlato::create([
-            'plato_id' => $plato6->id,
-            'insumo_id' => $insumo5->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-        
-        $insumoPlato22 = InsumoPlato::create([
-            'plato_id' => $plato6->id,
-            'insumo_id' => $insumo4->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato23 = InsumoPlato::create([
-            'plato_id' => $plato7->id,
-            'insumo_id' => $insumo10->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato23 = InsumoPlato::create([
-            'plato_id' => $plato7->id,
-            'insumo_id' => $insumo11->id,
-            'cantidad' => 20,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato23 = InsumoPlato::create([
-            'plato_id' => $plato7->id,
-            'insumo_id' => $insumo12->id,
-            'cantidad' => 100,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato23 = InsumoPlato::create([
-            'plato_id' => $plato7->id,
-            'insumo_id' => $insumo13->id,
-            'cantidad' => 0.25,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato24 = InsumoPlato::create([
-            'plato_id' => $plato7->id,
-            'insumo_id' => $insumo14->id,
-            'cantidad' => 2,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato25 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo1->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato26 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo7->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato27 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo11->id,
-            'cantidad' => 20,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato28 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo14->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato29 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo15->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato30 = InsumoPlato::create([
-            'plato_id' => $plato8->id,
-            'insumo_id' => $insumo16->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato31 = InsumoPlato::create([
-            'plato_id' => $plato9->id,
-            'insumo_id' => $insumo8->id,
-            'cantidad' => 100,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato32 = InsumoPlato::create([
-            'plato_id' => $plato9->id,
-            'insumo_id' => $insumo10->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato33 = InsumoPlato::create([
-            'plato_id' => $plato9->id,
-            'insumo_id' => $insumo11->id,
-            'cantidad' => 20,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato34 = InsumoPlato::create([
-            'plato_id' => $plato9->id,
-            'insumo_id' => $insumo14->id,
-            'cantidad' => 1,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
-
-        $insumoPlato35 = InsumoPlato::create([
-            'plato_id' => $plato9->id,
-            'insumo_id' => $insumo16->id,
-            'cantidad' => 50,
-            'comedor_id' => Comedor::all()->first()->id,
-        ]);
- 
+        $plato1->insumos()->attach($insumo1->id, ['cantidad' => 50]);
+        $plato1->insumos()->attach($insumo2->id, ['cantidad' => 100]);
+        $plato1->insumos()->attach($insumo3->id, ['cantidad' => 80]);
+        $plato1->insumos()->attach($insumo5->id, ['cantidad' => 50]);
+        $plato1->insumos()->attach($insumo7->id, ['cantidad' => 1]);
+        $plato2->insumos()->attach($insumo6->id, ['cantidad' => 50]);
+        $plato2->insumos()->attach($insumo2->id, ['cantidad' => 100]);
+        $plato2->insumos()->attach($insumo3->id, ['cantidad' => 80]);
+        $plato2->insumos()->attach($insumo5->id, ['cantidad' => 50]);
+        $plato2->insumos()->attach($insumo1->id, ['cantidad' => 50]);
+        $plato2->insumos()->attach($insumo7->id, ['cantidad' => 1]);
+        $plato3->insumos()->attach($insumo7->id, ['cantidad' => 1]);
+        $plato3->insumos()->attach($insumo2->id, ['cantidad' => 200]);
+        $plato4->insumos()->attach($insumo8->id, ['cantidad' => 50]);
+        $plato4->insumos()->attach($insumo2->id, ['cantidad' => 100]);
+        $plato4->insumos()->attach($insumo3->id, ['cantidad' => 80]);
+        $plato4->insumos()->attach($insumo5->id, ['cantidad' => 50]);
+        $plato4->insumos()->attach($insumo4->id, ['cantidad' => 50]);
+        $plato5->insumos()->attach($insumo9->id, ['cantidad' => 1]);
+        $plato5->insumos()->attach($insumo2->id, ['cantidad' => 200]);
+        $plato6->insumos()->attach($insumo6->id, ['cantidad' => 75]);
+        $plato6->insumos()->attach($insumo5->id, ['cantidad' => 50]);
+        $plato6->insumos()->attach($insumo4->id, ['cantidad' => 50]);
+        $plato7->insumos()->attach($insumo10->id, ['cantidad' => 50]);
+        $plato7->insumos()->attach($insumo11->id, ['cantidad' => 20]);
+        $plato7->insumos()->attach($insumo12->id, ['cantidad' => 100]);
+        $plato7->insumos()->attach($insumo13->id, ['cantidad' => 0.25]);
+        $plato7->insumos()->attach($insumo14->id, ['cantidad' => 2]);
+        $plato8->insumos()->attach($insumo1->id, ['cantidad' => 50]);
+        $plato8->insumos()->attach($insumo7->id, ['cantidad' => 1]);
+        $plato8->insumos()->attach($insumo11->id, ['cantidad' => 20]);
+        $plato8->insumos()->attach($insumo14->id, ['cantidad' => 1]);
+        $plato8->insumos()->attach($insumo15->id, ['cantidad' => 50]);
+        $plato8->insumos()->attach($insumo16->id, ['cantidad' => 50]);
+        $plato9->insumos()->attach($insumo8->id, ['cantidad' => 100]);
+        $plato9->insumos()->attach($insumo10->id, ['cantidad' => 50]);
+        $plato9->insumos()->attach($insumo11->id, ['cantidad' => 20]);
+        $plato9->insumos()->attach($insumo14->id, ['cantidad' => 1]);
+        $plato9->insumos()->attach($insumo16->id, ['cantidad' => 50]);
     }
 }

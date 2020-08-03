@@ -24,7 +24,7 @@ class PlatoAsignadoObserver
         $menu = $platoAsignado->menu_id;
 
         $plato = $platoAsignado->plato;
-        $insumos_plato = $plato->insumosPlatos;
+        $insumos = $plato->insumos;
 
         $cantidad_inscripciones = Inscripcion::where('fecha_inscripcion', $fecha)
             ->where('comedor_id', $comedor)
@@ -33,10 +33,10 @@ class PlatoAsignadoObserver
             })
             ->count();
 
-        foreach ($insumos_plato as $insumo_plato) {
-            $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
-            $lotes = Lote::where('comedor_id', $insumo_plato->comedor_id)
-                ->where('insumo_id', $insumo_plato->insumo_id)
+        foreach ($insumos as $insumo) {
+            $cn_insumo = ($insumo->pivot->cantidad * $cantidad_inscripciones);
+            $lotes = Lote::where('comedor_id', $insumo->comedor_id)
+                ->where('insumo_id', $insumo->id)
                 ->orderBy('fecha_vencimiento', 'asc')
                 ->get();
 

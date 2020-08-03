@@ -92,12 +92,10 @@
 	<ul class="nav-dropdown-items">
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('menu') }}'><i
 					class='nav-icon la la-utensils'></i> Menus</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plato') }}'><i
-					class='nav-icon la la-drumstick-bite'></i> Platos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumo') }}'><i
 					class='nav-icon la la-carrot'></i> Insumos</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i
-					class='nav-icon la la-fish'></i> Insumo Plato</a></li>
+		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plato') }}'><i
+					class='nav-icon la la-drumstick-bite'></i> Platos</a></li>
 	</ul>
 
 </li>
@@ -265,8 +263,6 @@
 					class='nav-icon la la-question'></i> Platos</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumo') }}'><i
 					class='nav-icon la la-question'></i> Insumos</a></li>
-		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('insumoPlato') }}'><i
-					class='nav-icon la la-question'></i> Insumo Plato</a></li>
 	</ul>
 </li>
 

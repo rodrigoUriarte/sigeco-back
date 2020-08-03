@@ -40,12 +40,8 @@ class Plato extends Model implements Auditable
     public function menu(){
         return $this->belongsTo('App\Models\Menu');
     }
-    // public function insumos(){
-    //     return $this->belongsToMany('App\Models\Insumo')->using('App\Models\InsumoPlato')->withPivot(['cantidad']);
-    // }
-    //QUEDA PENDIENTE EL USO COMO TABLA PIVOT HASTA QUE BACKPACK SOPORTE CAMPOS APARTE DE LOS FK EN LA TABLA PIVOT
-    public function insumosPlatos(){
-        return $this->hasMany('App\Models\InsumoPlato');
+    public function insumos(){
+        return $this->belongsToMany('App\Models\Insumo')->withPivot(['cantidad']);
     }
     public function comedor(){
         return $this->belongsTo('App\Models\Comedor');

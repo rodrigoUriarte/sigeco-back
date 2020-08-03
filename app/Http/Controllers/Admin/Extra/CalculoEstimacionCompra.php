@@ -176,14 +176,14 @@ class CalculoEstimacionCompra extends Controller
                     ->get();
 
                 foreach ($platos as $plato) {
-                    $insumos_plato = $plato->insumosPlatos;
+                    $insumos = $plato->insumos;
                     $flag = false;
 
-                    foreach ($insumos_plato as $insumo_plato) {
+                    foreach ($insumos as $insumo) {
                         $cd_insumo = Lote::where('comedor_id', backpack_user()->persona->comedor_id)
-                            ->where('insumo_id', $insumo_plato->insumo_id)
+                            ->where('insumo_id', $insumo->id)
                             ->sum('cantidad');
-                        $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
+                        $cn_insumo = ($insumo->pivot->cantidad * $cantidad_inscripciones);
                         if ($cd_insumo >= $cn_insumo) {
                             //si flag es true 'c' va a ser cantidad que sobra de ese insumo
                             $flag = true;
@@ -199,12 +199,12 @@ class CalculoEstimacionCompra extends Controller
                         $aux = collect();
                         $aux->put('menu', Menu::find($menu_id)->descripcion);
                         $aux->put('plato', Plato::find($plato->id)->descripcion);
-                        $aux->put('insumo', Insumo::find($insumo_plato->insumo->id)->descripcion);
+                        $aux->put('insumo', Insumo::find($insumo->id)->descripcion);
                         $aux->put('estado', $flag);
                         if ($flag == false) {
-                            $aux->put('cantidad', $cf_insumo . ' ' . Insumo::find($insumo_plato->insumo->id)->unidad_medida);
+                            $aux->put('cantidad', $cf_insumo . ' ' . Insumo::find($insumo->id)->unidad_medida);
                         } else {
-                            $aux->put('cantidad', $cs_insumo . ' ' . Insumo::find($insumo_plato->insumo->id)->unidad_medida);
+                            $aux->put('cantidad', $cs_insumo . ' ' . Insumo::find($insumo->id)->unidad_medida);
                         }
                         $menus->push($aux);
                     }

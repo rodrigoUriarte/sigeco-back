@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PlatoRequest;
+use App\Models\Plato;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class PlatoCrudController
@@ -105,10 +108,26 @@ class PlatoCrudController extends CrudController
                 'label' => "Descripcion",
                 'type' => 'text',
                 'name' => 'descripcion',
-
             ]
         );
-
+        $this->crud->addField(
+            [
+                'label' => "Insumos",
+                'type' => 'repeatable',
+                'name' => 'insumos',
+                'fields' => [
+                    [
+                        'name' => 'insumos', //the name of the relation
+                        'multiple' => false //this is mandatory.
+                    ],
+                    [
+                        'name' => 'cantidad',
+                        'type' => 'text',
+                        'label' => 'Cantidad'
+                    ],
+                ],
+            ]
+        );
     }
 
     protected function setupUpdateOperation()
@@ -117,10 +136,41 @@ class PlatoCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $plato= Plato::findOrFail($id);
+
+        if ($plato->platosAsignados()->exists()) {
+            Alert::error('Este plato tiene asociado platos asignados. No se puede eliminar');
+            return Alert::getMessages();
+        }else {
+            $plato->insumos()->detach();
+        }
+
+        return $this->crud->delete($id);
+    }
+
     protected function setupShowOperation()
     {
         $this->crud->hasAccessOrFail('show');
         $this->crud->set('show.setFromDb', false);
         $this->setupListOperation();
+
+        $this->crud->addColumns(['insumos']);
+
+        $this->crud->setColumnDetails('insumos', [
+            // n-n relationship (with pivot table)
+            'label' => "Insumos", // Table column heading
+            'type' => "select_multiple_rowStyle",
+            'name' => 'insumos', // the method that defines the relationship in your Model
+            'entity' => 'insumos', // the method that defines the relationship in your Model
+            'attribute' => "descripcion_cantidad", // foreign key attribute that is shown to user
+            'model' => "App\Models\Insumo", // foreign key model
+         ]);
     }
 }

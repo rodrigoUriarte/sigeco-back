@@ -35,14 +35,14 @@ class CalculoPreparacionPlatos extends Controller
         $pd = collect();
 
         foreach ($platos as $plato) {
-            $insumos_plato = $plato->insumosPlatos;
+            $insumos = $plato->insumos;
             $flag = false;
 
-            foreach ($insumos_plato as $insumo_plato) {
+            foreach ($insumos as $insumo) {
                 $cd_insumo = Lote::where('comedor_id', $comedor)
-                    ->where('insumo_id', $insumo_plato->insumo_id)
+                    ->where('insumo_id', $insumo->id)
                     ->sum('cantidad');
-                $cn_insumo = ($insumo_plato->cantidad * $cantidad_inscripciones);
+                $cn_insumo = ($insumo->pivot->cantidad * $cantidad_inscripciones);
                 if ($cd_insumo >= $cn_insumo) {
                     $flag = true;
                 } else {
