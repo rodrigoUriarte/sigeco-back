@@ -1,3 +1,4 @@
+<h3 style="text-align: center">INSUMOS A UTILIZAR PARA LA PREPARACION DE PLATOS DEL DIA</h3>
 @foreach ($pa as $platoAsignado)
 <div class="card">
     <div class="card-header"><i class="la la-align-justify"></i>Menu: {{$platoAsignado->menu->descripcion}} - 

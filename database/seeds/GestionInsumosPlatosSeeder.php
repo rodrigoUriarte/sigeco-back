@@ -195,7 +195,6 @@ class GestionInsumosPlatosSeeder extends Seeder
         $plato7->insumos()->attach($insumo14->id, ['cantidad' => 2]);
         $plato8->insumos()->attach($insumo1->id, ['cantidad' => 50]);
         $plato8->insumos()->attach($insumo7->id, ['cantidad' => 1]);
-        $plato8->insumos()->attach($insumo11->id, ['cantidad' => 20]);
         $plato8->insumos()->attach($insumo14->id, ['cantidad' => 1]);
         $plato8->insumos()->attach($insumo15->id, ['cantidad' => 50]);
         $plato8->insumos()->attach($insumo16->id, ['cantidad' => 50]);

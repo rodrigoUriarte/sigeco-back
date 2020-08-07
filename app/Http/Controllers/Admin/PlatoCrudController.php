@@ -117,15 +117,23 @@ class PlatoCrudController extends CrudController
                 'name' => 'insumos',
                 'fields' => [
                     [
+                        'label' => "Insumo",
                         'name' => 'insumos', //the name of the relation
-                        'multiple' => false //this is mandatory.
+                        'multiple' => false, //this is mandatory.
+                        'attribute' => 'descripcionUM', // foreign key attribute that is shown to user
+
+                        'options'   => (function ($query) {
+                            return $query->where('comedor_id', backpack_user()->persona->comedor_id)->get();
+                        }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
                     ],
                     [
                         'name' => 'cantidad',
-                        'type' => 'text',
+                        'type' => 'number',
                         'label' => 'Cantidad'
                     ],
                 ],
+                // optional
+                'new_item_label'  => 'Agregar Insumo', // customize the text of the button
             ]
         );
     }
@@ -143,12 +151,12 @@ class PlatoCrudController extends CrudController
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
 
-        $plato= Plato::findOrFail($id);
+        $plato = Plato::findOrFail($id);
 
         if ($plato->platosAsignados()->exists()) {
             Alert::error('Este plato tiene asociado platos asignados. No se puede eliminar');
             return Alert::getMessages();
-        }else {
+        } else {
             $plato->insumos()->detach();
         }
 
@@ -171,6 +179,6 @@ class PlatoCrudController extends CrudController
             'entity' => 'insumos', // the method that defines the relationship in your Model
             'attribute' => "descripcion_cantidad", // foreign key attribute that is shown to user
             'model' => "App\Models\Insumo", // foreign key model
-         ]);
+        ]);
     }
 }

@@ -21,6 +21,18 @@ class PlatoRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'insumos' => json_decode($this->insumos, true),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -28,19 +40,20 @@ class PlatoRequest extends FormRequest
     public function rules()
     {
         return [
-            'comedor_id' => [Rule::exists('comedores','id')],
-            'menu_id' => ['required',Rule::exists('menus','id')],
+            'comedor_id' => ['required', Rule::exists('comedores', 'id')],
+            'menu_id' => ['required', Rule::exists('menus', 'id')],
             'descripcion' => [
                 'required',
                 Rule::unique('platos')
-                ->where(function ($query) {
-                    return $query
-                        ->where('comedor_id', '=', $this->comedor_id)
-                        ->where('descripcion', '=', $this->descripcion);
-                })
-                ->ignore($this->id),
+                    ->where(function ($query) {
+                        return $query
+                            ->where('comedor_id', '=', $this->comedor_id)
+                            ->where('descripcion', '=', $this->descripcion);
+                    })
+                    ->ignore($this->id),
             ],
-
+            'insumos.*.insumos' => ['required','distinct'],
+            'insumos.*.cantidad' => ['required'],
         ];
     }
 
@@ -52,7 +65,7 @@ class PlatoRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            //'insumos.*.insumos' => 'insumo',
         ];
     }
 
@@ -63,8 +76,14 @@ class PlatoRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-            //
-        ];
+        $messages = [];
+        foreach ($this->insumos as $index => $requestData) {
+            foreach ($requestData as $input => $value) {
+                $messages['insumos.' . $index . '.insumos' . '.required'] = 'El insumo numero ' . ($index + 1)  . '  de la preparacion del plato esta vacio';
+                $messages['insumos.' . $index . '.insumos' . '.distinct'] = 'El insumo numero ' . ($index + 1)  . '  de la preparacion del plato esta repetido';
+                $messages['insumos.' . $index . '.cantidad' . '.required'] = 'El insumo numero ' . ($index + 1)  . '  de la preparacion no tiene especificada una cantidad';
+            }
+        }
+        return $messages;       
     }
 }
