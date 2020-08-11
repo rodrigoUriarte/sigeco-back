@@ -8,6 +8,8 @@ use App\Models\Lote;
 use Illuminate\Http\Request;
 use App\Models\Plato;
 use Facade\Ignition\DumpRecorder\Dump;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 class CalculoPreparacionPlatos extends Controller
 {
@@ -20,6 +22,8 @@ class CalculoPreparacionPlatos extends Controller
         $comedor = $form['comedor_id'];
         $menu = $form['menu_id'];
 
+        $platosDisponibles = collect();
+
         $cantidad_inscripciones = Inscripcion::where('fecha_inscripcion', $fecha)
             ->where('comedor_id', $comedor)
             ->whereHas('menuAsignado',  function ($q) use ($menu) {
@@ -27,12 +31,16 @@ class CalculoPreparacionPlatos extends Controller
             })
             ->count();
 
+        //si no hay inscriptos se no se devuelve ningun plato
+        //faltaria agregar un mensaje flash avisando que no hay inscriptos para esa fecha
+        if ($cantidad_inscripciones == 0) {
+            return $platosDisponibles;
+        }
+
         $platos = Plato::where('comedor_id', $comedor)
             ->where('menu_id', $menu)
             ->get();
 
-
-        $pd = collect();
 
         foreach ($platos as $plato) {
             $insumos = $plato->insumos;
@@ -52,10 +60,10 @@ class CalculoPreparacionPlatos extends Controller
             }
 
             if ($flag == true) {
-                $pd->push($plato);
+                $platosDisponibles->push($plato);
             }
         }
-        return $pd;
+        return $platosDisponibles;
     }
 
     public function index(Request $request)
@@ -77,11 +85,10 @@ class CalculoPreparacionPlatos extends Controller
         }
 
         if ($search_term) {
-            $options=$options->filter(function ($item) use ($search_term) {
+            $options = $options->filter(function ($item) use ($search_term) {
                 // replace stristr with your choice of matching function
                 return false !== stristr($item->descripcion, $search_term);
             })->paginate(10);
-
         } else {
             $options = $options->paginate(10);
         }
@@ -89,9 +96,4 @@ class CalculoPreparacionPlatos extends Controller
         return $options;
     }
 
-
-    // public function show($id)
-    // {
-    //     return Category::find($id);
-    // }
 }

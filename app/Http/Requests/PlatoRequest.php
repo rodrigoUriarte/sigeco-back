@@ -3,7 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\Insumo;
+use App\Models\Plato;
+use App\Rules\PlatoUnicoRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 
 
@@ -52,8 +56,15 @@ class PlatoRequest extends FormRequest
                     })
                     ->ignore($this->id),
             ],
-            'insumos.*.insumos' => ['required','distinct'],
+            'insumos.*.insumos' => [
+                'required', 'distinct',
+            ],          
+            
             'insumos.*.cantidad' => ['required'],
+
+            'insumos' => [
+                new PlatoUnicoRule($this->id,$this->comedor_id)
+            ],
         ];
     }
 
@@ -65,7 +76,7 @@ class PlatoRequest extends FormRequest
     public function attributes()
     {
         return [
-            //'insumos.*.insumos' => 'insumo',
+            //
         ];
     }
 
@@ -84,6 +95,6 @@ class PlatoRequest extends FormRequest
                 $messages['insumos.' . $index . '.cantidad' . '.required'] = 'El insumo numero ' . ($index + 1)  . '  de la preparacion no tiene especificada una cantidad';
             }
         }
-        return $messages;       
+        return $messages;
     }
 }
