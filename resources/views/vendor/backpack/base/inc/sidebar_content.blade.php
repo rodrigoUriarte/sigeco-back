@@ -42,7 +42,7 @@
 			class="nav-icon la la-layer-group"></i>GESTION USUARIOS</a>
 	<ul class="nav-dropdown-items">
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
-				<span>Users</span></a></li>
+				<span>Usuarios</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
 					class='nav-icon la la-male'></i> Personas</a></li>
 	</ul>
@@ -134,7 +134,7 @@
 		GESTION USUARIOS</a>
 	<ul class="nav-dropdown-items">
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
-				<span>Users</span></a></li>
+				<span>Usuarios</span></a></li>
 		<li class='nav-item'><a class='nav-link' href="{{ backpack_url('persona') }}"><i
 					class='nav-icon la la-male'></i> Personas</a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i>
@@ -215,7 +215,7 @@
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> AUTENTICACION</a>
 	<ul class="nav-dropdown-items">
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i>
-				<span>Users</span></a></li>
+				<span>Usuarios</span></a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-group"></i>
 				<span>Roles</span></a></li>
 		<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i

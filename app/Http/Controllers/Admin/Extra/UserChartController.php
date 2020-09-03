@@ -32,7 +32,7 @@ class UserChartController extends Controller
                 $vacio->labels($emptyArray);
                 $vacio->dataset('Inscripciones por dia', 'line', $emptyArray)->color('blue');
                 $vacio->dataset('Asistencias por dia', 'line', $emptyArray)->color('green');
-                $vacio->dataset('Insistencias por dia', 'line', $emptyArray)->color('red');
+                $vacio->dataset('Inasistencias por dia', 'line', $emptyArray)->color('red');
                 return view('personalizadas.estadisticas', ['inscripciones' => $vacio]);
             }
 
@@ -134,7 +134,7 @@ class UserChartController extends Controller
             $grafico->labels($etiquetasInscripciones->keys());
             $grafico->dataset('Inscripciones por dia', 'line', $inscripciones->values())->color('blue');
             $grafico->dataset('Asistencias por dia', 'line', $asistencias->values())->color('green');
-            $grafico->dataset('Insistencias por dia', 'line', $inasistencias->values())->color('red');
+            $grafico->dataset('Inasistencias por dia', 'line', $inasistencias->values())->color('red');
             return view('personalizadas.estadisticas', ['inscripciones' => $grafico]);
         } else {
             return abort(403, 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.');

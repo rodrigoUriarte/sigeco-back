@@ -45,7 +45,7 @@ class RemitoRequest extends FormRequest
             'cantidad' => ['required'],
             'fecha_vencimiento' => ['required'],
             'insumo.*' => ['required', Rule::exists('insumos', 'id')],
-            'cantidad.*' =>  ['required', 'numeric', 'min:0.01', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'cantidad.*' =>  ['required', 'numeric', 'min:0.01', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
             'fecha_vencimiento.*' =>  ['required', 'date'],
         ];
     }

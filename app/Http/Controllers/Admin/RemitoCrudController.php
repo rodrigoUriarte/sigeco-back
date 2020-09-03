@@ -332,13 +332,12 @@ class RemitoCrudController extends CrudController
                             ->first()
                             ->get('fecha_vencimiento');
                         $lote->save();
-                        $remito->insumos()->updateExistingPivot(
-                            $insumoV->pivot->insumo_id,
-                            ['fecha_vencimiento' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                        $remito->insumos()->where('insumo_id', $insumoV->pivot->insumo_id)
+                            ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                            ->update(['fecha_vencimiento' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
                                 ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
                                 ->first()
-                                ->get('fecha_vencimiento')]
-                        );
+                                ->get('fecha_vencimiento')]);
                     }
                     if (
                         $insumoV->pivot->cantidad !=
@@ -353,13 +352,12 @@ class RemitoCrudController extends CrudController
                             ->first()
                             ->get('cantidad');
                         $lote->save();
-                        $remito->insumos()->updateExistingPivot(
-                            $insumoV->pivot->insumo_id,
-                            ['cantidad' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
+                        $remito->insumos()->where('insumo_id', $insumoV->pivot->insumo_id)
+                            ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
+                            ->update(['cantidad' => $insumosN->where('insumo_id', $insumoV->pivot->insumo_id)
                                 ->where('fecha_vencimiento', $insumoV->pivot->fecha_vencimiento)
                                 ->first()
-                                ->get('cantidad')]
-                        );
+                                ->get('cantidad')]);
                     }
                     //ELIMINO
                 } else {
@@ -476,6 +474,6 @@ class RemitoCrudController extends CrudController
             'entity'    => 'insumos', // the method that defines the relationship in your Model
             'attribute' => 'descripcion_cantidad_vencimiento', // foreign key attribute that is shown to user
             'model'     => 'App\Models\Insumo', // foreign key model
-         ]);
+        ]);
     }
 }
