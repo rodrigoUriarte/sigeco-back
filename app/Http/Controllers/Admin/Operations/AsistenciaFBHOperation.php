@@ -28,12 +28,14 @@ trait AsistenciaFBHOperation
      */
     protected function setupAsistenciaFBHDefaults()
     {
-        $this->crud->allowAccess('asistenciaFBH');
+        if (backpack_user()->hasRole('operativo')) {
+            $this->crud->allowAccess('asistenciaFBH');
 
-        $this->crud->operation('list', function () {
-            $this->crud->enableBulkActions();
-            $this->crud->addButtonFromView('bottom', 'asistenciaFBH', 'asistenciaFBH', 'end');
-        });
+            $this->crud->operation('list', function () {
+                $this->crud->enableBulkActions();
+                $this->crud->addButtonFromView('bottom', 'asistenciaFBH', 'asistenciaFBH', 'end');
+            });
+        }
     }
 
     /**

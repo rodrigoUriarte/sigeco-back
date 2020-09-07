@@ -30,12 +30,15 @@ trait InasistenciaFBHOperation
      */
     protected function setupInasistenciaFBHDefaults()
     {
-        $this->crud->allowAccess('inasistenciaFBH');
+        if (backpack_user()->hasRole('operativo')) {
 
-        $this->crud->operation('list', function () {
-            $this->crud->enableBulkActions();
-            $this->crud->addButtonFromView('bottom', 'inasistenciaFBH', 'inasistenciaFBH', 'end');
-        });
+            $this->crud->allowAccess('inasistenciaFBH');
+
+            $this->crud->operation('list', function () {
+                $this->crud->enableBulkActions();
+                $this->crud->addButtonFromView('bottom', 'inasistenciaFBH', 'inasistenciaFBH', 'end');
+            });
+        }
     }
 
     /**

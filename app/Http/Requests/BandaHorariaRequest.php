@@ -67,7 +67,7 @@ class BandaHorariaRequest extends FormRequest
                 new HoraFinRule($this->id, $this->comedor_id, $this->hora_inicio)
             ],
 
-            'limite_comensales' => ['required', 'integer'],
+            'limite_comensales' => ['required', 'integer','min:1', 'max:999999'],
         ];
     }
 

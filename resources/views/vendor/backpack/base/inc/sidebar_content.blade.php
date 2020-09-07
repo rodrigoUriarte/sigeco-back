@@ -159,6 +159,9 @@
 
 	</ul>
 </li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('ayuda') }}'><i
+	class='nav-icon la la-question-circle'></i> AYUDA</a></li>
 @endif
 
 {{-- AUDITOR --}}

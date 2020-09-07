@@ -74,6 +74,13 @@ class MenusAsignadosSeeder extends Seeder
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,
                 ]);
+                $ma = MenuAsignado::create([
+                    'fecha_inicio' => '2020-09-01',
+                    'fecha_fin' => '2020-09-30',
+                    'user_id' => $user->id,
+                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
+                    'comedor_id' => $user->persona->comedor->id,
+                ]);
             }
         }
     }

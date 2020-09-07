@@ -54,7 +54,7 @@ class ProveedorCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->hasAccessOrFail('list');
-        $this->crud->addColumns(['cuit','nombre', 'telefono', 'email', 'direccion']);
+        $this->crud->addColumns(['cuit','nombre', 'telefono', 'email', 'direccion', 'comedores']);
 
         $this->crud->setColumnDetails('cuit', [
             'name' => "cuit_masked", // The db column name
@@ -84,6 +84,16 @@ class ProveedorCrudController extends CrudController
             'label' => "Direccion", // Table column heading
             'type' => "address",
         ]);
+
+        $this->crud->setColumnDetails('comedores', [
+            // n-n relationship (with pivot table)
+            'label'     => 'Comedores Asociados', // Table column heading
+            'type'      => 'select_multiple_rowStyle',
+            'name'      => 'comedores', // the method that defines the relationship in your Model
+            'entity'    => 'comedores', // the method that defines the relationship in your Model
+            'attribute' => 'descripcion', // foreign key attribute that is shown to user
+            'model'     => 'App\Models\Comedor', // foreign key model
+         ]);
     }
 
     protected function setupCreateOperation()

@@ -39,7 +39,6 @@ class RegistrarInasistenciasJob implements ShouldQueue
             ->where('comedor_id', $this->comedor_id)
             ->doesntHave('asistencia')
             ->get();
-        //necesito comprobar de que comedor son las inscripciones??
 
         foreach ($inscripciones as $inscripcion) {
             $asistencia = Asistencia::create(

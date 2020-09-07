@@ -42,7 +42,7 @@ class ProveedorRequest extends FormRequest
             'cuit' => ['required', 'digits:11', Rule::unique('proveedores')->ignore($this->id)],
             'email' => ['required', 'email:rfc,dns', Rule::unique('proveedores')->ignore($this->id)],
             'nombre' => ['required', Rule::unique('proveedores')->ignore($this->id)],
-            'telefono' => ['required', 'digits:10', Rule::unique('proveedores')->ignore($this->id)],
+            'telefono' => ['required', 'phone:AR', Rule::unique('proveedores')->ignore($this->id)],
             'direccion' => ['required'],
         ];
     }
