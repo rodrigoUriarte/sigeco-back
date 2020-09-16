@@ -46,7 +46,7 @@ class RemitoRequest extends FormRequest
             'fecha_vencimiento' => ['required'],
             'insumo.*' => ['required', Rule::exists('insumos', 'id')],
             'cantidad.*' =>  ['required', 'numeric', 'min:0.01', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'fecha_vencimiento.*' =>  ['required', 'date'],
+            'fecha_vencimiento.*' =>  ['required', 'date', 'after:now'],
         ];
     }
 
@@ -69,8 +69,14 @@ class RemitoRequest extends FormRequest
      */
     public function messages()
     {
+        // $messages = [];
+        // foreach ($this->fecha_vencimiento as $index => $value) {
+        //     $messages['fecha_vencimiento.' . $index . '.after:now'] = 'falla';
+        // }
+        // return $messages;
+
         return [
-            //
+            'fecha_vencimiento.*.after' =>  'El atributo :attribute debe tener una fecha posterior a hoy',
         ];
     }
 }
