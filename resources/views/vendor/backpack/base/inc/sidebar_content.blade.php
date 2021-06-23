@@ -59,7 +59,7 @@
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('bandaHoraria') }}'><i
 					class='nav-icon la la-clock'></i> Bandas Horarias</a></li>
 		<li class='nav-item'><a class='nav-link' href='{{ backpack_url('regla') }}'><i
-					class='nav-icon la la-balance-scale'></i> Reglas</a></li>
+					class='nav-icon la la-balance-scale'></i> Reglas Sanciones</a></li>
 	</ul>
 </li>
 

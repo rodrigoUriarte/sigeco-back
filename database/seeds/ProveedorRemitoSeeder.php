@@ -54,7 +54,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito1 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 20000,
             'insumo_id' => 1,
             'remito_id' => $remito1->id,
@@ -70,7 +70,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito2 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 5000,
             'insumo_id' => 1,
             'remito_id' => $remito1->id,
@@ -87,7 +87,7 @@ class ProveedorRemitoSeeder extends Seeder
 
 
         $insumoRemito3 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 10000,
             'insumo_id' => 2,
             'remito_id' => $remito1->id,
@@ -103,7 +103,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito4 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 15000,
             'insumo_id' => 2,
             'remito_id' => $remito1->id,
@@ -119,7 +119,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito5 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 20000,
             'insumo_id' => 3,
             'remito_id' => $remito1->id,
@@ -135,7 +135,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito6 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 30000,
             'insumo_id' => 4,
             'remito_id' => $remito1->id,
@@ -151,7 +151,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito7 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 50000,
             'insumo_id' => 5,
             'remito_id' => $remito1->id,
@@ -167,7 +167,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito8 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 40000,
             'insumo_id' => 6,
             'remito_id' => $remito1->id,
@@ -183,7 +183,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito9 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 100,
             'insumo_id' => 7,
             'remito_id' => $remito1->id,
@@ -199,7 +199,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito10 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 15000,
             'insumo_id' => 8,
             'remito_id' => $remito1->id,
@@ -215,7 +215,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito11 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 250,
             'insumo_id' => 9,
             'remito_id' => $remito1->id,
@@ -231,7 +231,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito12 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 10000,
             'insumo_id' => 10,
             'remito_id' => $remito1->id,
@@ -248,7 +248,7 @@ class ProveedorRemitoSeeder extends Seeder
 
         // NO HACEMOS INGRESO DE MORRON(ID-11) PARA PROBAR ALGUNAS FUNCIONES DEL SISTEMA
         $insumoRemito14 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 10000,
             'insumo_id' => 12,
             'remito_id' => $remito1->id,
@@ -264,7 +264,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito15 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 20,
             'insumo_id' => 13,
             'remito_id' => $remito1->id,
@@ -280,7 +280,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito16 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 200,
             'insumo_id' => 14,
             'remito_id' => $remito1->id,
@@ -296,7 +296,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito17 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 12000,
             'insumo_id' => 15,
             'remito_id' => $remito1->id,
@@ -312,7 +312,7 @@ class ProveedorRemitoSeeder extends Seeder
         ]);
 
         $insumoRemito18 = InsumoRemito::create([
-            'fecha_vencimiento' => $this->rand_date('2020-06-01', '2020-12-31'),
+            'fecha_vencimiento' => $this->rand_date('2021-06-01', '2021-12-31'),
             'cantidad' => 15000,
             'insumo_id' => 16,
             'remito_id' => $remito1->id,

@@ -68,6 +68,11 @@ class Lote extends Model implements Auditable
         return date_format($myDate,'d-m-Y');
     }
 
+    public function getCantidadUMAttribute()
+    {
+        return "{$this->cantidad}  ({$this->insumo->unidad_medida})";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

@@ -30,7 +30,7 @@
             <tr>
                 <td>{{$lote->insumo->descripcion}} </td>
                 <td style="text-align:right">{{$lote->fecha_vencimiento_formato}} </td>
-                <td style="text-align:right">{{$lote->cantidad}} </td>
+                <td style="text-align:right">{{$lote->cantidad_um}} </td>
                 <td style="text-align:right">
                     @if($lote->usado == 0)
                     NO

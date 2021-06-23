@@ -19,68 +19,20 @@ class MenusAsignadosSeeder extends Seeder
         foreach ($users as $user) {
             if ($user->hasRole('comensal')) {
                 $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-02-01',
-                    'fecha_fin' => '2020-02-29',
+                    'fecha_inicio' => '2021-01-01',
+                    'fecha_fin' => '2021-01-31',
                     'user_id' => $user->id,
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,
+                    'created_at' => '2020-12-10 05:30:30'
                 ]);
                 $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-03-01',
-                    'fecha_fin' => '2020-03-31',
+                    'fecha_inicio' => '2021-02-01',
+                    'fecha_fin' => '2021-02-28',
                     'user_id' => $user->id,
                     'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
                     'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-04-01',
-                    'fecha_fin' => '2020-04-30',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-04-01',
-                    'fecha_fin' => '2020-04-30',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-05-01',
-                    'fecha_fin' => '2020-05-31',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-06-01',
-                    'fecha_fin' => '2020-06-30',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id, 
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-07-01',
-                    'fecha_fin' => '2020-07-31',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-08-01',
-                    'fecha_fin' => '2020-08-31',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                ]);
-                $ma = MenuAsignado::create([
-                    'fecha_inicio' => '2020-09-01',
-                    'fecha_fin' => '2020-09-30',
-                    'user_id' => $user->id,
-                    'menu_id' => Menu::where('comedor_id', $user->persona->comedor->id)->inRandomOrder()->first()->id,
-                    'comedor_id' => $user->persona->comedor->id,
-                    'created_at' => '2020-08-10 05:30:30'
+                    'created_at' => '2021-01-10 05:30:30'
                 ]);
             }
         }

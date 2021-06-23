@@ -67,17 +67,17 @@ class UnidadAcademicaComedorOperativoSeeder extends Seeder
 
         DB::table('bandas_horarias')->insert([
             [
-                'descripcion' => '12:00:00 - 12:30:00',
-                'hora_inicio' => '12:00:00',
-                'hora_fin' => '12:30:00',
+                'descripcion' => '14:00:00 - 14:30:00',
+                'hora_inicio' => '14:00:00',
+                'hora_fin' => '14:30:00',
                 'limite_comensales' => '100',
                 'comedor_id' => $comedor->id,
             ],
 
             [
-                'descripcion' => '12:30:00 - 13:00:00',
-                'hora_inicio' => '12:30:00',
-                'hora_fin' => '13:00:00',
+                'descripcion' => '14:30:00 - 15:00:00',
+                'hora_inicio' => '14:30:00',
+                'hora_fin' => '15:00:00',
                 'limite_comensales' => '100',
                 'comedor_id' => $comedor->id,
             ],
